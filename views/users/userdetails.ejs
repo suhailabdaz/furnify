@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Untree.co">
+  <link rel="shortcut icon" href="favicon.png">
+  <meta name="description" content="" />
+  <meta name="keywords" content="bootstrap, bootstrap4" />
+
+  <!-- Bootstrap CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="css/tiny-slider.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
+
+  <style>
+    #lineone{
+      min-height:50vh;
+    }
+
+    .section-container {
+        background-color: #ffffff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+    }
+
+    @media (min-width: 768px) {
+        .section-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: -15px; /* Adjust the left margin */
+            margin-right: -15px; /* Adjust the right margin */
+        }
+
+        .section-half {
+            flex: 0 0 calc(50% - 15px); /* Two sections in one row with margin */
+            margin-right: 30px; /* Adjust the gap between sections */
+            margin-bottom: 20px; /* Adjust the bottom margin */
+        }
+    }
+
+    .category-options {
+        display: none;
+    }
+
+    .search-bar {
+        background-color: #3b5d50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 35px;
+        margin: 0;
+        display: flex;
+        border: 2px solid #efeeee;
+        border-radius: 30px;
+        overflow: hidden;
+    }
+
+    .search-input {
+        border: none;
+        padding: 10px;
+        width: 800px;
+        background-color: #3b5d50;
+        color: white;
+    }
+
+    .search-button {
+        background-color: #3d5d50;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        cursor: pointer;
+    }
+</style>
+
+</head>
+
+<body>
+
+  <!-- Start Header/Navigation -->
+  <%-include('userpartials/nav')%>
+  <!-- End Header/Navigation -->
+
+  <!-- Start Hero Section -->
+  <div class="hero">
+    <div class="container">
+      <div class="row justify-content-between">
+        <div class="col-lg-5">
+          <div class="intro-excerpt">
+            <h1 class="heroo">User-details</h1>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <!-- ... (additional content if needed) ... -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Hero Section -->
+
+  <div class=" container mt-4">
+
+    <!-- User Details Section -->
+    <div class="row">
+      <div class="col-lg-6">
+    <section id="lineone" class=" user-details-section mt-4 section-container d-flex align-items-stretch">
+      <div class="section-half">
+        <h3>Your Profile</h3>
+        <!-- Personal details -->
+        <div class="personal-details">
+          <p> <%= userData.email %></p>
+          <p> <%= userData.username%></p>
+          <!-- <p>Date of Birth: January 1, 1990</p>
+          <p>Gender: Male</p> -->
+          <a href="/edit-profile" class="btn btn-primary">Edit your details</a>
+
+    </section>
+    </div>
+
+
+    <div class="col-lg-6">
+    <section  id="lineone" class="user-details-section mt-4 section-container  d-flex align-items-stretch">
+      <div class="section-half">
+        <h4>Saved Addresses</h4>
+        <!-- Saved addresses -->
+        <ul>
+          <li>123 Main St, Cityville, Country</li>
+          <li>456 Oak Ave, Townsville, Country</li>
+        </ul>
+        <a href="/add-address" class="btn btn-primary">Add new address</a>
+      </div>
+
+    </section>
+  </div>
+</div>
+ 
+
+
+    <section class="user-details-section mt-4 section-container">
+      <div class="section-half">
+        <h4>Password</h4>
+        <!-- Password management -->
+        <p>Email: user@example.com</p>
+        <p>Password: ********</p>
+        <a href="/reset-password" class="btn btn-warning">Reset password</a>
+      </div>
+    </section>
+  </div>
+    		<!-- Start Footer Section -->
+		<%-include('userpartials/footer')%>
+		
+		<!-- End Footer Section -->	
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/tiny-slider.js"></script>
+    <script src="js/custom.js"></script>
+</body>
+
+</html>

@@ -50,6 +50,13 @@ usrouter.get('/logout',user_controller.logout)
 
 usrouter.get('/userdetails',profile_controller.userdetails)
 
+usrouter.get('/editProfile',profile_controller.profileEdit)
+
+usrouter.post('/updateprofile',profile_controller.profileUpdate)
+
+
+
+
 
 
 

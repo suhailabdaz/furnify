@@ -182,7 +182,8 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Name</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
                         <th>E-Mail</th>
                         <th>Phone No</th>
                         <th>Blocked</th>
@@ -194,7 +195,8 @@
                     <% if(locals.users) { %>
                     <% users.forEach(function(data) { %>
                     <tr>
-                        <td><%= data.username %></td>
+                        <td><%= data.firstname %></td>
+                        <td><%= data.lastname %></td>
                         <td><%= data.email %></td>
                         <td><%= data.mobileNumber %></td>
                         <td><%= data.status %></td>

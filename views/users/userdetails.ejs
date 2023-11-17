@@ -115,10 +115,10 @@
         <!-- Personal details -->
         <div class="personal-details">
           <p> <%= userData.email %></p>
-          <p> <%= userData.username%></p>
+          <p> <%= userData.firstname %>&nbsp;<%=userData.lastname%></p>
           <!-- <p>Date of Birth: January 1, 1990</p>
           <p>Gender: Male</p> -->
-          <a href="/edit-profile" class="btn btn-primary">Edit your details</a>
+          <a href="/editProfile" class="btn btn-primary">Edit your details</a>
 
     </section>
     </div>
@@ -130,10 +130,11 @@
         <h4>Saved Addresses</h4>
         <!-- Saved addresses -->
         <ul>
-          <li>123 Main St, Cityville, Country</li>
-          <li>456 Oak Ave, Townsville, Country</li>
+          <% userData.address.forEach(function(address) { %>
+            <li><%= address.adname %></li>
+        <% }); %>
         </ul>
-        <a href="/add-address" class="btn btn-primary">Add new address</a>
+        <a href="/add-address.adname" class="btn btn-primary">Add new address</a>
       </div>
 
     </section>

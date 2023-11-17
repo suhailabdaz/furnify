@@ -15,15 +15,23 @@
                     <div class="card-body">
                         <form action="/signupotp" method="post">
                             <div class="form-group">
-                                <label for="username">Name</label>
+                                <label for="firstname">First Name</label>
                                 
-                                <input type="text" class="form-control" id="username" name="username"required>
+                                <input type="text" class="form-control" id="firstName" name="firstname"required>
                                 <% if(locals.nameerror){%>
                                     <div class="alter text-danger text-start"><%= nameerror%></div>
                     
                                 <%}%>
                             </div>
-                            
+                            <div class="form-group">
+                                <label for="lastname">Last Name</label>
+                                
+                                <input type="text" class="form-control" id="lastname" name="lastname"required>
+                                <% if(locals.nameerror){%>
+                                    <div class="alter text-danger text-start"><%= nameerror%></div>
+                    
+                                <%}%>
+                            </div>
                             
                             <div class="form-group">
                                 <label for="email">Email</label>

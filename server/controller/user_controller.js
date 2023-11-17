@@ -7,6 +7,7 @@ const categoryModel=require('../model/category_model')
 const productModel=require('../model/product_model')
 
 const {nameValid,
+    lnameValid,
     emailValid,
     phoneValid,
     passwordValid,
@@ -69,7 +70,7 @@ const profile=async(req,res)=>{
     try {
         if(req.session.isAuth){
             const categories = await categoryModel.find();
-            const name=req.session.username
+            const name=req.session.firstname
             res.render("users/profile", { categories,name});
             
 
@@ -138,13 +139,15 @@ return otp;
 
 const signupotp = async (req, res) => {
     try {
-        const username = req.body.username
+        const firstname = req.body.firstname
+        const lastname=req.body.lastname
         const email = req.body.email
         const phone = req.body.phone
         const password = req.body.password
         const cpassword = req.body.confirm_password
 
-        const isNameValid = nameValid(username)
+        const isfnameValid = nameValid(firstname)
+        const islnameValid=lnameValid(lastname)
         const isEmailValid = emailValid(email)
         const isPhoneValid = phoneValid(phone)
         const ispasswordValid = passwordValid(password)
@@ -157,7 +160,10 @@ const signupotp = async (req, res) => {
         else if (!isEmailValid) {
             res.render('users/signup', { emailerror: "Enter a valid E-mail" })
         }
-        else if (!isNameValid) {
+        else if (!isfnameValid) {
+            res.render('users/signup', { nameerror: "Enter a valid Name" })
+        }
+        else if (!islnameValid) {
             res.render('users/signup', { nameerror: "Enter a valid Name" })
         }
         else if (!isPhoneValid) {
@@ -171,7 +177,7 @@ const signupotp = async (req, res) => {
         }
         else {
             const hashedpassword = await bcrypt.hash(password, 10)
-            const user = new usersModel({ username:username, email: email, mobileNumber: phone, password: hashedpassword })
+            const user = new usersModel({firstname:firstname,lastname:lastname, email: email, mobileNumber: phone, password: hashedpassword })
             req.session.user = user
             req.session.signup = true
             req.session.forgot = false
@@ -290,7 +296,7 @@ const loginaction = async (req, res) => {
         if (passwordmatch && !user.status) {
             // Authentication successful
             req.session.userId = user._id;
-            req.session.username = user.username;
+            req.session.firstname = user.firstname;
             req.session.isAuth = true;
             res.redirect('/');
         } else {

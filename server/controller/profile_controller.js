@@ -18,6 +18,52 @@ const userdetails = async (req, res) => {
     }
 }
 
+const profileEdit=async(req,res)=>{
+    try{
+        const userId=req.session.userId
+        console.log("id",userId);
+        const categories = await categoryModel.find();
+        const data=await userModel.findOne({_id:userId})
+        console.log("data",data);
+        res.render('users/editprofile',{userData:data,categories})
+    }
+    catch(err){
+        res.status(500).send('error occured')
+        console.log(err);
+    }
+}
+
+const profileUpdate=async(req,res)=>{
+    try{
+        const {email,firstName,lastName,mob}=req.body
+        const userId=req.session.userId
+        console.log("id",userId);
+        console.log("values",firstName,lastName,mob
+        )
+        const data = await userModel.updateOne(
+            { _id: userId },
+            {
+                $set: {
+                    firstname: firstName,
+                    lastname: lastName,
+                    mobilenumber: mob
+                }
+            }
+        );
+        console.log("data",data);
+        res.redirect('/userdetails')
+    }
+    catch(err){
+        res.status(500).send('error occured')
+        console.log(err);
+    }
+}
 
 
-module.exports={userdetails}
+
+
+
+
+
+
+module.exports={userdetails,profileEdit,profileUpdate}

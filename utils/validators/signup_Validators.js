@@ -1,6 +1,11 @@
-const nameValid=(name)=>{
-    nameRegex=/^[A-Za-z]+$/
-    return name.length >1 && nameRegex.test(name)
+const nameValid=(firstname)=>{
+    fnameRegex=/^[A-Za-z]+$/
+    return firstname.length >1 && fnameRegex.test(firstname)
+}
+
+const lnameValid=(lastname)=>{
+    lnameRegex=/^[A-Za-z]+$/
+    return lastname.length >1 && lnameRegex.test(lastname)
 }
 
 const emailValid=(email)=>{
@@ -34,6 +39,7 @@ const confirmpasswordValid=(confirmpassword,password)=>{
 
 module.exports={
     nameValid,
+    lnameValid,
     emailValid,
     phoneValid,
     passwordValid,

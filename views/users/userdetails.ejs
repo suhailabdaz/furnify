@@ -17,6 +17,16 @@
   <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
 
   <style>
+
+.address-section {
+    border: 1px solid #ccc; /* Add a border for a rectangular section effect */
+    margin-bottom: 10px; /* Add some spacing between each address section */
+    padding: 10px; /* Add padding to the section */
+  }
+
+  .address-list {
+    font-size: 16px; /* Increase the text size */
+  }
     #lineone{
       min-height:50vh;
     }
@@ -131,10 +141,21 @@
         <!-- Saved addresses -->
         <ul>
           <% userData.address.forEach(function(address) { %>
-            <li><%= address.adname %></li>
-        <% }); %>
+            <div class="address-section">
+              <li class="address-list">
+                <%= address.adname %>, <%= address.street %>
+                <a href="/editaddress">
+                  <img src="images/icons8-edit-40.png" alt="Edit Icon">
+                </a>
+                <a href="/deleteaddress">
+                  <img src="images/icons8-delete-40.png" alt="Delete Icon">
+                </a>
+              </li>
+            </div>
+          <% }); %>
         </ul>
-        <a href="/add-address.adname" class="btn btn-primary">Add new address</a>
+        
+        <a href="/addAddress" class="btn btn-primary">Add new address</a>
       </div>
 
     </section>

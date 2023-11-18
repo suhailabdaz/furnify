@@ -54,6 +54,12 @@ usrouter.get('/editProfile',profile_controller.profileEdit)
 
 usrouter.post('/updateprofile',profile_controller.profileUpdate)
 
+usrouter.get('/addAddress',profile_controller.newAddress)
+
+usrouter.post('/addressUpdating',profile_controller.addressUpdate)
+
+
+
 
 
 

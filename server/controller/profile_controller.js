@@ -46,7 +46,7 @@ const profileUpdate=async(req,res)=>{
                 $set: {
                     firstname: firstName,
                     lastname: lastName,
-                    mobilenumber: mob
+                    mobileNumber: mob
                 }
             }
         );
@@ -59,6 +59,85 @@ const profileUpdate=async(req,res)=>{
     }
 }
 
+const newAddress=async(req,res)=>{
+    try{
+        const categories = await categoryModel.find();
+        res.render('users/newAddress',{categories})
+    }
+    catch(err){
+        res.status(500).send('error occured')
+        console.log(err);
+    }
+}
+
+const addressUpdate = async (req, res) => {
+    try {
+        const { fullname,adname,street,pincode,city,state,country,phone } = req.body;
+        const userId = req.session.userId;
+        console.log("id", userId);
+
+        const existingUser = await userModel.findOne({ _id: userId });
+
+        if (existingUser) {
+            // Corrected query to find existing address for the user
+            const existingAddress = await userModel.findOne({
+                '_id': userId,
+                'address': {
+                    $elemMatch: {
+                        'fullname': fullname,
+                        'adname': adname,
+                        'street': street,
+                        'pincode': pincode,
+                        'city': city,
+                        'state': state,
+                        'country': country,
+                        'phonenumber': phone
+                    }
+                }
+            });
+            
+            if (existingAddress) {
+                // req.flash('address', 'This Address already existed');
+                return res.redirect('/addAddress');
+            }
+
+            existingUser.address.push({
+                fullname: fullname,
+                adname:adname,
+                street: street,
+                pincode: pincode,
+                city: city,
+                state:state,
+                country:country,
+                phonenumber:phone
+               
+            });
+
+            await existingUser.save();
+
+            // req.flash('address', 'Address added successfully');
+            return res.redirect('/userdetails');
+        }
+        const newAddress = await userModel.create({
+            userId: userId,
+            address: {
+                fullname: fullname,
+                adname:adname,
+                street: street,
+                pincode: pincode,
+                city: city,
+                state:state,
+                country:country,
+                phonenumber:phone
+               
+            },
+        });
+        res.redirect('/userdetails');
+    } catch (err) {
+        res.status(500).send('Error occurred');
+        console.log(err);
+    }
+};
 
 
 
@@ -66,4 +145,8 @@ const profileUpdate=async(req,res)=>{
 
 
 
-module.exports={userdetails,profileEdit,profileUpdate}
+
+
+
+
+module.exports={userdetails,profileEdit,profileUpdate,newAddress,addressUpdate}

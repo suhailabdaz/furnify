@@ -16,10 +16,15 @@ const usersSchema = new mongoose.Schema({
     password: { type: String, required: true },
     address: {
         type: [{
+          saveas:{type:String},
+          fullname:{type:String},
           adname:{type:String},
           street: { type: String},
           pincode:{type:Number},
           city: { type: String },
+          state:{type:String},
+          country:{type:String},
+          phonenumber:{type:Number}
         }]},
     isAdmin:{
         type:Boolean,

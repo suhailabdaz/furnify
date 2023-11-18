@@ -50,4 +50,6 @@ adrouter.post('/updateproduct/:id',product_controller.updateproduct)
 
 
 
+
+
 module.exports= adrouter

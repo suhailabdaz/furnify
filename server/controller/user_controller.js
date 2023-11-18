@@ -70,7 +70,8 @@ const profile=async(req,res)=>{
     try {
         if(req.session.isAuth){
             const categories = await categoryModel.find();
-            const name=req.session.firstname
+            const user = await usersModel.findOne(); // Assuming you want to find the first user
+            const name = user.firstname;
             res.render("users/profile", { categories,name});
             
 

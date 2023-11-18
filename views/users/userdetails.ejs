@@ -17,77 +17,116 @@
   <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
 
   <style>
+    .address-section {
+    border: 1px solid #ccc;
+    min-width: 69vh;
+    border-radius: 10px; /* Make the section rounded */
+    margin-bottom: 10px;
+    padding: 10px;
+    position: relative; /* Position relative for absolute positioning of icons */
+}
 
-.address-section {
-    border: 1px solid #ccc; /* Add a border for a rectangular section effect */
-    margin-bottom: 10px; /* Add some spacing between each address section */
-    padding: 10px; /* Add padding to the section */
-  }
+.address-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-  .address-list {
-    font-size: 16px; /* Increase the text size */
-  }
-    #lineone{
-      min-height:50vh;
-    }
+.address-list {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
 
-    .section-container {
-        background-color: #ffffff;
-        padding: 20px;
+.address-list p {
+    font-size: 30px;
+    font-weight: 200;
+    margin: 0;
+}
+
+.edit {
+    margin-right: 20px;
+}
+
+
+.section-container {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+.passwordForm{
+  margin-top: 12vh;
+}
+
+@media (min-width: 768px) {
+    .section-half {
+        flex: 0 0 calc(50% - 15px);
+        margin-right: 30px;
         margin-bottom: 20px;
-        border-radius: 10px;
     }
+}
 
-    @media (min-width: 768px) {
-        .section-container {
-            display: flex;
-            flex-wrap: wrap;
-            margin-left: -15px; /* Adjust the left margin */
-            margin-right: -15px; /* Adjust the right margin */
-        }
+#lineone {
+    min-height: 50vh;
+}
 
-        .section-half {
-            flex: 0 0 calc(50% - 15px); /* Two sections in one row with margin */
-            margin-right: 30px; /* Adjust the gap between sections */
-            margin-bottom: 20px; /* Adjust the bottom margin */
-        }
-    }
+.section-container {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
 
-    .category-options {
-        display: none;
-    }
-
-    .search-bar {
-        background-color: #3b5d50;
+@media (min-width: 768px) {
+    .section-container {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 35px;
-        margin: 0;
-        display: flex;
-        border: 2px solid #efeeee;
-        border-radius: 30px;
-        overflow: hidden;
+        flex-wrap: wrap;
+        margin-left: -15px; /* Adjust the left margin */
+        margin-right: -15px; /* Adjust the right margin */
     }
 
-    .search-input {
-        border: none;
-        padding: 10px;
-        width: 800px;
-        background-color: #3b5d50;
-        color: white;
+    .section-half {
+        flex: 0 0 calc(50% - 15px); /* Two sections in one row with margin */
+        margin-right: 30px; /* Adjust the gap between sections */
+        margin-bottom: 20px; /* Adjust the bottom margin */
     }
+}
 
-    .search-button {
-        background-color: #3d5d50;
-        color: white;
-        border: none;
-        padding: 10px;
-        border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
-        cursor: pointer;
-    }
-</style>
+.category-options {
+    display: none;
+}
+
+.search-bar {
+    background-color: #3b5d50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    margin: 0;
+    border: 2px solid #efeeee;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.search-input {
+    border: none;
+    padding: 10px;
+    width: 800px;
+    background-color: #3b5d50;
+    color: white;
+}
+
+.search-button {
+    background-color: #3d5d50;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    cursor: pointer;
+}
+
+  </style>
 
 </head>
 
@@ -117,62 +156,79 @@
   <div class=" container mt-4">
 
     <!-- User Details Section -->
-    <div class="row">
-      <div class="col-lg-6">
+<!-- User Details Section -->
+<div class="row">
+  <div class="col-lg-6">
     <section id="lineone" class=" user-details-section mt-4 section-container d-flex align-items-stretch">
       <div class="section-half">
         <h3>Your Profile</h3>
         <!-- Personal details -->
         <div class="personal-details">
-          <p> <%= userData.email %></p>
-          <p> <%= userData.firstname %>&nbsp;<%=userData.lastname%></p>
+          <p><%= userData.email %></p>
+          <p><%= userData.firstname %>&nbsp;<%= userData.lastname %></p>
           <!-- <p>Date of Birth: January 1, 1990</p>
           <p>Gender: Male</p> -->
           <a href="/editProfile" class="btn btn-primary">Edit your details</a>
-
+        </div>
+      </div>
     </section>
-    </div>
+  </div>
 
-
-    <div class="col-lg-6">
-    <section  id="lineone" class="user-details-section mt-4 section-container  d-flex align-items-stretch">
+  <div class="col-lg-6">
+    <section id="lineone" class="user-details-section mt-4 section-container d-flex align-items-stretch">
       <div class="section-half">
         <h4>Saved Addresses</h4>
         <!-- Saved addresses -->
         <ul>
           <% userData.address.forEach(function(address) { %>
-            <div class="address-section">
-              <li class="address-list">
-                <%= address.adname %>, <%= address.street %>
-                <a href="/editaddress">
-                  <img src="images/icons8-edit-40.png" alt="Edit Icon">
-                </a>
-                <a href="/deleteaddress">
-                  <img src="images/icons8-delete-40.png" alt="Delete Icon">
-                </a>
-              </li>
-            </div>
+            <li class="address-list">
+              <div class="address-section">
+                <div class="address-content">
+                  <p><%= address.saveas %></p>
+                  <div class="address-icons">
+                    <a class="edit" href="/editaddress/<%= address._id %>"><img src="images/icons8-edit-40.png" alt="Edit Icon"></a>
+                    <a class="delete" href="/deleteaddress/<%= address._id %>"><img src="images/icons8-delete-40.png" alt="Delete Icon"></a>
+                  </div>
+                </div>
+              </div>
+            </li>
           <% }); %>
         </ul>
         
+
         <a href="/addAddress" class="btn btn-primary">Add new address</a>
       </div>
-
     </section>
   </div>
 </div>
+
  
 
 
-    <section class="user-details-section mt-4 section-container">
-      <div class="section-half">
-        <h4>Password</h4>
-        <!-- Password management -->
-        <p>Email: user@example.com</p>
-        <p>Password: ********</p>
-        <a href="/reset-password" class="btn btn-warning">Reset password</a>
-      </div>
-    </section>
+<section class="user-details-section mt-4 section-container">
+  <div class="section-half">
+    <h4>Password</h4>
+    <!-- Password management -->
+    <p>Email: user@example.com</p>
+    <p>Password: ********</p>
+    <button id="changePasswordLink" type="submit" class="btn btn-warning">Change Password</button>
+    <br><br>
+
+    <!-- Password change form -->
+    <form action="/cp" method="post"id="passwordForm">
+      <label for="newPassword">New Password:</label>
+      <input type="password" id="newPassword" name="newPassword" required>
+
+
+      <label for="confirmPassword">Confirm Password:</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+      <br><br>
+
+      <button type="submit" class="btn btn-warning">Submit</button>
+    </form>
+  </div>
+</section>
   </div>
     		<!-- Start Footer Section -->
 		<%-include('userpartials/footer')%>
@@ -180,6 +236,7 @@
 		<!-- End Footer Section -->	
 
 
+    
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/tiny-slider.js"></script>
     <script src="js/custom.js"></script>

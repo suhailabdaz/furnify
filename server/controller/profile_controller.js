@@ -1,5 +1,17 @@
 const categoryModel=require('../model/category_model')
 const userModel=require('../model/user_model')
+const bcrypt=require("bcrypt")
+
+const {nameValid,
+    lnameValid,
+    emailValid,
+    phoneValid,
+    passwordValid,
+    confirmpasswordValid}=require("../../utils/validators/signup_Validators")
+
+const {bnameValid,
+        adphoneValid,
+        pincodeValid}=require("../../utils/validators/address_Validators")
 
 
 
@@ -72,7 +84,7 @@ const newAddress=async(req,res)=>{
 
 const addressUpdate = async (req, res) => {
     try {
-        const { fullname,adname,street,pincode,city,state,country,phone } = req.body;
+        const { saveas,fullname,adname,street,pincode,city,state,country,phone } = req.body;
         const userId = req.session.userId;
         console.log("id", userId);
 
@@ -102,6 +114,7 @@ const addressUpdate = async (req, res) => {
             }
 
             existingUser.address.push({
+                saveas:saveas,
                 fullname: fullname,
                 adname:adname,
                 street: street,
@@ -121,6 +134,7 @@ const addressUpdate = async (req, res) => {
         const newAddress = await userModel.create({
             userId: userId,
             address: {
+                saveas:saveas,
                 fullname: fullname,
                 adname:adname,
                 street: street,
@@ -139,6 +153,136 @@ const addressUpdate = async (req, res) => {
     }
 };
 
+const changepassword=async(req,res)=>{
+    console.log("mele");
+    try{
+        console.log("vannu");
+        const password = req.body.newPassword
+        const cpassword = req.body.confirmPassword
+
+        const ispasswordValid = passwordValid(password)
+        const iscpasswordValid = confirmpasswordValid(cpassword, password)
+
+        if (!ispasswordValid) {
+            res.render('users/userdetails', { perror: "Password should contain one uppercase,one lowercase,one number,one special charecter" })
+        }
+        else if (!iscpasswordValid) {
+            res.render('users/userdetails', { cperror: "Password and Confirm password should be match" })
+        }
+        else{
+            const hashedpassword = await bcrypt.hash(password, 10)
+            const userId = req.session.userId;
+            console.log("ippo",userId);
+            await userModel.updateOne({_id:userId},{password:hashedpassword})
+            res.redirect('/userdetails')
+
+        }
+        
+    }
+    catch(err){
+        res.status(500).send('error occured')
+        console.log(err);
+    }
+}
+
+const editaddress=async(req,res)=>{
+    try{
+        
+        const addressId = req.params.addressId;
+        // Fetch address details based on addressId
+        const userId = req.session.userId; // Get the user ID
+        // Find the user and the specific address based on user ID and address ID
+        const user = await userModel.findById(userId);
+        const addressToEdit = user.address.id(addressId);
+        const categories = await categoryModel.find();
+    
+        // Render the edit address form and pass the address details as locals
+        res.render('users/editaddress',{ addressToEdit,categories });
+    }
+    catch(err){
+        res.status(500).send('error occured')
+        console.log(err);
+
+    }
+}
+const updateAddress = async (req, res) => {
+    try {
+        const { saveas, fullname, adname, street, pincode, city, state, country, phone } = req.body;
+        const addressId=req.params.addressId
+        const userId = req.session.userId;
+        console.log("id", userId);
+
+        // Check if the new address already exists for the user excluding the currently editing address
+        const isAddressExists = await userModel.findOne({
+            '_id': userId,
+            'address': {
+                $elemMatch: {
+                    '_id': { $ne: addressId }, // Exclude the currently editing address
+                    'saveas': saveas,
+                    'fullname': fullname,
+                    'adname': adname,
+                    'street': street,
+                    'pincode': pincode,
+                    'city': city,
+                    'state': state,
+                    'country': country,
+                    'phonenumber': phone
+                }
+            }
+        });
+
+        if (isAddressExists) {
+            // Address with the same details already exists, handle it accordingly
+            return res.status(400).send('Address already exists');
+        }
+
+        // Update the existing address based on the addressId
+        const result = await userModel.updateOne(
+            { '_id': userId, 'address._id': addressId },
+            {
+                $set: {
+                    'address.$.saveas': saveas,
+                    'address.$.fullname': fullname,
+                    'address.$.adname': adname,
+                    'address.$.street': street,
+                    'address.$.pincode': pincode,
+                    'address.$.city': city,
+                    'address.$.state': state,
+                    'address.$.country': country,
+                    'address.$.phonenumber': phone
+                }
+            }
+        );
+
+        // Check if the update was successful
+        
+            res.redirect('/userdetails');
+    } catch (err) {
+        res.status(500).send('Error occurred');
+        console.log(err);
+    }
+};
+
+const deleteAddress=async(req,res)=>{
+    try{
+        const addressId=req.params.addressId
+        const userId=req.session.userId
+        const result = await userModel.updateOne(
+            { _id: userId, 'address._id': addressId },
+            { $pull: { address: { _id: addressId } } }
+        );
+        console.log('userId:', userId);
+        console.log('addressId:', addressId);
+        console.log('Update result:', result);
+        res.redirect('/userdetails');
+
+    }
+    catch(err){
+        res.status(500).send('Error occurred');
+        console.log(err);
+
+    }
+}
 
 
 
@@ -149,4 +293,6 @@ const addressUpdate = async (req, res) => {
 
 
 
-module.exports={userdetails,profileEdit,profileUpdate,newAddress,addressUpdate}
+
+module.exports={userdetails,profileEdit,profileUpdate,newAddress,addressUpdate,changepassword
+,editaddress,updateAddress,deleteAddress}

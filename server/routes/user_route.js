@@ -58,6 +58,16 @@ usrouter.get('/addAddress',profile_controller.newAddress)
 
 usrouter.post('/addressUpdating',profile_controller.addressUpdate)
 
+usrouter.post('/cp',profile_controller.changepassword)
+
+usrouter.get('/editaddress/:addressId',profile_controller.editaddress)
+
+usrouter.post('/updateaddress/:addressId', profile_controller.updateAddress);
+
+usrouter.get('/deleteaddress/:addressId', profile_controller.deleteAddress);
+
+
+
 
 
 

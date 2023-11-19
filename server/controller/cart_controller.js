@@ -1,6 +1,7 @@
 const categoryModel=require('../model/category_model')
 const cartModel=require('../model/cart_model')
-const productModel=require('../model/product_model')
+const productModel=require('../model/product_model');
+const usersModel = require('../model/user_model');
 
 
 
@@ -224,45 +225,38 @@ const deletecart=async(req,res)=>{
   }
 }
 
-const checkoutpage=async(req,res)=>{
+const checkoutpage = async (req, res) => {
   try {
     const categories = await categoryModel.find();
-  
     const cartId = req.query.cartId;
-  
-    const cart = await cartModel.findById(cartId).populate('item.productId');
-  
-    // Initialize an array to store cart items
-    const cartItems = [];
-  
-    // Iterate through each item in the cart
-    for (const cartItem of cart.item) {
-      // Add product name and item total to cartItems array
-      cartItems.push({
-        productName: cartItem.productId.name,
-       
-        quantity: cartItem.quantity,
-        itemTotal: cartItem.total,
-      });
-  
-      // Log the details (optional)
-      console.log('Product Name:', cartItem.productId.name);
-      console.log('Item Total:', cartItem.total);
-      console.log('quant',cartItem.quantity);
+    const userId = req.session.userId;
+
+    const addresslist = await usersModel.findOne({ _id: userId });
+
+    if (!addresslist) {
+      console.log('User not found');
+      // Handle the case where the user with the given userId is not found
+      return res.status(404).send('User not found');
     }
-  
-    // Log the cart total (optional)
+
+    const addresses = addresslist.address;
+
+    const cart = await cartModel.findById(cartId).populate('item.productId');
+
+    const cartItems = cart.item.map((cartItem) => ({
+      productName: cartItem.productId.name,
+      quantity: cartItem.quantity,
+      itemTotal: cartItem.total,
+    }));
+
     console.log('Cart Total:', cart.total);
-  
-    // Render the checkout page with cartItems and categories
-    res.render('users/checkout', { cartItems, categories ,cart});
-  } 
-  
-  catch(err){
-    console.log(err);
-    res.status(500).send('error occured')
+
+    res.render('users/checkout', { addresses, cartItems, categories, cart });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error occurred');
   }
-}
+};
 
 
   

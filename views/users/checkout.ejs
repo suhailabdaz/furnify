@@ -16,6 +16,30 @@
   <meta name="description" content="" />
   <meta name="keywords" content="bootstrap, bootstrap4" />
   <style>
+	 .address-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .address-item {
+            width: 48%; /* Two items in one row with a small gap */
+            padding: 10px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .address-details {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .larger-text {
+            font-size: 16px; /* Adjust the size as needed */
+
+        }
+
+        
     .category-options {
       display: none;
     }
@@ -49,6 +73,10 @@
       border-bottom-right-radius: 20px;
       cursor: pointer;
     }
+	.key{
+		color: #3b5d50;
+		font-weight: bold;
+	}
   </style>
 
 		<!-- Bootstrap CSS -->
@@ -91,8 +119,32 @@
 		          <h2 class="h3 mb-3 text-black">Select Address</h2>
 		          <div class="p-3 p-lg-5 border bg-white">
 		            
-		               
 
+					<% if (addresses && addresses.length > 0) { %>
+						<div class="address-list">
+							<% addresses.forEach(address => { %>
+								<div class="address-item">
+									<label>
+										<input type="radio" name="selectedAddress" value="<%= address.id %>" class="address-radio">
+										<span class="larger-text"><%= address.saveas %></span>
+									</label>
+									<div class="address-details larger-text">
+										<p><span class="key">Full Name: </span><%= address.fullname %></p>
+										<p><span class="key">House name/Flat no:</span> <%= address.adname %></p>
+										<p><span class="key">Street:</span> <%= address.street %></p>
+										<p><span class="key">City:</span> <%= address.city %></p>
+										<p><span class="key">Pin-Code:</span><%= address.pincode %></p>
+										<p><span class="key">State:</span><%= address.state %></p>
+										<p><span class="key">Country:</span> <%= address.country %></p>
+										<!-- Add other address properties as needed -->
+									</div>
+								</div>
+							<% }); %>
+						</div>
+					<% } else { %>
+						<p>No addresses found.</p>
+					<% } %>
+				
 		        
 
 
@@ -283,7 +335,15 @@
 		<%-include('userpartials/footer')%>
 		
 		<!-- End Footer Section -->	
-
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+		<script>
+			$(document).ready(function () {
+				$('.address-radio').change(function () {
+					$('.address-details').slideUp();
+					$(this).closest('.address-item').find('.address-details').slideDown();
+				});
+			});
+		</script>
 
 		<script src="js/bootstrap.bundle.min.js"></script>
 		<script src="js/tiny-slider.js"></script>

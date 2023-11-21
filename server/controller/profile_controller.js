@@ -129,23 +129,11 @@ const addressUpdate = async (req, res) => {
             await existingUser.save();
 
             // req.flash('address', 'Address added successfully');
-            return res.redirect('/userdetails');
+            
+
+           
         }
-        const newAddress = await userModel.create({
-            userId: userId,
-            address: {
-                saveas:saveas,
-                fullname: fullname,
-                adname:adname,
-                street: street,
-                pincode: pincode,
-                city: city,
-                state:state,
-                country:country,
-                phonenumber:phone
-               
-            },
-        });
+        
         res.redirect('/userdetails');
     } catch (err) {
         res.status(500).send('Error occurred');
@@ -189,14 +177,14 @@ const editaddress=async(req,res)=>{
     try{
         
         const addressId = req.params.addressId;
-        // Fetch address details based on addressId
-        const userId = req.session.userId; // Get the user ID
-        // Find the user and the specific address based on user ID and address ID
+        
+        const userId = req.session.userId; 
+        
         const user = await userModel.findById(userId);
         const addressToEdit = user.address.id(addressId);
         const categories = await categoryModel.find();
     
-        // Render the edit address form and pass the address details as locals
+       
         res.render('users/editaddress',{ addressToEdit,categories });
     }
     catch(err){
@@ -212,12 +200,11 @@ const updateAddress = async (req, res) => {
         const userId = req.session.userId;
         console.log("id", userId);
 
-        // Check if the new address already exists for the user excluding the currently editing address
         const isAddressExists = await userModel.findOne({
             '_id': userId,
             'address': {
                 $elemMatch: {
-                    '_id': { $ne: addressId }, // Exclude the currently editing address
+                    '_id': { $ne: addressId }, 
                     'saveas': saveas,
                     'fullname': fullname,
                     'adname': adname,
@@ -232,11 +219,10 @@ const updateAddress = async (req, res) => {
         });
 
         if (isAddressExists) {
-            // Address with the same details already exists, handle it accordingly
             return res.status(400).send('Address already exists');
         }
 
-        // Update the existing address based on the addressId
+
         const result = await userModel.updateOne(
             { '_id': userId, 'address._id': addressId },
             {
@@ -254,7 +240,6 @@ const updateAddress = async (req, res) => {
             }
         );
 
-        // Check if the update was successful
         
             res.redirect('/userdetails');
     } catch (err) {

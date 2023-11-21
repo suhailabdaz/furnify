@@ -210,7 +210,7 @@ const deletecart=async(req,res)=>{
       const pid=req.params.id
       const size=req.params.size
       console.log('Deleting item:', { userId, pid });
-      const result=await cartModel.updateOne({userId:userId},{$pull:{item:{_id:pid,size:size}}})
+      const result=await cartModel.updateOne({userId:userId},{$pull:{item:{_id:pid}}})
       console.log('Update result:', result);
       const updatedCart = await cartModel.findOne({ userId: userId });
       const newTotal = updatedCart.item.reduce((acc, item) => acc + item.total, 0);
@@ -227,6 +227,7 @@ const deletecart=async(req,res)=>{
 
 const checkoutpage = async (req, res) => {
   try {
+    
     const categories = await categoryModel.find();
     const cartId = req.query.cartId;
     const userId = req.session.userId;
@@ -235,23 +236,24 @@ const checkoutpage = async (req, res) => {
 
     if (!addresslist) {
       console.log('User not found');
-      // Handle the case where the user with the given userId is not found
       return res.status(404).send('User not found');
     }
 
     const addresses = addresslist.address;
 
-    const cart = await cartModel.findById(cartId).populate('item.productId');
+    const cart = await cartModel.findById(cartId).populate('item.productId')
 
-    const cartItems = cart.item.map((cartItem) => ({
+    const cartItems = (cart.item || []).map((cartItem) => ({
       productName: cartItem.productId.name,
       quantity: cartItem.quantity,
       itemTotal: cartItem.total,
     }));
 
+    
+
     console.log('Cart Total:', cart.total);
 
-    res.render('users/checkout', { addresses, cartItems, categories, cart });
+    res.render('users/checkout', { addresses, cartItems, categories, cart,cartId });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error occurred');

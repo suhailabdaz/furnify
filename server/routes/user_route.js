@@ -3,6 +3,7 @@ const usrouter=express.Router()
 const user_controller=require("../controller/user_controller")
 const cart_controller=require("../controller/cart_controller")
 const profile_controller=require("../controller/profile_controller")
+const checkout_controller=require("../controller/checkout_controller")
 
 usrouter.get("/",user_controller.home)
 
@@ -65,6 +66,16 @@ usrouter.get('/editaddress/:addressId',profile_controller.editaddress)
 usrouter.post('/updateaddress/:addressId', profile_controller.updateAddress);
 
 usrouter.get('/deleteaddress/:addressId', profile_controller.deleteAddress);
+
+//checkoutsection
+
+usrouter.post('/checkoutreload',checkout_controller.checkoutreload)
+
+usrouter.post('/placeOrder',checkout_controller.placeOrder)
+
+
+
+
 
 
 

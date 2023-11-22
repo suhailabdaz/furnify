@@ -244,6 +244,7 @@ const checkoutpage = async (req, res) => {
     const cart = await cartModel.findById(cartId).populate('item.productId')
 
     const cartItems = (cart.item || []).map((cartItem) => ({
+      productId:cartItem.productId._id,
       productName: cartItem.productId.name,
       quantity: cartItem.quantity,
       itemTotal: cartItem.total,

@@ -1,5 +1,6 @@
 const categoryModel=require('../model/category_model')
 const userModel=require('../model/user_model')
+const orderModel=require('../model/order_model')
 const bcrypt=require("bcrypt")
 
 const {nameValid,
@@ -269,6 +270,19 @@ const deleteAddress=async(req,res)=>{
     }
 }
 
+const orderHistory=async (req,res)=>{
+    try{
+        const userId = req.session.userId;
+        const userOrderHistory = await orderModel.find({ userId :userId});
+        console.log(userOrderHistory)
+
+        res.render("users/order_history",{ order: userOrderHistory})
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 
 
 
@@ -280,4 +294,4 @@ const deleteAddress=async(req,res)=>{
 
 
 module.exports={userdetails,profileEdit,profileUpdate,newAddress,addressUpdate,changepassword
-,editaddress,updateAddress,deleteAddress}
+,editaddress,updateAddress,deleteAddress,orderHistory}

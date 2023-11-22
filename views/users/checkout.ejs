@@ -297,13 +297,17 @@
 							<!-- Add other hidden fields for additional address properties as needed -->
 							<% cartItems.forEach(cartItem => { %>
 							<!-- Hidden input fields for cart item details -->
-							<input type="hidden" name="selectedProductNames" class="selectedProductNames" value="<%= cartItem.productName %>">
-							<input type="hidden" name="selectedQuantities" class="selectedQuantities" value="<%= cartItem.quantity %>">
-							<input type="hidden" name="selectedCartTotals" class="selectedCartTotals" value="<%= cartItem.itemTotal %>">
+							<input type="hidden" name="selectedProductIds[]" class="selectedProductIds[]" value="<%= cartItem.productId ? cartItem.productId.toString() : '' %>">
+
+							<input type="hidden" name="selectedProductNames[]" class="selectedProductNames[]" value="<%= cartItem.productName %>">
+							<input type="hidden" name="selectedQuantities[]" class="selectedQuantities[]" value="<%= cartItem.quantity %>">
+							<input type="hidden" name="selectedCartTotals[]" class="selectedCartTotals[]" value="<%= cartItem.itemTotal %>">
 							<!-- Add other hidden fields for additional cart item properties as needed -->
 							<% }); %>
-							<input type="hidden" name="selectedItemTotals" class="selectedItemTotals" value="<%= cart.total %>">
+							<input type="hidden" name="carttotal" class="carttotal" value="<%= cart.total %>">
 							<input type="hidden" name="selectedPaymentOption" id="selectedPaymentOption">
+							
+							<input type="hidden" name="cartId" value="<%= cart._id %>">
 							<div class="form-group">
 								<button class="btn btn-black btn-lg py-3 btn-block">Place Order</button>
 							</div>

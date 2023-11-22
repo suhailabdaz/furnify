@@ -67,6 +67,8 @@ usrouter.post('/updateaddress/:addressId', profile_controller.updateAddress);
 
 usrouter.get('/deleteaddress/:addressId', profile_controller.deleteAddress);
 
+usrouter.get('/orderHistory',profile_controller.orderHistory)
+
 //checkoutsection
 
 usrouter.post('/checkoutreload',checkout_controller.checkoutreload)

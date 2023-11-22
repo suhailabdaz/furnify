@@ -1,0 +1,45 @@
+<!-- orderHistory.ejs -->
+
+<!-- Include your header, navigation, and other common elements -->
+
+<div class="container">
+    <h2>Order History</h2>
+
+    <% if (order && order.items && order.items.length > 0) { %>
+        <ul>
+            <% order.items.forEach(item => { %>
+                <li>
+                    <% if (item && item.productName) { %>
+                        <span class="item-name"><%= item.productName %></span>
+                    <% } else { %>
+                        <span class="item-name">Product Name Not Available</span>
+                    <% } %>
+    
+                    <% if (item && item.quantity) { %>
+                        <span class="item-quantity">Quantity: <%= item.quantity %></span>
+                    <% } else { %>
+                        <span class="item-quantity">Quantity Not Available</span>
+                    <% } %>
+    
+                    <% if (item && item.price) { %>
+                        <span class="item-price">Price: <%= item.price %></span>
+                    <% } else { %>
+                        <span class="item-price">Price Not Available</span>
+                    <% } %>
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No items in this order.</p>
+    <% } %>
+    
+</div>
+
+<!-- Include your footer and other common elements -->
+
+<!-- <script>
+    function cancelOrder(orderId) {
+        // Implement cancel order functionality using AJAX or other methods
+        // You can reload the page or update the order status dynamically
+    }
+</script> -->

@@ -1,6 +1,7 @@
 const express=require('express')
 const admin_controller=require('../controller/admin_controller')
 const product_controller=require("../controller/product_controller")
+const order_controller=require("../controller/order_controller")
 
 const multer=require('multer')
 const upload=multer({dest:'uploads/'})
@@ -40,6 +41,9 @@ adrouter.get('/editimg/:id',product_controller.editimg)
 adrouter.get('/deleteimg',product_controller.deleteimg)
 adrouter.post('/updateimg/:id',upload.array('images'),product_controller.updateimg)
 adrouter.post('/updateproduct/:id',product_controller.updateproduct)
+
+adrouter.get('/orderPage',order_controller.orderPage)
+adrouter.post('/updateOrderStatus',order_controller.updateOrderStatus)
 
 
 

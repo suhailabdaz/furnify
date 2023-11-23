@@ -1,22 +1,55 @@
-const isLogedout = (req, res, next) => {
-    if (!req.session.user) {
-       next()
-    } else {
-        res.redirect("/home")
-    }
+const category=require('.././server/model/category_model')
+
+const loadCategory=async(req,res,next)=>{
+    try {
+      res.locals.isAuth = req.session.isAuth || false;
+        const categories = await category.find(); 
+        res.locals.categories = categories; 
+        next(); 
+      } catch (error) {
+       
+        console.error('Error fetching categories:', error);
+        res.status(500).send('Internal Server Error');
+      }
+}
+const iflogged=async(req,res,next)=>{
+  if(req.session.isAuth){
+    res.redirect('/')
+  }else{
+    next()
+  }
+}
+const islogged=async(req,res,next)=>{
+  if(req.session.isAuth){
+    req.user=req.session.user;
+    next()
+  }else{
+    res.redirect('/profile')
+  }
 }
 
-const isLogged = (req, res, next) => {
-    if (req.session.user) {
-        req.user = req.session.user
-        next()
-    } else {
-        res.redirect('/login')
-    }
+const loggedout=async(req,res,next)=>{
+  if(req.session.user){
+    next()
+  }else{
+    res.redirect('/')
+  }
 }
 
+const checkSessionVariable = (variableName,redirectPath) => {
+    return (req, res, next) => {
+      
+      if (req.session[variableName]) {
 
-const loggedadmin = (req, res, next) => {
+        next();
+      } else {
+      
+        res.redirect(redirectPath);
+      }
+    };
+  };
+
+  const loggedadmin = (req, res, next) => {
     if(req.session.admin){
         req.admin = req.session.user
         next()
@@ -30,37 +63,26 @@ const logoutAdmin = (req, res, next) => {
     if(!req.session.admin){
         next()
     } else {
-        res.redirect('/admin/dashboad')
+        res.redirect('/admin/adminpanel')
     }
 }
 const logouting = (req,res,next) => {
-    req.session.destroy()
-    res.redirect('/login')
-    
-    
-    
+    req.session.destroy(),
+    res.redirect('/admin')
 }
-const checkinguseroradmin = async (req,res,next) =>{
-    if(req.session.admin){
-        // req.admin = req.session.user
-       return res.redirect("/admin/dashboad")
-    }else if(req.session.user){
-    //   return res.render('user/home')
-      return res.redirect('/shop')
-    }else {
-       res.redirect('/login')
-    }
 
-}
+
+
 
 
 module.exports ={
-    isLogedout,
-    isLogged,
     logoutAdmin,
     loggedadmin,
     logouting,
-    checkinguseroradmin,
-   
-    
+    loadCategory,
+    islogged,
+    loggedout,
+    iflogged,
+    checkSessionVariable
+
 }

@@ -26,7 +26,7 @@ const adminloginpost=async(req,res)=> {
         console.log(user);
         if(passwordmatch && user.isAdmin){
             console.log("getin");
-            req.session.isAuth = true;
+            req.session.admin = true;
             res.redirect('/admin/adminpanel');
             
         }

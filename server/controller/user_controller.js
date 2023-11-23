@@ -19,7 +19,7 @@ console.log(Email,pass)
 
 
 
-const home = async (req, res) => {
+const home = async (req, res) =>{
     try {
         // Assuming your categoryModel has a method like getAllCategories
         const categories = await categoryModel.find();
@@ -33,14 +33,10 @@ const home = async (req, res) => {
 };
 const shop = async (req, res) => {
     const category = req.query.category;
-  
-    // Fetch products based on the selected category
     const products = await productModel.find({$and:[{category},{status:true}] }).exec();
     const categories = await categoryModel.find();
     const ctCategory = categories.find(cat => cat._id.toString() === category);
-
-  // Extract the name of the selected category
-  const categoryName =ctCategory ? ctCategory.name : null;
+    const categoryName =ctCategory ? ctCategory.name : null;
 
  
 
@@ -69,20 +65,20 @@ const shop = async (req, res) => {
 const profile=async(req,res)=>{
     try {
         if(req.session.isAuth){
+            const userId=req.session.userId
             const categories = await categoryModel.find();
-            const user = await usersModel.findOne(); // Assuming you want to find the first user
+            const user = await usersModel.findOne({_id:userId});
             const name = user.firstname;
-            res.render("users/profile", { categories,name});
-            
-
+            res.render("users/profile", {categories,name});
         }
         else{
+            req.session.forgrtpressed=true
+            req.session.signupPressed = true
             res.render("users/login");
         }
 
 
     } catch (error) {
-        // Handle error appropriately, e.g., log it or send an error response
         console.error("Error fetching categories:", error);
         res.status(500).send("Internal Server Error");
     }
@@ -97,14 +93,18 @@ const logout= async(req, res) => {
 
         }
     catch (error) {
-        // Handle error appropriately, e.g., log it or send an error response
         console.error("Error fetching categories:", error);
         res.status(500).send("Internal Server Error");
     }
 };
 
 const signup=async(req,res)=>{
+    req.session.signupPressed = false
+    req.session.otppressed=true
     res.render("users/signup")
+    
+    
+    
 }
 const sendmail = async (email, otp) => {
     try {
@@ -223,6 +223,7 @@ const otp = async (req, res) => {
 
 const verifyotp = async (req, res) => {
     try {
+        
         const enteredotp = req.body.otp
 
         const user = req.session.user
@@ -241,9 +242,14 @@ const verifyotp = async (req, res) => {
             try {
                 if(req.session.signup){
                 await usersModel.create(user)
+                const userdata = await usersModel.findOne({ email: email });
+                req.session.userId = userdata._id;
+                req.session.isAuth=true
+                req.session.otppressed=false
                 res.redirect('/')
                 }
                 else if(req.session.forgot){
+                    req.session.newpasspressed=true
                     res.redirect('/newpassword')
                 }
             }
@@ -295,13 +301,12 @@ const loginaction = async (req, res) => {
         const passwordmatch = await bcrypt.compare(req.body.password, user.password);
 
         if (passwordmatch && !user.status) {
-            // Authentication successful
             req.session.userId = user._id;
             req.session.firstname = user.firstname;
             req.session.isAuth = true;
             res.redirect('/');
         } else {
-            // Authentication failed
+            
             res.render("users/login.ejs", { passworderror: "Invalid password or you're BLOCKED" });
         }
     } catch (error) {
@@ -349,6 +354,8 @@ const forgotpasspost=async (req, res) => {
             
 
             await sendmail(email, otp)
+            req.session.forgrtpressed=false
+            req.session.otppressed=true
             res.redirect('/otp')
         }
         else{
@@ -392,6 +399,7 @@ const reset_password = async (req, res) => {
             const hashedpassword = await bcrypt.hash(password, 10)
             const email = req.session.user.email;
             await usersModel.updateOne({email:email},{password:hashedpassword})
+            req.session.newpasspressed=false
             res.redirect('/profile')
 
         }

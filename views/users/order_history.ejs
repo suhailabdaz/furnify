@@ -1,45 +1,141 @@
-<!-- orderHistory.ejs -->
+<!-- UserProfile Page -->
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- Include your header, navigation, and other common elements -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Untree.co">
+  <link rel="shortcut icon" href="favicon.png">
 
-<div class="container">
-    <h2>Order History</h2>
+  <meta name="description" content="" />
+  <meta name="keywords" content="bootstrap, bootstrap4" />
 
-    <% if (order && order.items && order.items.length > 0) { %>
-        <ul>
-            <% order.items.forEach(item => { %>
-                <li>
-                    <% if (item && item.productName) { %>
-                        <span class="item-name"><%= item.productName %></span>
-                    <% } else { %>
-                        <span class="item-name">Product Name Not Available</span>
-                    <% } %>
-    
-                    <% if (item && item.quantity) { %>
-                        <span class="item-quantity">Quantity: <%= item.quantity %></span>
-                    <% } else { %>
-                        <span class="item-quantity">Quantity Not Available</span>
-                    <% } %>
-    
-                    <% if (item && item.price) { %>
-                        <span class="item-price">Price: <%= item.price %></span>
-                    <% } else { %>
-                        <span class="item-price">Price Not Available</span>
-                    <% } %>
-                </li>
-            <% }); %>
-        </ul>
-    <% } else { %>
-        <p>No items in this order.</p>
-    <% } %>
-    
-</div>
+  <!-- Bootstrap CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="css/tiny-slider.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <title>Profile-Furnify</title>
 
-<!-- Include your footer and other common elements -->
-
-<!-- <script>
-    function cancelOrder(orderId) {
-        // Implement cancel order functionality using AJAX or other methods
-        // You can reload the page or update the order status dynamically
+  <style>
+    .username{
+        font-weight: 600;
+        color: #F0EAD6;
     }
-</script> -->
+.heroprofile{
+    max-height: 100px;
+}
+    .welcome{
+        color: #efeeee;
+        font-weight: 200;
+    }
+    .category-options {
+      display: none;
+    }
+    .search-bar {
+      background-color: #3b5d50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 35px;
+      margin: 0;
+      display: flex;
+      border: 2px solid #efeeee;
+      border-radius: 30px;
+      overflow: hidden;
+    }
+
+    .search-input {
+      border: none;
+      padding: 10px;
+      width: 800px;
+      background-color: #3b5d50;
+      color: white;
+    }
+
+    .search-button {
+      background-color: #3d5d50;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+    <!-- Start Header Area -->
+    <%- include('userpartials/nav')%>
+        <!-- End Header Area -->
+        <!-- Start Banner Section -->
+        <section class="banner-area organic-breadcrumb">
+            <div class="container">
+                <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                </div>
+            </div>
+        </section>
+
+
+        
+
+		<div class="container mt-5">
+            <h1 class="mb-4">Order History</h1>
+           
+        
+            <% if (orders.length === 0) { %>
+              <p>No orders found.</p>
+            <% } else { %>
+              <% orders.forEach(order => { %>
+                <div class="list-group-item mb-3">
+                  <div class="d-flex justify-content-between">
+                    <h5>Order ID: <%= order.orderId %></h5>
+                    <% if (order.status !== 'Cancelled' && order.status !== 'Delivered') { %>
+                      <a href="/cancelorder/<%= order._id %>">Cancel</a>
+                    <% } %>
+                  </div>
+                  <p>Amount: ₹<%= order.totalPrice %></p>
+                  <p>Status: <%= order.status %></p>
+        
+                  <!-- Order Items Section -->
+                  <div class="order-section">
+                    <!-- Display order details here if needed -->
+                    <ul class="list-group">
+                        
+                      <% order.productDetails.forEach(item => { %>
+                        <li class="list-group-item">
+                          <img src="/<%= item.images[0] %>" alt="" style="height: 100px; width: 100px;">
+                          <p>Product Name: <%= item.name %></p>
+                         
+                          <p>Quantity: <%= allOrderItems.quantity %></p> <!-- Assuming quantity is a property of items -->
+                          <!-- Add more details as needed -->
+                          
+                        </li>
+                      <% }); %>
+                    </ul>
+                  </div>
+                  <!-- End Order Items Section -->
+                </div>
+              <% }); %>
+            <% } %>
+          </div>
+        
+	
+	
+
+
+
+
+
+        <%- include('userpartials/footer')%>
+
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/tiny-slider.js"></script>
+        <script src="js/custom.js"></script>
+
+</body>
+
+</html>

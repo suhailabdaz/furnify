@@ -14,8 +14,6 @@ const updateOrderStatus=async(req,res)=>{
     try{
         console.log("cheringina")
         const { orderId, status } = req.body;
-
-        // Update the order status in the database
         const updatedOrder = await orderModel.findOneAndUpdate(
             { _id: orderId },
             { $set: { status: status } },
@@ -26,8 +24,8 @@ const updateOrderStatus=async(req,res)=>{
             return res.status(404).json({ error: 'Order not found' });
         }
 
-        // Redirect to the order page or send a response as needed
-        res.redirect('/admin/orderPage'); // Adjust the path based on your routes
+    
+        res.redirect('/admin/orderPage'); 
 
     }
     catch(err){

@@ -1,6 +1,8 @@
 const categoryModel=require('../model/category_model')
 const userModel=require('../model/user_model')
 const orderModel=require('../model/order_model')
+const productModel=require('../model/product_model')
+const cartModel=require('../model/cart_model')
 const bcrypt=require("bcrypt")
 
 const {nameValid,
@@ -13,6 +15,8 @@ const {nameValid,
 const {bnameValid,
         adphoneValid,
         pincodeValid}=require("../../utils/validators/address_Validators")
+const { default: mongoose } = require('mongoose')
+
 
 
 
@@ -272,15 +276,75 @@ const deleteAddress=async(req,res)=>{
 
 const orderHistory=async (req,res)=>{
     try{
-        const userId = req.session.userId;
-        const userOrderHistory = await orderModel.find({ userId :userId});
-        console.log(userOrderHistory)
-
-        res.render("users/order_history",{ order: userOrderHistory})
-    }
+                const userId=req.session.userId;
+                console.log(userId);
+                const categories=await categoryModel.find({})
+                const od=await orderModel.find({userId:userId})
+                const allOrderItems = [];
+                od.forEach(order => {
+                  allOrderItems.push(...order.items);
+                });
+                const orders=await orderModel.aggregate([
+                    {
+                        $match: {
+                            userId: userId,
+                        }
+                    },
+                    // {
+                    //     $unwind: '$items'
+                    // },
+                    {
+                        $lookup: {
+                            from: 'products',
+                            localField: 'items.productId',
+                            foreignField: '_id',
+                            as: 'productDetails'
+                        }
+                    },
+                ])
+                console.log(orders)
+                console.log("jjjj",od)
+                console.log("ppppp",allOrderItems)
+                
+            
+                
+                res.render('users/order_history',{orders,categories,allOrderItems})
+           
+        }
+        
+    
     catch(err){
         console.log(err)
     }
+}
+
+const ordercancelling=async(req,res)=>{
+    try{
+    
+       const id= req.params.id
+       const update=await orderModel.updateOne({_id:id},{status:"Cancelled"})
+       const result=await orderModel.findOne({_id:id})
+       console.log("result",result);
+       const items=result.items.map(item=>({
+        productId:item.productId,
+        quantity:item.quantity,
+        
+    }))
+
+    for(const item of items){
+        const product =await productModel.findOne({_id:item.productId})
+        product.stock+=item.quantity
+        await product.save()
+       
+    }
+
+       res.redirect("/orderhistory")
+
+    }
+    catch(err){
+        res.status(500).send('error occured')
+        console.log(err);
+    }
 }
 
 
@@ -294,4 +358,4 @@ const orderHistory=async (req,res)=>{
 
 
 module.exports={userdetails,profileEdit,profileUpdate,newAddress,addressUpdate,changepassword
-,editaddress,updateAddress,deleteAddress,orderHistory}
+,editaddress,updateAddress,deleteAddress,orderHistory,ordercancelling}

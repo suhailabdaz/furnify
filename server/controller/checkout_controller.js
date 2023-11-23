@@ -116,7 +116,7 @@ const placeOrder = async (req, res) => {
     const cartId = req.body.cartId;
     
 
-    // Create an array of items (adjust based on your data model)
+    
     const items = req.body.selectedProductNames.map((productName, index) => ({
       productName:req.body.selectedProductNames[index],
       productId: new mongoose.Types.ObjectId(req.body.selectedProductIds[index]),
@@ -125,7 +125,7 @@ const placeOrder = async (req, res) => {
     }));
     
 
-    // Create a new instance of the orderModel (adjust based on your data model)
+
     const order = new orderModel({
       orderId: shortid.generate(),
       userId: userId,
@@ -138,6 +138,7 @@ const placeOrder = async (req, res) => {
       status: 'Pending',
       updatedAt: null,
     });
+    console.log('Items:', items);
 
     // Save the order to the database
     await order.save();

@@ -10,7 +10,36 @@
     <link href="/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+  .product-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin: 20px;
+        }
 
+        .product-images {
+            width: 40%; /* Adjust the width as needed */
+        }
+
+        .product-images img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            transition: border 0.3s ease-in-out;
+        }
+
+        .product-images img:hover {
+            border-color: #3498db;
+        }
+
+        .product-details {
+            width: 55%; /* Adjust the width as needed */
+            padding: 20px;
+            text-align: left;
+        }
 
 
         .image-gallery {
@@ -174,41 +203,38 @@
               
         </ul>
     </div>
-<div class="fulldiv  my-5 d-flex justify-content-center">
-<div>
-    <div class="product-image">
-    <img class="img-fluid" src="/<%= product.images[0] %>" alt="<%= product.name %> Image" id="mainImage">
-    </div>
-    <div class="image-gallery my-5 d-flex justify-content-center">
-        <% product.images.forEach((image, index) => { %>
-            <img src="/<%= image %>" alt="<%= product.name %> Image" onclick="showImage('/<%= image %>')" />
-        <% }); %>
-    </div>
+    <div class="fulldiv my-5 d-flex justify-content-center">
+        <div class="product-container">
+            <div class="product-image">
+                <img class="img-fluid" src="/<%= product.images[0] %>" alt="<%= product.name %> Image" id="mainImage">
+                </div>
+                <div class="image-gallery my-5 d-flex flex-column align-items-center">
+                    <% product.images.forEach((image, index) => { %>
+                        <img src="/<%= image %>" alt="<%= product.name %> Image" onclick="showImage('/<%= image %>')" class="img-fluid mb-2" />
+                    <% }); %>
+                </div>
+                
+            <div class="product-details">
+                <h1><%= product.name %></h1>
+                <p class="price">Rs.<%= product.price.toFixed(2) %></p>
+                <div class="description">
+                    <p><strong>Description:</strong></p>
+                    <p><%= product.description %></p>
+                </div>
+                <div class="buttons-row">
+                    <a href="/addtocart/<%= product._id %>"><button class="btn btn-primary">
+                        <span class="fas fa-shopping-cart"></span> Add to Cart
+                    </button></a>
 
-    <div class="product-details">
-        <h1><%= product.name %></h1>
-        <p class="price">Rs.<%= product.price.toFixed(2) %></p>
-
-
-        <div class="description">
-            <p><strong>Description:</strong></p>
-            <p><%= product.description %></p>
+                    <a href="/addtofavourites/<%=product._id%>"><button class="btn btn-secondary">
+                        <span class="fas fa-heart"></span> Add to Wishlist
+                    </button></a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
-   <!-- Add to Cart Button -->
-   <a href="/addtocart/<%= product._id %>"><button class="btn btn-primary">
-    <span class="fas fa-shopping-cart"></span> Add to Cart
-</button>
-</a>
 
-<!-- Add to Wishlist Button -->
-<a href="/addtofavourites/<%=product._id%>">
-<button class="btn btn-secondary">
-    <span class="fas fa-heart"></span> Add to Wishlist
-</button>
-</a>
+
 
 
     <footer>

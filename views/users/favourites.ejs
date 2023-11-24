@@ -23,6 +23,44 @@
   <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
 
   <style>
+    .add-to-cart-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      border-radius: 25px;
+      background-color: #000407;
+      color: #fff;
+      border: 2px solid #462c2c;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .add-to-cart-button:hover {
+      background-color: rgb(31, 77, 42);
+      border-color: #000000;
+      color: #fff;
+    }
+    .remove-from-cart-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      border-radius: 25px;
+      background-color: #000000;
+      color: #fff;
+      border: 2px solid #dcd7d7;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .remove-from-cart-button:hover {
+      background-color: #a22618;
+      border-color: #ffffff;
+      color: #fff;
+    }
     .category-options {
       display: none;
     }
@@ -107,12 +145,11 @@
           </div>
         </div>
         <div class="col-lg-7">
-          <!-- ... (additional content if needed) ... -->
         </div>
       </div>
     </div>
   </div>
-  <!-- End Hero Section -->
+
 
   <div class="untree_co-section before-footer-section">
     <div class="container">
@@ -125,6 +162,7 @@
 					<th class="product-thumbnail">Image</th>
 					<th class="product-name">Product</th>
 					<th class="product-price">Price</th>
+          <th class="product-addtocart">Add to cart</th>
                     <th class="product-remove">remove</th>
 				  </tr>
 				</thead>
@@ -139,9 +177,9 @@
 						  <h2 class="h5 text-black"><%= item.productId.name %></h2>
 						</td>
 						<td><%= item.productId.price %></td>
-						
+						 <td><a href="/addtocartviafav/<%= item._id %>" class="add-to-cart-button">Add To Cart</a></td>
 
-        <td><a href="/deletefav/<%= item._id %>">X</a></td>
+        <td><a href="/deletefav/<%= item._id %>" class="remove-from-cart-button">Remove</a></td>
 
 					  </tr>
 					<% }); %>

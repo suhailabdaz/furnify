@@ -8,13 +8,14 @@ const bcrypt=require("bcrypt")
 const {nameValid,
     lnameValid,
     emailValid,
-    phoneValid,
     passwordValid,
-    confirmpasswordValid}=require("../../utils/validators/signup_Validators")
+    confirmpasswordValid,
+    phoneValid}=require("../../utils/validators/signup_Validators")
 
 const {bnameValid,
         adphoneValid,
-        pincodeValid}=require("../../utils/validators/address_Validators")
+        pincodeValid,
+        }=require("../../utils/validators/address_Validators")
 const { default: mongoose } = require('mongoose')
 
 
@@ -94,6 +95,17 @@ const addressUpdate = async (req, res) => {
         console.log("id", userId);
 
         const existingUser = await userModel.findOne({ _id: userId });
+        const fullnamevalid=bnameValid(fullname)
+        const saveasvalid=bnameValid(saveas)
+        const adnameValid=bnameValid(adname)
+        const streetValid=bnameValid(street)
+        const pincodevalid=pincodeValid(pincode)
+        const cityValid=bnameValid(city)
+        const stateValid=bnameValid(state)
+        const countryValid=bnameValid(country)
+        const phoneValid=adphoneValid(phone)
+        
+
 
         if (existingUser) {
             // Corrected query to find existing address for the user

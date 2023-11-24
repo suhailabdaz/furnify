@@ -38,6 +38,7 @@ const showcart = async (req, res) => {
               total: 0,
             });
       }
+      console.log(cart)
 
       res.render('users/cart.ejs', { cart, categories });
   } catch (err) {

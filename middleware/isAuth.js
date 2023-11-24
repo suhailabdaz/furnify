@@ -51,7 +51,6 @@ const checkSessionVariable = (variableName,redirectPath) => {
 
   const loggedadmin = (req, res, next) => {
     if(req.session.admin){
-        req.admin = req.session.user
         next()
     } else {
         res.redirect('/admin')

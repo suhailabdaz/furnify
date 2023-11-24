@@ -12,21 +12,29 @@
             background-color: #FAF9F6;
         }
 
-        .toggle-container {
-            display: flex;
-            align-items: center;
-        }
-
+       .toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 2px solid #000000; /* Border for the toggle container */
+    border-radius: 20px;
+    background-color: #FAF9F6; /* Background color of the toggle container */
+    color: #000000; /* Text color of the labels in the toggle container */
+}
         .toggle-label {
             margin-right: 10px;
         }
 
         .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
+    position: relative;
+    display: inline-block;
+    width: 60px; /* Width of the toggle switch */
+    height: 34px;
+    border: 2px solid #000000; /* Height of the toggle switch */
+    background-color: #ccc; /* Default background color of the toggle switch */
+    border-radius: 17px; /* Border radius to make it rounded */
+}
 
         .toggle-switch input {
             opacity: 0;
@@ -35,42 +43,46 @@
         }
 
         .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff; 
+    ;/* Background color when the toggle switch is off */
+    border-radius: 17px; /* Border radius to make it rounded */
+    -webkit-transition: .4s;
+    transition: .4s;
+}
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: rgb(0, 0, 0);
+    border-radius: 50%; /* Border radius to make it a circle */
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+       
+        input:focus + .slider {
+            box-shadow: 0 0 1px #000000;
         }
 
         input:checked + .slider {
-            background-color: #2196F3;
-        }
+    background-color: #000000; /* Background color when the toggle switch is on */
+}
 
-        input:focus + .slider {
-            box-shadow: 0 0 1px #2196F3;
-        }
-
-        input:checked + .slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
 
         .pclass {
             font-size: clamp(1.25rem, 1.16rem + .39vw, 1.625rem);
@@ -195,13 +207,15 @@
     </style>
     <div class="container mt-1">
         <div class="fuul">
+            
             <div class="row d-flex justify-content-end mt-5">
+                
                 <div class="col-md-6">
                     <div class="card mt-2">
                         <div class="toggle-container">
                             <label class="toggle-label">Login</label>
                             <label class="toggle-switch">
-                                <input type="checkbox" id="toggle">
+                                <input type="checkbox" id="toggle" onchange="toggleSwitch()">
                                 <span class="slider"></span>
                             </label>
                             <label class="toggle-label">Signup</label>
@@ -242,25 +256,42 @@
 </body>
 
 </html>
-    <script>
-        const toggleSwitch = document.getElementById('toggle');
-        const signupLink = document.getElementById('signupLink');
-        const loginLink = document.getElementById('loginLink');
-    
-        toggleSwitch.addEventListener('change', () => {
-            if (toggleSwitch.checked) {
-                // Show login, hide signup
-                signupLink.style.display = 'none';
-                loginLink.style.display = 'inline-block';
-                console.log('Switched to Login');
-            } else {
-                // Show signup, hide login
-                signupLink.style.display = 'inline-block';
-                loginLink.style.display = 'none';
-                console.log('Switched to Signup');
-            }
-        });
-    </script>
-    <a id="signupLink" href="/signup">Signup</a>
-<a id="loginLink" href="#login" style="display: none;">Login</a>
+<script>
+    const toggleSwitch = document.getElementById('toggle');
+    const signupLink = document.getElementById('signupLink');
+    const loginLink = document.getElementById('loginLink');
+
+    // Function to set the toggle state based on the current route
+    function setToggleState() {
+        if (window.location.pathname === '/signup') {
+            // If the current route is /signup, set the toggle to true (Signup)
+            toggleSwitch.checked = true;
+            signupLink.style.display = 'none';
+            loginLink.style.display = 'inline-block';
+            console.log('Switched to Login');
+        } else {
+            // Otherwise, set the toggle to false (Login)
+            toggleSwitch.checked = false;
+            signupLink.style.display = 'inline-block';
+            loginLink.style.display = 'none';
+            console.log('Switched to Signup');
+        }
+    }
+
+    // Add an event listener to the toggle switch
+    toggleSwitch.addEventListener('change', () => {
+        if (toggleSwitch.checked) {
+            // Redirect to the /signup route
+            window.location.href = "/signup";
+        } else {
+            // Redirect to the /login route
+            window.location.href = "/login";
+        }
+    });
+
+    // Call the setToggleState function when the page loads
+    window.addEventListener('load', setToggleState);
+</script>
+
+
 

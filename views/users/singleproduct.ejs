@@ -204,9 +204,11 @@
 </a>
 
 <!-- Add to Wishlist Button -->
-<button class="btn btn-secondary" onclick="addToWishlist('<%= product._id %>')">
+<a href="/addtofavourites/<%=product._id%>">
+<button class="btn btn-secondary">
     <span class="fas fa-heart"></span> Add to Wishlist
 </button>
+</a>
 
 
     <footer>

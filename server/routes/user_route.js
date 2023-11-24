@@ -21,7 +21,7 @@ usrouter.get('/otp',auth.checkSessionVariable('otppressed','/'),user_controller.
 
 usrouter.post("/verifyotp",auth.iflogged,user_controller.verifyotp)
 
-usrouter.post("/resendotp",auth.islogged,user_controller.resendotp)
+usrouter.post("/resendotp",auth.iflogged,user_controller.resendotp)
 
 usrouter.post("/loginaction",user_controller.loginaction)
 
@@ -70,6 +70,12 @@ usrouter.get('/deleteaddress/:addressId',auth.islogged, profile_controller.delet
 usrouter.get('/orderHistory',auth.islogged,profile_controller.orderHistory)
 
 usrouter.get('/cancelorder/:id',auth.islogged,profile_controller.ordercancelling)
+
+usrouter.get('/favouritespage',auth.islogged,cart_controller.favouritespage)
+
+usrouter.get('/addtofavourites/:id',auth.islogged,cart_controller.addToFvourites)
+
+usrouter.get('/deletefav/:id',auth.islogged,cart_controller.deletefav)
 
 //checkoutsection
 

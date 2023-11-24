@@ -17,10 +17,15 @@
   <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
 
   <style>
+    .personal-details p{
+      font-size: large;
+      color: black;
+      font-weight: 400;
+    }
     .address-section {
     border: 1px solid #ccc;
     min-width: 69vh;
-    border-radius: 10px; /* Make the section rounded */
+    border-radius: 10px; 
     margin-bottom: 10px;
     padding: 10px;
     position: relative; /* Position relative for absolute positioning of icons */
@@ -164,6 +169,7 @@
         <h3>Your Profile</h3>
         <!-- Personal details -->
         <div class="personal-details">
+          <br>
           <p><%= userData.email %></p>
           <p><%= userData.firstname %>&nbsp;<%= userData.lastname %></p>
           <!-- <p>Date of Birth: January 1, 1990</p>
@@ -209,13 +215,11 @@
   <div class="section-half">
     <h4>Password</h4>
     <!-- Password management -->
-    <p>Email: user@example.com</p>
-    <p>Password: ********</p>
-    <button id="changePasswordLink" type="submit" class="btn btn-warning">Change Password</button>
+    <button id="changePasswordLink" type="submit" class="btn btn-warning" onclick="togglePasswordForm()">Change Password</button>
     <br><br>
 
     <!-- Password change form -->
-    <form action="/cp" method="post"id="passwordForm">
+    <form action="/cp" method="post"id="passwordForm" style="display: none;">
       <label for="newPassword">New Password:</label>
       <input type="password" id="newPassword" name="newPassword" required>
 
@@ -236,7 +240,13 @@
 		<!-- End Footer Section -->	
 
 
-    
+    <script>
+    function togglePasswordForm() {
+    var passwordForm = document.getElementById('passwordForm');
+    passwordForm.style.display = (passwordForm.style.display === 'block') ? 'none' : 'block';
+}
+
+  </script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/tiny-slider.js"></script>
     <script src="js/custom.js"></script>

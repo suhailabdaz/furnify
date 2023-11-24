@@ -1,5 +1,3 @@
-
-
 const bcrypt=require("bcrypt")
 const usersModel=require("../model/user_model")
 const categoryModel=require("../model/category_model")
@@ -28,22 +26,17 @@ const adminloginpost=async(req,res)=> {
             console.log("getin");
             req.session.admin = true;
             res.redirect('/admin/adminpanel');
-            
         }
         else{
-            // req.flash('passworderror','invalid password')
-            // res.redirect('/login')
             console.log("get");
             res.render("admin/admin_login",{passworderror:"Invalid-password"} )
-            // res.send("password")
         }
     }
     catch{
-        // req.flash('emailerror','invalid e-mail')
-        // res.redirect('/login')
+      
         console.log("gettt");
         res.render("admin/admin_login",{emailerror:"Invalid-email"})
-        // res.send("email")
+
     }
 }
 
@@ -72,15 +65,43 @@ const userslist=async(req,res)=>{
 
 const userupdate=async(req,res)=>{
     try{
+       
+        
         const email = req.params.email; 
-        const user =await usersModel.findOne({email:email}); 
-    
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        user.status = !user.status;
-        await user.save();
-        res.redirect('/admin/userslist')
+const user = await usersModel.findOne({ email: email }); 
+
+if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+}
+
+
+const currentStatus = user.status;
+
+
+user.status = !user.status;
+await user.save();
+
+
+if (currentStatus === false && user.status === true){
+
+    if (req.session.isAuth && req.session.userId === user._id.toString()) {
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Error destroying session:", err);
+                return res.status(500).send("Internal Server Error");
+            }
+            console.log('User session destroyed');
+            return res.redirect('/admin/userslist');
+        });
+    } else {
+
+        return res.redirect('/admin/userslist');
+    }
+} else {
+
+    return res.redirect('/admin/userslist');
+}
+
     }
     catch(err){
         console.log(err);
@@ -143,7 +164,6 @@ const filter=async(req,res)=>{
 const category=async(req,res)=>{
     try{
         const category=await categoryModel.find({})
-        // console.log(user);
         res.render("admin/categories",{cat:category})
     }
     catch(err){
@@ -166,8 +186,15 @@ const addcategory=async(req,res)=>{
     try{
         const catName=req.body.categoryName
         const catdes=req.body.description
+        const categoryExists=categoryModel.find({name:catName})
+        if(categoryExists){
+            console.log("category exsits")
+            res.redirect('/admin/category')
+        }
+        else{
         await categoryModel.insertMany({name:catName,description:catdes})
         res.redirect('/admin/category')
+        }
     }
     catch(err){
         console.log(err);
@@ -218,117 +245,6 @@ const updatecategory=async(req,res)=>{
     }
 
 }
-// const subcategory=async(req,res)=>{
-//     try{
-//         const s_category=await subcatModel.find({}).populate({
-//             path: 'p_category',
-//             select: 'name'
-//         });
-//     //   console.log(s_category);
-//         res.render("admin/subcategories",{cat:s_category})
-//     }
-//     catch(err){
-//         console.log(err);
-//         res.send("Error Occured")
-//     }
-// }
-
-// const newsubcat=async(req,res)=>{
-//     try{
-//         const pcat=await categoryModel.find()
-//         res.render("admin/addsubcat",{p_cat:pcat})
-//     }
-//     catch(err){
-//         console.log(err);
-//         res.send("Error Occured")
-//     }
-// }
-// const updatesubcat=async(req,res)=>{
-//     try{
-//         const id=req.params.id
-//         const cat=await subcatModel.findOne({_id:id})
-//         const pcat=await categoryModel.find()
-//         res.render('admin/updatesubcat',{itemcat:cat,p_cat:pcat})
-//     }
-//     catch(err){
-//         console.log(err);
-//         res.send("Error Occured")
-//     }
-// }
-// const addsubcategory=async(req,res)=>{
-//     try{
-//         const catName=req.body.categoryName
-//         const p_cat=req.body.parentCategory
-//         const catdes=req.body.description
-//         await subcatModel.insertMany({name:catName,description:catdes, p_category:p_cat})
-//         res.redirect('/admin/subcategory')
-//     }
-//     catch(err){
-//         console.log(err);
-//         res.send("Error Occured")
-//     }
-// }
-// const catstatus=async(req,res)=>{
-//     try{
-//         const id = req.params.id; 
-//         const category =await subcatModel.findOne({_id:id}); 
-//         // console.log(category);
-//         if (!category) {
-//             return res.status(404).json({ message: 'category not found' });
-//         }
-//         category.status = !category.status;
-//         await category.save();
-//         // console.log(category);
-//         res.redirect('/admin/subcategory')
-//     }
-//     catch(err){
-//         console.log(err);
-//         res.send("Error Occured")
-//     }
-// }
-// const deletesubcat=async(req,res)=>{
-//     try{
-//         const id = req.params.id; 
-//         const category=await subcatModel.deleteOne({_id:id})
-//         res.redirect('/admin/subcategory')
-//     }
-//     catch(err){
-//         console.log(err);
-//         res.send("Error Occured")
-//     }
-// }
-// const updatesubcategory=async(req,res)=>{
-//     try{
-//         const id=req.params.id
-//         const catName=req.body.categoryName
-//         const catdes=req.body.description
-//         const pcat=req.body.parentCategory
-//         await subcatModel.updateOne({_id:id},{$set:{name:catName,description:catdes,p_category:pcat}})
-//         res.redirect('/admin/subcategory')
-//     }
-//     catch(err){
-//         console.log(err);
-//         res.send("Error Occured")
-//     }
-
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports={login,adminloginpost,adminpanel,userslist,userupdate,searchUser,searchview,filter,category,

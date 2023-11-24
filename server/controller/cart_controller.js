@@ -2,7 +2,7 @@ const categoryModel=require('../model/category_model')
 const cartModel=require('../model/cart_model')
 const productModel=require('../model/product_model');
 const usersModel = require('../model/user_model');
-
+const favModel=require('../model/favourites_model')
 
 
 
@@ -16,7 +16,6 @@ const showcart = async (req, res) => {
       let cart;
 
       if (userId) {
-          // If userId exists, find the cart by userId
           cart = await cartModel.findOne({ userId: userId }).populate({
               path: 'item.productId',
               select: 'images name price',
@@ -32,8 +31,12 @@ const showcart = async (req, res) => {
       // Ensure cart is defined and has the expected structure
       if (!cart || !cart.item) {
           // Handle the case when cart is not found or does not have items
-          // You can redirect the user, show an empty cart, or handle it as appropriate
-          return res.render('users/cart', {cart: null, categories });
+          
+            cart = new cartModel({
+              sessionId: req.session.id,
+              item: [],
+              total: 0,
+            });
       }
 
       res.render('users/cart.ejs', { cart, categories });
@@ -261,6 +264,113 @@ const checkoutpage = async (req, res) => {
   }
 };
 
+const addToFvourites= async (req, res) => {
+  try {
+    const pid = req.params.id;
+    const product = await productModel.findOne({ _id: pid });
+
+    const userId = req.session.userId;
+    const price = product.price;
+    const quantity = 1;
+  
+    let fav;
+    if (userId) {
+      fav = await favModel.findOne({ userId: userId });
+    }
+    if (!fav) {
+      fav = await favModel.findOne({ sessionId: req.session.id });
+    }
+
+    if (!fav) {
+      fav = new favModel({
+        sessionId: req.session.id,
+        item: [],
+        total: 0,
+      });
+    }
+    
+    const productExist = fav.item.findIndex((item) => item.productId == pid);
+    
+    if (productExist !== -1) {
+      fav.item[productExist].quantity += 1;
+      fav.item[productExist].total =
+        fav.item[productExist].quantity * price;
+    } else {
+      const newItem = {
+        productId: pid,
+        price: price,
+      };
+      fav.item.push(newItem);
+    }
+
+    if (userId && !fav.userId) {
+      fav.userId = userId;
+    }
+
+    await fav.save();
+    res.redirect('/favouritespage');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error occurred');
+  }
+}
+const favouritespage=async(req,res)=>{
+  try {
+    const userId = req.session.userId;
+    const sessionId = req.session.id;
+    const categories = await categoryModel.find();
+    let fav;
+
+    if (userId) {
+        fav = await favModel.findOne({ userId: userId }).populate({
+            path: 'item.productId',
+            select: 'images name price',
+        });
+    } else {
+        fav = await favModel.findOne({ sessionId: sessionId }).populate({
+            path: 'item.productId',
+            select: 'images name price',
+        });
+    }
+
+    
+    if (!fav || !fav.item) {
+          cart = new favModel({
+            sessionId: req.session.id,
+            item: [],
+            total: 0,
+          });
+    }
+
+    res.render('users/favourites.ejs', { fav, categories });
+} catch (err) {
+    console.error(err);
+    res.status(500).send('Error occurred');
+}
+  
+}
+
+const deletefav=async(req,res)=>{
+  try {
+      const userId=req.session.userId
+      const pid=req.params.id
+      console.log('Deleting item:', { userId, pid });
+      const result=await favModel.updateOne({userId:userId},{$pull:{item:{_id:pid}}})
+      console.log('Update result:', result);
+      const updatedFav = await favModel.findOne({ userId: userId });
+      const newTotal = updatedFav.item.reduce((acc, item) => acc + item.total, 0);
+      updatedFav.total = newTotal;
+      await updatedFav.save();
+     res.redirect('/favouritespage')
+  }
+  catch(err) {
+      console.log(err);
+      res.status(500).send('error occured')
+
+  }
+}
+
+
 
   
   module.exports= {
@@ -269,6 +379,9 @@ const checkoutpage = async (req, res) => {
     updateCartItem,
     updatecart,
     deletecart,
-    checkoutpage
+    checkoutpage,
+    addToFvourites,
+    favouritespage,
+    deletefav
   };
   

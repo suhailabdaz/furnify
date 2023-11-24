@@ -1,83 +1,319 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Sign Up</title>
+    <title>Signup</title>
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">Sign Up</div>
-                    <div class="card-body">
-                        <form action="/signupotp" method="post">
-                            <div class="form-group">
-                                <label for="firstname">First Name</label>
-                                
-                                <input type="text" class="form-control" id="firstName" name="firstname"required>
-                                <% if(locals.nameerror){%>
-                                    <div class="alter text-danger text-start"><%= nameerror%></div>
-                    
-                                <%}%>
-                            </div>
-                            <div class="form-group">
-                                <label for="lastname">Last Name</label>
-                                
-                                <input type="text" class="form-control" id="lastname" name="lastname"required>
-                                <% if(locals.nameerror){%>
-                                    <div class="alter text-danger text-start"><%= nameerror%></div>
-                    
-                                <%}%>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email"required>
-                                <% if(locals.emailerror){%>
-                                    <div class="alter text-danger text-start"><%= emailerror%></div>
-                    
-                                <%}%>
-                            </div>
-                            <div class="form-group">
-                                <label for="Phone">Phone</label>
-                                <input type="tel" class="form-control" id="phone" name="phone"required>
-                                <% if(locals.phoneerror){%>
-                                    <div class="alter text-danger text-start"><%= phoneerror%></div>
-                    
-                                <%}%>
-                            </div>
-                            <!-- {{!-- <span><p style="margin-left: 5px; color: rgb(227, 11, 11);">{{emexist}}</p></span> --}} -->
+    <style>
+        body {
+            background-color: #FAF9F6;
+        }
 
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password"required>
-                                <% if(locals.passworderror){%>
-                                    <div class="alter text-danger text-start"><%= passworderror%></div>
-                    
-                                <%}%>
-                            </div>
-                            <div class="form-group">
-                                <label for="Confirm-password">Confirm-Password</label>
-                                <input type="password" class="form-control" id="password" name="confirm_password"required>
-                                <% if(locals.cpassworderror){%>
-                                    <div class="alter text-danger text-start"><%= cpassworderror%></div>
-                    
-                                <%}%>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Sign Up</button>
-                        </form>
-                        <a href="/profile">login</a>
+       .toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 2px solid #000000; /* Border for the toggle container */
+    border-radius: 20px; /* Border radius to make it rounded */ 
+    background-color: #FAF9F6; /* Background color of the toggle container */
+    color: #000000; /* Text color of the labels in the toggle container */
+}
+        .toggle-label {
+            margin-right: 10px;
+        }
+
+        .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px; /* Width of the toggle switch */
+    height: 34px; /* Height of the toggle switch */
+    background-color: #ccc; /* Default background color of the toggle switch */
+    border-radius: 17px; /* Border radius to make it rounded */
+}
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff; /* Background color when the toggle switch is off */
+    border-radius: 17px; /* Border radius to make it rounded */
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%; /* Border radius to make it a circle */
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+       
+        input:focus + .slider {
+            box-shadow: 0 0 1px #000000;
+        }
+
+        input:checked + .slider {
+    background-color: #000000; /* Background color when the toggle switch is on */
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+        .pclass {
+            font-size: clamp(1.25rem, 1.16rem + .39vw, 1.625rem);
+            font-weight: 400;
+            letter-spacing: normal;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+
+        .toplogin {
+            font-size: clamp(1.625rem, 1.52rem + .45vw, 2.0625rem);
+            font-weight: 500;
+            letter-spacing: -.01em;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: #000; /* Text color is changed to black for better visibility */
+        }
+
+        .heading {
+            color: #000; /* Change text color to black */
+            padding-left: 20px;
+        }
+
+        .card {
+            background-color: #FAF9F6;
+            border-color: #FAF9F6;
+        }
+
+        .card-body {
+            margin-top: 1px;
+        }
+
+        .fuul {
+            margin-top: 1cm;
+            margin-right: 1cm;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center; /* Center the buttons horizontally */
+            align-items: center; /* Center the buttons vertically */
+            height: 16vh;/* Make the container full height */
+            
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none; /* Remove border for the capsule effect */
+            border-radius: 30px; /* Adjust the border-radius for a capsule shape */
+            margin: 0 10px; /* Add margin between the buttons */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .signup-button {
+            background-color: #5a4f31;
+            color: #000; /* Change text color to black for better visibility */
+        
+        }
+
+        .login-button {
+            background-color: #747065;
+            color: #FAF9F6;
+        }
+        .frm .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .frm label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .frm .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #000000;
+            background-color: #FAF9F6;
+    
+            border-top: #000;
+            border-left: #000;
+            border-right: #000;
+            border-radius: 0.25rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .frm .form-control:focus {
+            border-color: #FAF9F6;
+            outline: 0;
+        }
+
+        .frm .btn-primary {
+            margin-top: 10px;
+            color: #fff;
+            width: 100%;
+            background-color: #000000;
+            border-color: #000000;
+            border-radius: 100px;
+            height: 7vh;
+
+        }
+
+        .frm .btn-primary:hover {
+            background-color: #ffffff;
+            border-color: #000000;
+            color: #000;
+        }
+
+        /* Highlight the login button when on the login page */
+        body.login .login-button,
+        body.signup .signup-button {
+            background-color: #FAF9F6;
+            color: #000; /* Change text color to black for better visibility */
+        }
+        .fpw{
+            color: #000;
+        }
+    </style>
+    <div class="container mt-1">
+        <div class="fuul">
+            <div class="row d-flex justify-content-end mt-5">
+                <div class="col-md-6">
+                    <div class="card mt-2">
+                        <div class="toggle-container">
+                            <label class="toggle-label">Login</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="toggle" onchange="toggleSwitch()">
+                                <span class="slider"></span>
+                            </label>
+                            <label class="toggle-label">Signup</label>
+                        </div>
+
+                        <div class="heading">
+                            <div class="toplogin"><h2>Create Your Account<h2>
+                            <p class="pclass">And Join the Furnify community..<p>
+                        </div>
+                        </div>
+                        <div class="card-body">
+                            <form class="frm" action="/signupotp" method="post">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="firstName" name="firstname" required placeholder="First Name">
+                                    <% if(locals.nameerror){%>
+                                        <div class="alter text-danger text-start"><%= nameerror%></div>
+                                    <%}%>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="lastname" name="lastname" required
+                                        placeholder="Last Name">
+                                    <% if(locals.nameerror){%>
+                                        <div class="alter text-danger text-start"><%= nameerror%></div>
+                                    <%}%>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control" id="email" name="email" required placeholder="Email">
+                                    <% if(locals.emailerror){%>
+                                        <div class="alter text-danger text-start"><%= emailerror%></div>
+                                    <%}%>
+                                </div>
+                                <div class="form-group">
+<input type="tel" class="form-control" id="phone" name="phone" required placeholder="Phone Number">                                   
+ <% if(locals.phoneerror){%>
+                                        <div class="alter text-danger text-start"><%= phoneerror%></div>
+                                    <%}%>
+                                </div>
+            
+                                <div class="form-group">
+                                    <input type="password" class="form-control" id="password" name="password" required placeholder="Password">                                 
+                                       <% if(locals.passworderror){%>
+                                        <div class="alter text-danger text-start"><%= passworderror%></div>
+                                    <%}%>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required placeholder="Confirm Password">
+                                       <% if(locals.cpassworderror){%>
+                                        <div class="alter text-danger text-start"><%= cpassworderror%></div>
+                                    <%}%>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Signup</button><br><br>
+                            </form>
+                            
+                            
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
+<script>
+    const toggleSwitch = document.getElementById('toggle');
+    const signupLink = document.getElementById('signupLink');
+    const loginLink = document.getElementById('loginLink');
+
+    // Function to set the toggle state based on the current route
+    function setToggleState() {
+        if (window.location.pathname === '/signup') {
+            // If the current route is /signup, set the toggle to true (Signup)
+            toggleSwitch.checked = true;
+            signupLink.style.display = 'none';
+            loginLink.style.display = 'inline-block';
+            console.log('Switched to Login');
+        } else {
+            // Otherwise, set the toggle to false (Login)
+            toggleSwitch.checked = false;
+            signupLink.style.display = 'inline-block';
+            loginLink.style.display = 'none';
+            console.log('Switched to Signup');
+        }
+    }
+
+    // Add an event listener to the toggle switch
+    toggleSwitch.addEventListener('change', () => {
+        if (toggleSwitch.checked) {
+            // Redirect to the /signup route
+            window.location.href = "/signup";
+        } else {
+            // Redirect to the /login route
+            window.location.href = "/profile";
+        }
+    });
+
+    // Call the setToggleState function when the page loads
+    window.addEventListener('load', setToggleState);
+</script>
+
+
+

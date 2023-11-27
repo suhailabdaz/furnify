@@ -77,11 +77,15 @@ usrouter.get('/addtofavourites/:id',auth.islogged,cart_controller.addToFvourites
 
 usrouter.get('/deletefav/:id',auth.islogged,cart_controller.deletefav)
 
+usrouter.get("/addtocartviafav/:id",auth.islogged,cart_controller.addtocartviafav)
+
 //checkoutsection
 
 usrouter.post('/checkoutreload',auth.islogged,checkout_controller.checkoutreload)
 
 usrouter.post('/placeOrder',auth.islogged,checkout_controller.placeOrder)
+
+
 
 
 

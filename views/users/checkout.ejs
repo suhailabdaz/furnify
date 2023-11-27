@@ -277,19 +277,16 @@
 
 		                <form action="/placeOrder" method="post" id="orderForm">
 							<label>
-							  <input type="radio" name="paymentOption" value="Direct Bank Transfer" id="paymentOption1" onchange="updateHiddenField(this)">
-							  Direct Bank Transfer
+							  <input type="radio" name="paymentOption" value="Cash On Delivery" id="paymentOption1" onchange="updateHiddenField(this)">
+							 Cash On Delivery
 							</label><br>
 						
 							<label>
-							  <input type="radio" name="paymentOption" value="Cheque Payment" id="paymentOption2" onchange="updateHiddenField(this)">
-							  Cheque Payment
-							</label><br>
+							  <input type="radio" name="paymentOption" value="Razorpay" id="paymentOption2" onchange="updateHiddenField(this)">
+							  Razorpay
+							</label><br><br>
 						
-							<label>
-							  <input type="radio" name="paymentOption" value="Paypal" id="paymentOption3" onchange="updateHiddenField(this)">
-							  Paypal
-							</label><br>
+							
 							
 						
 							<!-- Hidden input fields for address details -->
@@ -308,6 +305,7 @@
 							<input type="hidden" name="selectedPaymentOption" id="selectedPaymentOption">
 							
 							<input type="hidden" name="cartId" value="<%= cart._id %>">
+
 							<div class="form-group">
 								<button class="btn btn-black btn-lg py-3 btn-block">Place Order</button>
 							</div>
@@ -329,15 +327,18 @@
 		
 		<!-- End Footer Section -->	
 		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+		<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 		
 
-		<script>
+		
+
+<script>
+			// Script for handling address selection
 			$(document).ready(function () {
 				$('.address-radio').change(function () {
 					// Get the selected address ID from the data attribute
 					var selectedAddressId = $(this).data('address-id');
 					
-					// Set the value of the hidden input field
 					$('#selectedAddressId').val(selectedAddressId);
 		
 					// Hide other address details (if needed)
@@ -346,12 +347,9 @@
 				});
 			});
 			function updateHiddenField(selectedRadio) {
-      // Set the value of the hidden input to the value of the selected radio button
-      document.getElementById('selectedPaymentOption').value = selectedRadio.value;
+        document.getElementById('selectedPaymentOption').value = selectedRadio.value;
     }
 		</script>
-	
-
    
 
 

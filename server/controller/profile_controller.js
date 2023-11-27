@@ -92,6 +92,7 @@ const addressUpdate = async (req, res) => {
     try {
         const { saveas,fullname,adname,street,pincode,city,state,country,phone } = req.body;
         const userId = req.session.userId;
+        const categories = await categoryModel.find();
         console.log("id", userId);
 
         const existingUser = await userModel.findOne({ _id: userId });
@@ -104,11 +105,32 @@ const addressUpdate = async (req, res) => {
         const stateValid=bnameValid(state)
         const countryValid=bnameValid(country)
         const phoneValid=adphoneValid(phone)
-        
-
-
+        if(!fullnamevalid)
+{
+    res.render("users/newAddress",{nameerror:"Enter valid name",categories})
+}
+if(!saveasvalid)
+{
+    res.render("users/newAddress",{saveaserror:"Enter valid Type",categories})
+}
+if(!adnameValid)
+{
+    res.render("users/newAddress",{adnameerror:"Enter valid housename",categories})
+}
+if(!streetValid)
+{
+    res.render("users/newAddress",{streeterror:"Enter valid street",categories})
+}
+if(!pincodevalid)
+{
+    res.render("users/newAddress",{pincodeerror:"Enter valid housename",categories})
+}
+if(!cityValid)
+{
+    res.render("users/newAddress",{cityerror:"Enter valid housename",categories})
+}
         if (existingUser) {
-            // Corrected query to find existing address for the user
+    
             const existingAddress = await userModel.findOne({
                 '_id': userId,
                 'address': {

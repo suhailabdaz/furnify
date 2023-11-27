@@ -6,6 +6,8 @@ const productModel=require('../model/product_model')
 const bcrypt=require("bcrypt")
 const shortid=require("shortid")
 const mongoose=require("mongoose")
+const Razorpay=require("razorpay")
+const {key_id,key_secret}=require("../../.env")
 
 const checkoutreload = async (req, res) => {
     try {
@@ -96,35 +98,34 @@ const checkoutreload = async (req, res) => {
     }
 };
 
-
 const placeOrder = async (req, res) => {
   try {
     console.log(req.body);
+    const categories = await categoryModel.find({});
 
     const addressId = req.body.selectedAddressId;
-    const user = await userModel.findOne({ address: { $elemMatch: { _id: addressId } } });
+    const user = await userModel.findOne({
+      address: { $elemMatch: { _id: addressId } },
+    });
 
     if (!user) {
-      // Handle the case when the user with the specified addressId is not found
       return res.status(404).send('User not found');
     }
 
-    const selectedAddress = user.address.find(address => address._id.equals(addressId));
+    const selectedAddress = user.address.find((address) =>
+      address._id.equals(addressId)
+    );
     const userId = req.session.userId;
     const username = selectedAddress.fullname;
     const paymentMethod = req.body.selectedPaymentOption;
     const cartId = req.body.cartId;
-    
 
-    
     const items = req.body.selectedProductNames.map((productName, index) => ({
-      productName:req.body.selectedProductNames[index],
+      productName: req.body.selectedProductNames[index],
       productId: new mongoose.Types.ObjectId(req.body.selectedProductIds[index]),
       quantity: parseInt(req.body.selectedQuantities[index]),
       price: parseInt(req.body.selectedCartTotals[index]),
     }));
-    
-
 
     const order = new orderModel({
       orderId: shortid.generate(),
@@ -140,25 +141,17 @@ const placeOrder = async (req, res) => {
     });
     console.log('Items:', items);
 
-    // Save the order to the database
     await order.save();
 
-    // Remove the items from the user's cart using the cartModel
     for (const item of items) {
       await cartModel.updateOne(
         { userId: userId },
         { $pull: { item: { productId: item.productId } } }
       );
-    
-      // Set the total field to zero after removing the items
-      await cartModel.updateOne(
-        { userId: userId },
-        { $set: { total: 0 } }
-      );
-    }
-  
 
-    // Reduce the stock of the specific product in the product model
+      await cartModel.updateOne({ userId: userId }, { $set: { total: 0 } });
+    }
+
     for (const item of items) {
       await productModel.updateOne(
         { _id: item.productId },
@@ -166,8 +159,7 @@ const placeOrder = async (req, res) => {
       );
     }
 
-    // Redirect or send a response as needed
-    res.redirect('/');
+    res.render('users/order_confirmation', { order, categories });
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Error');
@@ -178,11 +170,9 @@ const placeOrder = async (req, res) => {
 
 
 
+
+
   module.exports={
     checkoutreload,
     placeOrder,
   }
-  
-
-
-

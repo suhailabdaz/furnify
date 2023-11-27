@@ -70,11 +70,11 @@
                                 <!-- <td><%= order.createdAt %></td> -->
                                 <td>
                                     <!-- Form for updating the order status -->
-                                    <form action="/admin/updateOrderStatus" method="post" id="orderStatusForm">
+                                    <form action="/admin/updateOrderStatus" method="post" id="orderStatusForm_<%= order._id %>">
                                         <input type="hidden" name="orderId" value="<%= order._id %>">
                                         
                                         <label for="status"></label>
-                                        <select name="status" id="status" onchange="submitForm()">
+                                        <select name="status" id="status_<%= order._id %>" onchange="submitForm('<%= order._id %>')">
                                             <% const statuses = ['Pending', 'Processing', 'Shipped', 'Delivered','Cancelled']; %>
                                             <% for (const status of statuses) { %>
                                                 <option value="<%= status %>" <%= order.status === status ? 'selected' : '' %>><%= status.charAt(0).toUpperCase() + status.slice(1) %></option>
@@ -130,11 +130,29 @@
     <!-- endinject -->
     <!-- Custom js for this page -->
     <script src="/adminassets/js/dashboard.js"></script>
-    <!-- End custom js for this page -->
-    <script>
-        function submitForm() {
-            document.getElementById("orderStatusForm").submit();
-        }
-    </script>
+  
+    <script>function submitForm(orderId) {
+      const statusElement = document.getElementById('status_' + orderId);
+    const status = statusElement.value;
+  
+      fetch('/admin/updateOrderStatus', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `orderId=${orderId}&status=${status}`,
+      })
+      .then(response => {
+          if (response.ok) {
+              window.location.href = '/admin/orderPage';
+          } else {
+              console.error('Failed to update order status');
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+  }
+</script>
   </body>
 </html>

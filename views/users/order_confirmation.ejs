@@ -23,44 +23,6 @@
   <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
 
   <style>
-    .add-to-cart-button {
-      display: inline-block;
-      padding: 10px 20px;
-      font-size: 16px;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      border-radius: 25px;
-      background-color: #000407;
-      color: #fff;
-      border: 2px solid #462c2c;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .add-to-cart-button:hover {
-      background-color: rgb(31, 77, 42);
-      border-color: #000000;
-      color: #fff;
-    }
-    .remove-from-cart-button {
-      display: inline-block;
-      padding: 10px 20px;
-      font-size: 16px;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      border-radius: 25px;
-      background-color: #000000;
-      color: #fff;
-      border: 2px solid #dcd7d7;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .remove-from-cart-button:hover {
-      background-color: #a22618;
-      border-color: #ffffff;
-      color: #fff;
-    }
     .category-options {
       display: none;
     }
@@ -141,71 +103,130 @@
       <div class="row justify-content-between">
         <div class="col-lg-5">
           <div class="intro-excerpt">
-            <h1>Favourites</h1>
+            <h1>Order Confirmation</h1>
           </div>
         </div>
         <div class="col-lg-7">
+          <!-- ... (additional content if needed) ... -->
         </div>
       </div>
     </div>
   </div>
-
-
-  <div class="untree_co-section before-footer-section">
+  <!-- End Hero Section -->
+  <section class="order_details section_gap">
     <div class="container">
-      <div class="row mb-5">
-        <form class="col-md-12" method="post">
-          <div class="site-blocks-table">
-			<table class="table">
-				<thead>
-				  <tr>
-					<th class="product-thumbnail">Image</th>
-					<th class="product-name">Product</th>
-					<th class="product-price">Price</th>
-          <th class="product-addtocart">Add to cart</th>
-                    <th class="product-remove">remove</th>
-				  </tr>
-				</thead>
-				<tbody>
-				  <% if (fav && fav.item && fav.item.length > 0) { %>
-					<% fav.item.forEach((item, index) => { %>
-					  <tr>
-						<td class="product-thumbnail">
-						  <img src="<%= item.productId.images[0] %>" alt="Image" class="img-fluid">
-						</td>
-						<td class="product-name">
-						  <h2 class="h5 text-black"><%= item.productId.name %></h2>
-						</td>
-						<td><%= item.productId.price %></td>
-						 <td><a href="/addtocartviafav/<%= item.productId._id%>" class="add-to-cart-button">Add To Cart</a></td>
+        <h3 class="title_confirmation">Thank you. Your order has been received.</h3>
+        <div class="row order_d_inner">
+            <div class="col-lg-4">
+                <div class="details_item">
+                    <h4>Order Info</h4>
+                    <ul class="list">
+                        <li><a href="#"><span>Order Id</span> : <%= order.orderId %></a></li>
+                        <li><a href="#"><span>Date</span> : <%= order.createdAt %></a></li>
+                        <li><a href="#"><span>Total</span> : <%= order.totalPrice %></a></li>
+                        <li><a href="#"><span>Payment method</span> : <%= order.paymentMethod %></a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- <div class="col-lg-4">
+                <div class="details_item">
+                    <h4>Billing Address</h4>
+                    <ul class="list">
+                        <li><a href="#"><span>Street</span> : 56/8</a></li>
+                        <li><a href="#"><span>City</span> : Los Angeles</a></li>
+                        <li><a href="#"><span>Country</span> : United States</a></li>
+                        <li><a href="#"><span>Postcode </span> : 36952</a></li>
+                    </ul>
+                </div>
+            </div> -->
+            <div class="col-lg-4">
+                <div class="details_item">
+                    <h4>Shipping Address</h4>
+						<ul class="list">
+                            <li><a href="#"><span>House Name </span> : <%= order.shippingAddress.adname %></a></li>
+							<li><a href="#"><span>Street</span> :  <%= order.shippingAddress.street %></a></li>
+							<li><a href="#"><span>City</span> :  <%= order.shippingAddress.city %></a></li>
+							<li><a href="#"><span>Country</span> :  <%= order.shippingAddress.country %></a></li>
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="order_details_table">
+				<h2>Invoice</h2>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Product</th>
+								<th scope="col">Quantity</th>
+								<th scope="col">Total</th>
+							</tr>
+						</thead>
+						<tbody>
 
-        <td><a href="/deletefav/<%= item._id %>" class="remove-from-cart-button">Remove</a></td>
-
-					  </tr>
-					<% }); %>
-				  <% } else { %>
-					<tr>
-					  <td colspan="6" class="text-center"><h1>Your have no favourites</h1></td>
-					</tr>
-				  <% } %>
-				</tbody>
-			  </table>
-          </div>
-        </form>
-      </div>
-
-    </div>
-
-  </div>
+                            <% order.items.forEach(item=>{ %>
+                                <tr>
+                                    <td>
+                                        <p><%= item.productId %></p>
+                                    </td>
+                                    <td>
+                                       <p> x <%= item.quantity %></p>
+                                       <td>
+                                        <p><%= item.quantity * item.price %></p>
+                                    </td>
+                                </tr>
+                          <%  }) %>
 
 
-</div>
-</div>
-</div>
+							
+							
+							
+							<tr>
+								<td>
+									<h4>Subtotal</h4>
+								</td>
+								<td>
+									<h5></h5>
+								</td>
+								<td>
+									<p><%= order.totalPrice %></p>
+								</td>
+							</tr>
+							<!-- <tr>
+								<td>
+									<h4>Shipping</h4>
+								</td>
+								<td>
+									<h5></h5>
+								</td>
+								<td>
+									<p>Flat rate: $50.00</p>
+                                    	</td>
+							</tr> -->
+							<tr>
+								<td>
+									<h4>Total</h4>
+								</td>
+								<td>
+									<h5></h5>
+								</td>
+								<td>
+									<p><%= order.totalPrice %></p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</section>
 
 
-    </div>
-  </div>
+
+
+
+
 
   <!-- Start Footer Section -->
   <footer class="footer-section">

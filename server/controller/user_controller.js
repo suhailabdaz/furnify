@@ -21,12 +21,10 @@ console.log(Email,pass)
 
 const home = async (req, res) =>{
     try {
-        // Assuming your categoryModel has a method like getAllCategories
         const categories = await categoryModel.find();
 
         res.render("users/index", { categories });
     } catch (error) {
-        // Handle error appropriately, e.g., log it or send an error response
         console.error("Error fetching categories:", error);
         res.status(500).send("Internal Server Error");
     }
@@ -38,10 +36,6 @@ const shop = async (req, res) => {
     const ctCategory = categories.find(cat => cat._id.toString() === category);
     const categoryName =ctCategory ? ctCategory.name : null;
 
- 
-
-    
-    // Render the shop page with the filtered products
     res.render("users/shop", { categoryName,categories,products, selectedCategory: category });
   };
   

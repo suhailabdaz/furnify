@@ -9,6 +9,7 @@ const path=require("path")
 const ejs=require("ejs")
 const nocache=require("nocache")
 
+
 const app=express()
 const port=3000
 app.use(nocache())
@@ -18,7 +19,7 @@ app.use(session({
   saveUninitialized: true,
 }));
 
-// app.use(flash());
+
 app.use(bodyParser.json()); 
 app.use(express.urlencoded({extended:true}))
 

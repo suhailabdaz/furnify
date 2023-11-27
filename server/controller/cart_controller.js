@@ -21,16 +21,16 @@ const showcart = async (req, res) => {
               select: 'images name price',
           });
       } else {
-          // If userId does not exist, find the cart by sessionId
+        
           cart = await cartModel.findOne({ sessionId: sessionId }).populate({
               path: 'item.productId',
               select: 'images name price',
           });
       }
 
-      // Ensure cart is defined and has the expected structure
+      
       if (!cart || !cart.item) {
-          // Handle the case when cart is not found or does not have items
+
           
             cart = new cartModel({
               sessionId: req.session.id,
@@ -129,11 +129,10 @@ const updateCartItem = async (req, res) => {
             return res.status(404).json({ message: 'Product not found in the cart' });
         }
 
-        // Update the quantity and total for the specific item
         cartItem.quantity = quantity;
         cartItem.total = quantity * cartItem.price;
 
-        // Recalculate the total for the entire cart
+
         cart.total = cart.item.reduce((acc, item) => acc + item.total, 0);
 
         await cart.save();
@@ -149,7 +148,7 @@ const updatecart = async (req, res) => {
   try {
     console.log("hi");
     console.log('Received Request:', req.body);
-    const { productId } = req.params; // Adjusted this line
+    const { productId } = req.params;
     const { action, cartId } = req.body;
     const cart = await cartModel.findOne({ _id: cartId });
     console.log("cartId", cartId);
@@ -186,7 +185,7 @@ const updatecart = async (req, res) => {
 
     cart.item[itemIndex].quantity = updatedQuantity;
 
-    // Calculate the new total for the specific product
+    
     const newProductTotal = price * updatedQuantity;
     cart.item[itemIndex].total = newProductTotal;
     const total = cart.item.reduce((acc, item) => acc + item.total, 0);
@@ -371,6 +370,66 @@ const deletefav=async(req,res)=>{
   }
 }
 
+const addtocartviafav=async(req,res)=>{
+  try{
+    const pid = req.params.id;
+    const product = await productModel.findOne({ _id: pid });
+
+    const userId = req.session.userId;
+    const price = product.price;
+    const stock= product.stock;
+    const quantity = 1;
+    console.log(req.session.id)
+    let cart;
+    if (userId) {
+      cart = await cartModel.findOne({ userId: userId });
+    }
+    if (!cart) {
+      cart = await cartModel.findOne({ sessionId: req.session.id });
+    }
+
+    if (!cart) {
+      cart = new cartModel({
+        sessionId: req.session.id,
+        item: [],
+        total: 0,
+      });
+    }
+    
+    const productExist = cart.item.findIndex((item) => item.productId == pid);
+    
+    if (productExist !== -1) {
+      cart.item[productExist].quantity += 1;
+      cart.item[productExist].total =
+        cart.item[productExist].quantity * price;
+    } else {
+      const newItem = {
+        productId: pid,
+        quantity: 1,
+        price: price,
+        stock :stock,
+        total: quantity * price,
+      };
+      cart.item.push(newItem);
+    }
+
+    if (userId && !cart.userId) {
+      cart.userId = userId;
+    }
+
+    cart.total = cart.item.reduce((acc, item) => acc + item.total, 0);
+
+    await cart.save();
+    res.redirect('/cartpage');
+
+
+  }
+  catch(err){
+    console.error(err);
+    res.status(500).send('Error occurred');
+}
+}
+
 
 
   
@@ -383,6 +442,7 @@ const deletefav=async(req,res)=>{
     checkoutpage,
     addToFvourites,
     favouritespage,
-    deletefav
+    deletefav,
+    addtocartviafav
   };
   

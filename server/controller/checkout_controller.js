@@ -166,6 +166,20 @@ const placeOrder = async (req, res) => {
   }
 };
 
+const instance=new Razorpay({key_id:key_id,key_secret:key_secret})
+
+const upi = async (req, res) => {
+  console.log('body:', req.body);
+  var options = {
+      amount: 500,
+      currency: "INR",
+      receipt: "order_rcpt"
+  };
+  instance.orders.create(options, function (err, order) {
+      console.log("order1 :", order);
+      res.send({ orderId: order.id })
+    })
+}
 
 
 
@@ -175,4 +189,5 @@ const placeOrder = async (req, res) => {
   module.exports={
     checkoutreload,
     placeOrder,
+    upi
   }

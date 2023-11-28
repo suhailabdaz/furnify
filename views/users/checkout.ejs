@@ -275,7 +275,7 @@
 		                  </tbody>
 		                </table>
 
-		                <form action="/placeOrder" method="post" id="orderForm">
+		                <form id="orderForm">
 							<label>
 							  <input type="radio" name="paymentOption" value="Cash On Delivery" id="paymentOption1" onchange="updateHiddenField(this)">
 							 Cash On Delivery
@@ -307,7 +307,7 @@
 							<input type="hidden" name="cartId" value="<%= cart._id %>">
 
 							<div class="form-group">
-								<button class="btn btn-black btn-lg py-3 btn-block">Place Order</button>
+								<button class="btn btn-black btn-lg py-3 btn-block" onclick="razorpay()">Place Order</button>
 							</div>
 						</form>
 		
@@ -349,7 +349,81 @@
 			function updateHiddenField(selectedRadio) {
         document.getElementById('selectedPaymentOption').value = selectedRadio.value;
     }
+	function razorpay(){}
+	{
+
+
+console.log("upi total","ppppppp");
+
+var options = {
+"key": 'rzp_test_tY3tynQ51qUYZR', // Enter the Key ID generated from the Dashboard
+"amount":  500, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+"currency": "INR",
+"name": "Furnify",
+"description": "Test Transaction",
+"image": "Urban Sole",
+"order_id": orderId, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+"handler": function (response){
+alert(response.razorpay_payment_id);
+document.getElementById('orderForm').action = '/placeOrder';
+document.getElementById('orderForm').method = 'post'; // Replace with your actual URL
+
+// Submit the form
+document.getElementById('orderForm').submit();
+
+},
+
+
+"theme": {
+"color": "orange"
+},
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+ rzp1.open();
+
+
+    e.preventDefault();
+
+
+                var orderId ;
+$(document).ready(function(){
+    var settings = {
+  "url": "/create/orderId",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "data": JSON.stringify({
+    "amount": 500
+  }),
+};
+
+//creates new orderId everytime
+$.ajax(settings).done(function (response) {
+
+  orderId=response.orderId;
+  console.log(orderId);
+  $("button").show();
+});
+});
+
+                
+            }
+
+              
+
 		</script>
+		
    
 
 

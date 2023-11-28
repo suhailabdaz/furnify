@@ -85,6 +85,8 @@ usrouter.post('/checkoutreload',auth.islogged,checkout_controller.checkoutreload
 
 usrouter.post('/placeOrder',auth.islogged,checkout_controller.placeOrder)
 
+usrouter.post('/create/orderId',auth.islogged,checkout_controller.upi)
+
 
 
 

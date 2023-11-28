@@ -2,6 +2,7 @@ const express=require('express')
 const admin_controller=require('../controller/admin_controller')
 const product_controller=require("../controller/product_controller")
 const order_controller=require("../controller/order_controller")
+const coupon_controller=require("../controller/coupon_controller")
 const auth=require("../../middleware/isAuth")
 const multer=require('multer')
 const upload=multer({dest:'uploads/'})
@@ -45,6 +46,10 @@ adrouter.post('/updateproduct/:id',auth.loggedadmin,product_controller.updatepro
 
 adrouter.get('/orderPage',auth.loggedadmin,order_controller.orderPage)
 adrouter.post('/updateOrderStatus',auth.loggedadmin,order_controller.updateOrderStatus)
+
+
+
+adrouter.post('/createCoupon',auth.loggedadmin,coupon_controller.createCoupon)
 
 
 

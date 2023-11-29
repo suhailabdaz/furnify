@@ -49,10 +49,10 @@ adrouter.post('/updateOrderStatus',auth.loggedadmin,order_controller.updateOrder
 
 
 
-adrouter.post('/createCoupon',auth.loggedadmin,coupon_controller.createCoupon)
+
 adrouter.get('/couponList',auth.loggedadmin,coupon_controller.couponList)
 adrouter.get('/newcoupon',auth.loggedadmin,coupon_controller.addcouponpage)
-
+adrouter.post('/add_coupon',auth.loggedadmin,coupon_controller.createCoupon)
 
 
 

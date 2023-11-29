@@ -3,6 +3,7 @@ const userModel=require('../model/user_model')
 const cartModel=require('../model/cart_model')
 const orderModel=require('../model/order_model')
 const productModel=require('../model/product_model')
+const couponModel=require('../model/coupon_model')
 const bcrypt=require("bcrypt")
 const shortid=require("shortid")
 const mongoose=require("mongoose")
@@ -182,12 +183,32 @@ const upi = async (req, res) => {
 }
 
 
-
+const applyCoupon = async (req, res) => {
+  try {
+     const {couponCode,subtotal}=req.body
+     const coupon=await couponModel.findOne({couponCode:couponCode})
+     console.log(coupon);
+     if(coupon.expiry > new Date() && coupon.minimumPrice <= subtotal){
+      console.log("cpnokke");
+      const dicprice=(subtotal*coupon.discount)/100
+      const price=subtotal-dicprice;
+      console.log(price)
+      res.json({success:true,price})
+     }
+     else{
+      res.json({success:false,message:"Invalid Coupon"})
+     }
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('Error occurred');
+    }
+}
 
 
 
   module.exports={
     checkoutreload,
     placeOrder,
-    upi
+    upi,
+    applyCoupon
   }

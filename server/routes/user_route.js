@@ -81,6 +81,8 @@ usrouter.get("/addtocartviafav/:id",auth.islogged,cart_controller.addtocartviafa
 
 //checkoutsection
 
+usrouter.post("/applyCoupon",checkout_controller.applyCoupon)
+
 usrouter.post('/checkoutreload',auth.islogged,checkout_controller.checkoutreload)
 
 usrouter.post('/placeOrder',auth.islogged,checkout_controller.placeOrder)

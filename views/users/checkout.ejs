@@ -234,14 +234,15 @@
 		            <div class="col-md-12">
 		              <h2 class="h3 mb-3 text-black">Coupon Code</h2>
 		              <div class="p-3 p-lg-5 border bg-white">
-
+                        <form>
 		                <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
 		                <div class="input-group w-75 couponcode-wrap">
 		                  <input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
 		                  <div class="input-group-append">
-		                    <button class="btn btn-black btn-sm" type="button" id="button-addon2">Apply</button>
+		                    <button class="btn btn-black btn-sm" type="button" id="button-addon2" onclick="couponApply()">Apply</button>
 		                  </div>
 		                </div>
+					</form>
 
 		              </div>
 		            </div>
@@ -265,7 +266,7 @@
                             <% }); %>
 		                    <tr>
 		                      <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-		                      <td class="text-black">$350.00</td>
+		                      <td id="subt" class="text-black"><%= cart.total %></td>
 		                    </tr>
 		                    <tr>
 		                      <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
@@ -301,7 +302,7 @@
 							<input type="hidden" name="selectedCartTotals[]" class="selectedCartTotals[]" value="<%= cartItem.itemTotal %>">
 							<!-- Add other hidden fields for additional cart item properties as needed -->
 							<% }); %>
-							<input type="hidden" name="carttotal" class="carttotal" value="<%= cart.total %>">
+							<input type="hidden" name="carttotal" class="carttotal" id="carttotal"value="<%= cart.total %>">
 							<input type="hidden" name="selectedPaymentOption" id="selectedPaymentOption">
 							
 							<input type="hidden" name="cartId" value="<%= cart._id %>">
@@ -432,7 +433,40 @@ document.getElementById('orderForm').submit();
 		}
 		}
 		
- 
+    
+
+		</script>
+		<script>
+
+function couponApply() {
+    const couponCode = document.getElementById('c_code').value;
+	const subtotal=document.getElementById('subt').innerText
+
+    fetch('/applyCoupon', {
+        method: "POST",
+        headers: {
+            'Content-Type': "application/json"
+        },
+		body: JSON.stringify({couponCode,subtotal })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+			console.log("ivideumethi")
+           document.getElementById('cartotal').innerText=data.price
+
+            // Update the Order Total dynamically
+            // const orderTotalElement = document.querySelector('.orderTotal');
+            // orderTotalElement.innerHTML = `<strong>$${data.totalAmount}</strong>`;
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error applying coupon:', error);
+        alert('An error occurred while applying the coupon. Please try again.');
+    });
+}
 
 		</script>
 		

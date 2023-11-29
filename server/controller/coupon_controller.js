@@ -15,7 +15,29 @@ const createCoupon=async(req,res)=>{
     }
 }
 
+const couponList=async(req,res)=>{
+    try{
+        const coupons=await couponModel.find({})
+        res.render('admin/couponList',{coupons})
+
+    }
+    catch(err){
+        console.log(err)
+
+    }
+}
+
+const addcouponpage=async(req,res)=>{
+    try{
+        res.render('admin/addCoupon')
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 
 module.exports={
-    createCoupon
+    createCoupon,couponList,
+    addcouponpage
 }

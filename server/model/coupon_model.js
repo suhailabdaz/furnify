@@ -3,19 +3,31 @@ const mongoose=require('mongoose')
 mongoose.connect("mongodb://127.0.0.1:27017/furnify")
 
 const couponSchema=new mongoose.Schema({
-    name:{
+    couponCode:{
         type:String,
         required:true,
         unique:true,
         upppercase:true
     },
+    minimumPrice:{
+        type:Number,
+        required:true,
+},
+   
+    discount:{
+        type:Number,
+        min:0,
+        max:100,
+        required:true
+    },
     expiry:{
         type:Date,
         required:true
     },
-    discount:{
-        type:Number,
-        required:true
+    status:{
+        type:Boolean,
+        required:true,
+        default:true
     }
 })
 

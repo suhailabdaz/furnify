@@ -275,7 +275,7 @@
 		                  </tbody>
 		                </table>
 
-		                <form id="orderForm">
+		                <form  id="orderForm">
 							<label>
 							  <input type="radio" name="paymentOption" value="Cash On Delivery" id="paymentOption1" onchange="updateHiddenField(this)">
 							 Cash On Delivery
@@ -307,7 +307,7 @@
 							<input type="hidden" name="cartId" value="<%= cart._id %>">
 
 							<div class="form-group">
-								<button class="btn btn-black btn-lg py-3 btn-block" onclick="razorpay()">Place Order</button>
+								<button class="btn btn-black btn-lg py-3 btn-block" type="button" onclick="razorpay()">Place Order</button>
 							</div>
 						</form>
 		
@@ -348,16 +348,18 @@
 			});
 			function updateHiddenField(selectedRadio) {
         document.getElementById('selectedPaymentOption').value = selectedRadio.value;
-    }
-	function razorpay(){}
+			}
+			</script>
+			<script>
+	function razorpay()
 	{
-
-
+		var pay=document.querySelector('input[name="paymentOption"]:checked');
+		if(pay.value=='Razorpay'){
 console.log("upi total","ppppppp");
 
 var options = {
 "key": 'rzp_test_tY3tynQ51qUYZR', // Enter the Key ID generated from the Dashboard
-"amount":  500, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+"amount":  500*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
 "currency": "INR",
 "name": "Furnify",
 "description": "Test Transaction",
@@ -419,8 +421,18 @@ $.ajax(settings).done(function (response) {
 
                 
             }
+			else{
+				console.log("jwDQJWD");
+				document.getElementById('orderForm').action = '/placeOrder';
+document.getElementById('orderForm').method = 'post'; // Replace with your actual URL
 
-              
+// Submit the form
+document.getElementById('orderForm').submit();
+			
+		}
+		}
+		
+ 
 
 		</script>
 		

@@ -382,6 +382,17 @@ const ordercancelling=async(req,res)=>{
 }
 
 
+const singleOrderPage=async (req,res)=>{
+    try{
+        const categories=await categoryModel.find({})
+        res.render('users/orderDetails',{categories})
+
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 
 
 
@@ -392,4 +403,5 @@ const ordercancelling=async(req,res)=>{
 
 
 module.exports={userdetails,profileEdit,profileUpdate,newAddress,addressUpdate,changepassword
-,editaddress,updateAddress,deleteAddress,orderHistory,ordercancelling}
+,editaddress,updateAddress,deleteAddress,orderHistory,ordercancelling,
+singleOrderPage}

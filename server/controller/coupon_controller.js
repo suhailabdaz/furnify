@@ -16,8 +16,7 @@ const createCoupon=async(req,res)=>{
                 couponCode: couponCode,
                 minimumPrice:minimumPrice,
                 discount:discount,
-                expiry:expiry
-                
+                expiry:expiry 
                 })
             console.log("COUPON created");
             res.redirect('/admin/couponList');

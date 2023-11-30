@@ -90,6 +90,7 @@
               <p>No orders found.</p>
             <% } else { %>
               <% orders.forEach(order => { %>
+                <a href="/singleOrder">
                 <div class="list-group-item mb-3">
                   <div class="d-flex justify-content-between">
                     <h5>Order ID: <%= order.orderId %></h5>
@@ -119,6 +120,7 @@
                   </div>
                   <!-- End Order Items Section -->
                 </div>
+                </a>
               <% }); %>
             <% } %>
           </div>

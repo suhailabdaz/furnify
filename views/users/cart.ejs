@@ -56,6 +56,12 @@
       border-bottom-right-radius: 20px;
       cursor: pointer;
     }
+   .alert{
+    color: rgb(179, 49, 49);
+    text-align: center;
+    font-size: 44px;
+    
+   }
   </style>
 </head>
 
@@ -131,8 +137,12 @@
 				  </tr>
 				</thead>
 				<tbody>
+          <% if(locals.message){%>
+            <div class="alert"><%= message%></div>
+        <%}%>
 				  <% if (cart && cart.item && cart.item.length > 0) { %>
 					<% cart.item.forEach((item, index) => { %>
+           
 					  <tr>
 						<td class="product-thumbnail">
 						  <img src="<%= item.productId.images[0] %>" alt="Image" class="img-fluid">
@@ -149,11 +159,11 @@
                   <button
                       onclick="updateQuantity('<%= cart._id %>','<%= item._id %>','<%= item.price %>','<%= index %>' , 1 )"
                       class="increase items-count" type="button">
-                      <i class="lnr lnr-chevron-up"></i></button>
+                      <span class="lnr lnr-chevron-up" style="font-weight:bold;">+</span></button>
                   <button
                       onclick="updateQuantity('<%= cart._id %>','<%= item._id %>','<%= item.price %>', '<%= index %>', -1 )"
-                      class="reduced items-count" type="button"><i
-                          class="lnr lnr-chevron-down"></i></button>
+                      class="reduced items-count" type="button"><span
+                          class="lnr lnr-chevron-down" style="font-weight:bold;">-</span></button>
               </div>
           </td>
 
@@ -326,6 +336,7 @@
   <script>
         async function updateQuantity(cartId, productId,price, index, count) {
                     try {
+                      
                         let quantityInput = document.getElementById(`sst${index}`);
                         let currentQuantity = parseInt(quantityInput.value);
                         console.log("jjjj",cartId);

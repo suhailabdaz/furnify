@@ -17,7 +17,7 @@ const updateOrderStatus=async(req,res)=>{
         
         const updatedOrder = await orderModel.findOneAndUpdate(
             { _id: orderId },
-            { $set: { status: status } },
+            { $set: { status: status ,updatedAt:Date.now()}},
             { new: true }
         );
       

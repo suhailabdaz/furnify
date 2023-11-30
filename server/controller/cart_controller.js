@@ -18,7 +18,7 @@ const showcart = async (req, res) => {
       if (userId) {
           cart = await cartModel.findOne({ userId: userId }).populate({
               path: 'item.productId',
-              select: 'images name price',
+              select: 'images name price stock',
           });
       } else {
         
@@ -56,8 +56,15 @@ const showcart = async (req, res) => {
       const userId = req.session.userId;
       const price = product.price;
       const stock= product.stock;
+     
+
       const quantity = 1;
       console.log(req.session.id)
+
+      if (stock==0){
+        res.redirect('/cartpage')
+      }
+      else{
       let cart;
       if (userId) {
         cart = await cartModel.findOne({ userId: userId });
@@ -99,9 +106,10 @@ const showcart = async (req, res) => {
   
       await cart.save();
       res.redirect('/cartpage');
+    }
     } catch (err) {
       console.error(err);
-      res.status(500).send('Error occurred');
+     
     }
   }
 
@@ -159,12 +167,18 @@ const updatecart = async (req, res) => {
 
     console.log("itemIndex", itemIndex);
     console.log("Cart Items:", cart.item);
-
+    
     console.log(cart.item[itemIndex].quantity);
     console.log(cart.item[itemIndex].stock);
     console.log(cart.item[itemIndex].price);
     const currentQuantity = cart.item[itemIndex].quantity;
-    const stockLimit = cart.item[itemIndex].stock;
+    
+    
+    const selectedProductId= cart.item[itemIndex].productId
+    const selectedProduct=await productModel.findOne({_id:selectedProductId})
+    console.log("selctedproduct",selectedProduct)
+    const stockLimit = selectedProduct.stock;
+    console.log("limit",stockLimit)
     const price = cart.item[itemIndex].price;
 
     let updatedQuantity;
@@ -179,12 +193,12 @@ const updatecart = async (req, res) => {
       return res.status(400).json({ success: false, error: 'Invalid action' });
     }
 
-    if (updatedQuantity < 1 || updatedQuantity > stockLimit) {
+    if (updatedQuantity < 1 || (updatedQuantity > stockLimit && action=="1")) {
       return res.status(400).json({ success: false, error: 'Quantity exceeds stock limits' });
     }
-
+    
     cart.item[itemIndex].quantity = updatedQuantity;
-
+    
     
     const newProductTotal = price * updatedQuantity;
     cart.item[itemIndex].total = newProductTotal;
@@ -246,6 +260,20 @@ const checkoutpage = async (req, res) => {
 
     const cart = await cartModel.findById(cartId).populate('item.productId')
 
+    for (const cartItem of cart.item || []) {
+      const product = await productModel.findById(cartItem.productId);
+
+    
+      if (cartItem.quantity > product.stock) {
+        
+        console.log('Selected quantity exceeds available stock for productId:', cartItem.productId);
+        return res.render('users/cart',{cart,categories,message:"Some of the products quantity Exceeds StockLimit..!!"})
+      
+      }
+      
+    }
+    
+
     const cartItems = (cart.item || []).map((cartItem) => ({
       productId:cartItem.productId._id,
       productName: cartItem.productId.name,
@@ -258,7 +286,9 @@ const checkoutpage = async (req, res) => {
     console.log('Cart Total:', cart.total);
 
     res.render('users/checkout', { addresses, cartItems, categories, cart,cartId });
-  } catch (err) {
+  
+  
+}catch(err) {
     console.error(err);
     res.status(500).send('Error occurred');
   }

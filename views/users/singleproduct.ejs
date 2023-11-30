@@ -229,10 +229,15 @@
                     <p><%= product.description %></p>
                 </div>
                 <div class="buttons-row">
+                    <% if (product.stock > 0) { %>
                     <a href="/addtocart/<%= product._id %>"><button class="btn btn-primary">
                             <span class="fas fa-shopping-cart"></span> Add to Cart
                         </button></a>
-
+                        <% } else { %>
+                            <button class="btn btn-danger" disabled>
+                                Out of Stock
+                            </button>
+                        <% } %>
                     <a href="/addtofavourites/<%=product._id%>"><button class="btn btn-secondary">
                             <span class="fas fa-heart"></span> Add to Wishlist
                         </button></a>

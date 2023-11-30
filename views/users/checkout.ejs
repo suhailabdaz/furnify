@@ -354,13 +354,14 @@
 			<script>
 	function razorpay()
 	{
+		let amountToPay=document.getElementById('cartotal').innerText
 		var pay=document.querySelector('input[name="paymentOption"]:checked');
 		if(pay.value=='Razorpay'){
 console.log("upi total","ppppppp");
 
 var options = {
 "key": 'rzp_test_tY3tynQ51qUYZR', // Enter the Key ID generated from the Dashboard
-"amount":  500*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+"amount":  amountToPay*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
 "currency": "INR",
 "name": "Furnify",
 "description": "Test Transaction",
@@ -407,7 +408,7 @@ $(document).ready(function(){
     "Content-Type": "application/json"
   },
   "data": JSON.stringify({
-    "amount": 500
+    "amount": amountToPay*100
   }),
 };
 
@@ -454,6 +455,8 @@ function couponApply() {
         if (data.success) {
 			console.log("ivideumethi")
            document.getElementById('cartotal').innerText=data.price
+		   document.getElementById('carttotal').value=data.price
+
 
             // Update the Order Total dynamically
             // const orderTotalElement = document.querySelector('.orderTotal');

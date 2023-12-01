@@ -1,20 +1,25 @@
-<!-- order_detail.ejs -->
-
+<!-- UserProfile Page -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Details</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Untree.co">
+  <link rel="shortcut icon">
 
+  <meta name="description" content="" />
+  <meta name="keywords" content="bootstrap, bootstrap4" />
 
+  <!-- Bootstrap CSS -->
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="/css/tiny-slider.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <title>Profile-Furnify</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="css/tiny-slider.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <style>
-         .username{
+  <style>
+    .username{
         font-weight: 600;
         color: #F0EAD6;
     }
@@ -58,32 +63,73 @@
       border-bottom-right-radius: 20px;
       cursor: pointer;
     }
-        </style>
-    <!-- Add your CSS styles here -->
+  </style>
 </head>
+
 <body>
+
+    <!-- Start Header Area -->
     <%- include('userpartials/nav')%>
+        <!-- End Header Area -->
+        <div class="hero">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-lg-5">
+                        <div class="intro-excerpt">
+                            <h1>Order Details</h1>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <h1>Order Detail</h1>
 
-  <h2>Order </h2>
-  <p>Status: </p>
+        
 
-  <h3>Order Items</h3>
-  <ul>
-    
-  </ul>
+        <div class="order-details">
+          <h2>Order Details</h2>
+        
+          <% if (order) { %>
+            <div class="order-info">
+              <p><strong>Order ID:</strong> <%= order.orderId %></p>
+              <p><strong>Total Amount:</strong> ₹<%= order.totalPrice %></p>
+              <p><strong>Status:</strong> <%= order.status %></p>
+              <p><strong>Placed At:</strong> <%= order.createdAt.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }) %></p>
+        
+              <!-- Add more essential details here -->
+        
+              <!-- Order Tracking Section -->
+              <div class="order-tracking">
+                <h3>Order Tracking</h3>
+                <!-- Implement your order tracking UI, e.g., dots moving -->
+                <!-- You can use CSS animations or JavaScript for dynamic tracking -->
+              </div>
+              <% if (order.status !== 'Cancelled' && order.status !== 'Delivered') { %>
+                <form method="post" action="/cancelorder/<%= order._id %>">
+                  <button type="submit">Cancel Order</button>
+                </form>
+              <% } %>
+             
+            </div>
+          <% } else { %>
+            <p>No order found.</p>
+          <% } %>
+        
+        </div>
 
-  <h3>Tracking History</h3>
-  <ul>
-    
-  </ul>
 
-  <%- include('userpartials/footer')%>
 
-  <script src="js/bootstrap.bundle.min.js"></script>
-  <script src="js/tiny-slider.js"></script>
-  <script src="js/custom.js"></script>
+
+
+        <%- include('userpartials/footer')%>
+
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/tiny-slider.js"></script>
+        <script src="/js/custom.js"></script>
 
 </body>
+
 </html>

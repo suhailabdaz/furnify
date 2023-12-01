@@ -84,45 +84,51 @@
 
 		<div class="container mt-5">
             <h1 class="mb-4">Order History</h1>
-           
-        
+            
             <% if (orders.length === 0) { %>
               <p>No orders found.</p>
             <% } else { %>
               <% orders.forEach(order => { %>
-                <a href="/singleOrder">
-                <div class="list-group-item mb-3">
-                  <div class="d-flex justify-content-between">
-                    <h5>Order ID: <%= order.orderId %></h5>
-                    <% if (order.status !== 'Cancelled' && order.status !== 'Delivered') { %>
-                      <a href="/cancelorder/<%= order._id %>">Cancel</a>
-                    <% } %>
-                  </div>
-                  <p>Amount: ₹<%= order.totalPrice %></p>
-                  <p>Status: <%= order.status %></p>
-        
-                  <!-- Order Items Section -->
-                  <div class="order-section">
-                    <!-- Display order details here if needed -->
-                    <ul class="list-group">
+              
+                
+                  <div class="list-group-item mb-3">
+                    
+                    <div class="d-flex justify-content-between">
+                     
+                      <h5>Order ID: <%= order.orderId %></h5>
+                      <% if (order.status !== 'Cancelled' && order.status !== 'Delivered' && order.status !== 'Returned') { %>
+                        <a href="/cancelorder/<%= order._id %>">Cancel</a>
+                      <% } %>
+                      <% if (order.status =='Delivered'){ %>
+                        <a href="/returnorder/<%= order._id %>">Return</a>
+                        <% } %>
+                    </div>
+                    <a href="/singleorder/<%= order._id %>">
+                    <p>Amount: ₹<%= order.totalPrice %></p>
+                    <p>Status: <%= order.status %></p>
+            
+                    <!-- Order Items Section -->
+                    <div class="order-section">
+                      <!-- Display order details here if needed -->
+                      <ul class="list-group">
                         
-                      <% order.productDetails.forEach(item => { %>
-                        <li class="list-group-item">
-                          <img src="/<%= item.images[0] %>" alt="" style="height: 100px; width: 100px;">
-                          <p>Product Name: <%= item.name %></p>
-                         
-                          <p>Quantity: <%= allOrderItems.quantity %></p> <!-- Assuming quantity is a property of items -->
-                          <!-- Add more details as needed -->
+                        <% order.items.forEach(item => { %>
                           
-                        </li>
-                      <% }); %>
-                    </ul>
+                          <li class="list-group-item">
+                            <img src="/<%= item.productDetails.images[0] %>" alt="" style="height: 100px; width: 100px;">
+                            <p>Product Name: <%= item.productDetails.name %></p>
+                            <p>Quantity: <%= item.quantity %></p>
+                          </li>
+                        <% }); %>
+                      </ul>
+                    </div>
+                  </a>
+                    <!-- End Order Items Section -->
                   </div>
-                  <!-- End Order Items Section -->
-                </div>
                 </a>
               <% }); %>
             <% } %>
+            
           </div>
         
 	

@@ -262,8 +262,8 @@ const checkoutpage = async (req, res) => {
 
     for (const cartItem of cart.item || []) {
       const product = await productModel.findById(cartItem.productId);
-
-    
+      
+      
       if (cartItem.quantity > product.stock) {
         
         console.log('Selected quantity exceeds available stock for productId:', cartItem.productId);

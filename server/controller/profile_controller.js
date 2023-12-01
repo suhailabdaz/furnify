@@ -336,13 +336,18 @@ const orderHistory=async (req,res)=>{
                         }
                     },
                 ])
-                console.log(orders)
-                console.log("jjjj",od)
-                console.log("ppppp",allOrderItems)
+                const updatedOrders = orders.map(order => ({
+                    ...order,
+                    items: order.items.map(item => ({
+                      ...item,
+                      productDetails: order.productDetails.find(product => product._id.toString() === item.productId.toString()),
+                    })),
+                  }));
+                
                 
             
                 
-                res.render('users/order_history',{orders,categories,allOrderItems})
+                res.render('users/order_history',{od,orders:updatedOrders,categories,allOrderItems})
            
         }
         
@@ -356,8 +361,18 @@ const ordercancelling=async(req,res)=>{
     try{
     
        const id= req.params.id
+       const userId=req.session.userId
        const update=await orderModel.updateOne({_id:id},{status:"Cancelled"})
        const result=await orderModel.findOne({_id:id})
+       if(result.paymentMethod=='Razorpay'){
+        const user=await userModel.findOne({_id:userId})
+        const refund=result.totalPrice;
+        const currentWallet = user.wallet; 
+        const newWallet = currentWallet + refund;
+        const amountUpdate = await userModel.updateOne({ _id: userId }, { wallet: newWallet });
+
+
+       }
        console.log("result",result);
        const items=result.items.map(item=>({
         productId:item.productId,
@@ -381,11 +396,52 @@ const ordercancelling=async(req,res)=>{
     }
 }
 
+const orderreturning=async(req,res)=>{
+    try{
+        const userId=req.session.userId
+
+        const id= req.params.id
+        const update=await orderModel.updateOne({_id:id},{status:"Returned"})
+        const order=await orderModel.findOne({_id:id})
+        const user=await userModel.findOne({_id:userId})
+        
+        console.log("paranja order",order)
+        const refund=order.totalPrice;
+        console.log("refundAmount",refund)
+
+        const currentWallet = user.wallet; 
+        const newWallet = currentWallet + refund;
+        const amountUpdate = await userModel.updateOne({ _id: userId }, { wallet: newWallet });
+
+        const result=await orderModel.findOne({_id:id})
+        
+        const items=result.items.map(item=>({
+         productId:item.productId,
+         quantity:item.quantity,
+         
+     }))
+     for(const item of items){
+        const product =await productModel.findOne({_id:item.productId})
+        product.stock+=item.quantity
+        await product.save()
+       
+    }
+
+       res.redirect("/orderhistory")
+
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 
 const singleOrderPage=async (req,res)=>{
     try{
+        const id= req.params.id
+        const order=await orderModel.findOne({_id:id})
         const categories=await categoryModel.find({})
-        res.render('users/orderDetails',{categories})
+        res.render('users/orderDetails',{categories,order})
 
     }
     catch(err){
@@ -404,4 +460,4 @@ const singleOrderPage=async (req,res)=>{
 
 module.exports={userdetails,profileEdit,profileUpdate,newAddress,addressUpdate,changepassword
 ,editaddress,updateAddress,deleteAddress,orderHistory,ordercancelling,
-singleOrderPage}
+singleOrderPage,orderreturning}

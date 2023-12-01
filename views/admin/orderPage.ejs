@@ -52,6 +52,7 @@
                         <th>Payment method</th>
                         <th>status</th>
                         <th>createdAt</th>
+                        <th>UpdatedAt</th>
                         
                     </tr>
                 </thead>
@@ -75,7 +76,7 @@
                                         
                                         <label for="status"></label>
                                         <select name="status" id="status_<%= order._id %>" onchange="submitForm('<%= order._id %>')">
-                                            <% const statuses = ['Pending', 'Processing', 'Shipped', 'Delivered','Cancelled']; %>
+                                            <% const statuses = ['Pending', 'Processing', 'Shipped', 'Delivered','Cancelled','Returned']; %>
                                             <% for (const status of statuses) { %>
                                                 <option value="<%= status %>" <%= order.status === status ? 'selected' : '' %>><%= status.charAt(0).toUpperCase() + status.slice(1) %></option>
                                             <% } %>
@@ -83,6 +84,12 @@
                                     </form>
                                     
                                 </td>
+                                <td>
+                                  <%= order.createdAt.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }) %>
+                                  </td>
+                                  <td>
+                                    <%= order.updatedAt ? order.updatedAt.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }) : 'N/A' %>
+                                  </td>
                             </tr>
                       
                        

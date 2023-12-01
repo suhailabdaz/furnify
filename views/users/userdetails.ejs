@@ -23,7 +23,7 @@
       font-weight: 400;
     }
     .address-section {
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     min-width: 69vh;
     border-radius: 10px; 
     margin-bottom: 10px;
@@ -57,7 +57,7 @@
     background-color: #ffffff;
     padding: 20px;
     margin-bottom: 20px;
-    border-radius: 10px;
+    border-radius: 1px;
 }
 .passwordForm{
   margin-top: 12vh;
@@ -209,8 +209,9 @@
 </div>
 
  
-
-
+<div class="tazhe">
+<div class="row">
+  <div class="col-lg-6">
 <section class="user-details-section mt-4 section-container">
   <div class="section-half">
     <h4>Password</h4>
@@ -234,10 +235,25 @@
   </div>
 </section>
   </div>
-    		<!-- Start Footer Section -->
+
+<div class="col-lg-6">
+<section class="user-details-section mt-4 section-container">
+  <div class="section-half">
+    <h4>Wallet&nbsp:&nbsp</h4>
+    <h1><span>Rs.&nbsp</span><span style="font-weight: bolder;"><%=userData.wallet%></span></h1>
+    <!-- Password management -->
+    
+
+    <!-- Password change form -->
+   
+  </div>
+</section>
+</div>
+  </div>
+</div>
 		<%-include('userpartials/footer')%>
+  
 		
-		<!-- End Footer Section -->	
 
 
     <script>

@@ -69,9 +69,11 @@ usrouter.get('/deleteaddress/:addressId',auth.islogged, profile_controller.delet
 
 usrouter.get('/orderHistory',auth.islogged,profile_controller.orderHistory)
 
-usrouter.get('/singleOrder',auth.islogged,profile_controller.singleOrderPage)
+usrouter.get('/singleOrder/:id',auth.islogged,profile_controller.singleOrderPage)
 
 usrouter.get('/cancelorder/:id',auth.islogged,profile_controller.ordercancelling)
+
+usrouter.get('/returnorder/:id',auth.islogged,profile_controller.orderreturning)
 
 usrouter.get('/favouritespage',auth.islogged,cart_controller.favouritespage)
 

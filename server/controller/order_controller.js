@@ -2,7 +2,7 @@ const orderModel=require("../model/order_model")
 
 const orderPage=async (req,res)=>{
     try{
-        const orders=await orderModel.find({}) 
+        const orders=await orderModel.find({}).sort({ createdAt: -1 })
     res.render("admin/orderPage",{orderdata:orders})
 }
 catch(err){

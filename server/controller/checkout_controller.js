@@ -138,7 +138,7 @@ const placeOrder = async (req, res) => {
       paymentMethod: paymentMethod,
       createdAt: new Date(),
       status: 'Pending',
-      updatedAt: null,
+      updatedAt: new Date(),
     });
     console.log('Items:', items);
 

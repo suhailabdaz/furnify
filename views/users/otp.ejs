@@ -99,12 +99,16 @@
         function updateTimer() {
             document.getElementById('timer').textContent = remainingTime;
     
-            // Disable the Resend OTP button when the timer reaches 0
+            // Hide the Resend OTP button when the timer reaches 0
             const resendButton = document.getElementById('resendButton');
+            const timerElement = document.getElementById('timer');
+            
             if (remainingTime === 0) {
-                resendButton.removeAttribute('disabled');
+                resendButton.style.display = 'none';
+                timerElement.style.display = 'none';
             } else {
-                resendButton.setAttribute('disabled', true);
+                resendButton.style.display = 'block';
+                timerElement.style.display = 'inline';
             }
         }
     

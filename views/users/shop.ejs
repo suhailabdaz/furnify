@@ -26,6 +26,39 @@
 
 	<body>
 		<style>
+			.sorting-filtering-options {
+    display: flex;
+}
+
+.sorting-options select,
+.filtering-options select {
+    width: 200px;
+    height: 60px;
+    background-color: #3b5d50;
+    color: #efeeee;
+    border: 4px solid #efeeee;
+    border-radius: 15px;
+    margin-right: 10px;
+}
+
+.sorting-options select {
+    margin-right: 15px;
+}
+
+.sorting-options select option,
+.filtering-options select option {
+    background-color: #3b5d50;
+    color: #efeeee;
+	font-size: 25px;
+	font-weight: 400;
+}
+.sorting-options select option[disabled][selected],
+.filtering-options select option[disabled][selected] {
+    background-color: #3b5d50;
+    color: #3b5d50;
+	
+}
+
 		.category-options {
 		  display: none;
 		}
@@ -83,9 +116,9 @@
                             <form id="sortform" action="/sortProducts" method="GET">
 								<select id="sortSelect"  name="sortPro" class="form-control-lg" onchange="submitSortForm()">
 									<% if (locals.sorting) { %>
-									<option value="default" disabled selected><%=sorting%></option>
+									<option value="default"  disabled selected><%=sorting%></option>
 									<% } else { %>
-										<option value="default" disabled selected>Sort-by</option>
+										<option value="default"; disabled selected>Sort-by</option>
 										<% } %>
 
 									<option value="Newest">New Arrivals</option>

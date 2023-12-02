@@ -9,6 +9,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="/css/tiny-slider.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -17,6 +19,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-elevatezoom/3.0.8/jquery.elevatezoom.min.css">
 
     <style>
+ 
+
+  .product-details-section {
+            width: calc(55% - 25px); /* Adjusted width with right margin */
+            padding: 20px;
+            text-align: left;
+            background-color: #fff; /* Set the background color you want */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: Add box shadow for a card-like appearance */
+            margin-right: 25px; /* Right margin */
+            z-index: 2; /* Ensure the product details card is above the images */
+        }
+
+        /* Tiny Slider Container */
+        #product-slider {
+            position: relative;
+            overflow: hidden;
+        }
+
+   
+
+
+
+
+
+
         .product-container {
             display: flex;
             justify-content: space-between;
@@ -207,21 +234,17 @@
     </div>
     <div class="fulldiv my-5 d-flex justify-content-center">
         <div class="product-container">
-            <div class="product-image">
-                <a class="zoom" id="zoom-link" href="/<%= product.images[0] %>">
-
-                    <img src="/<%= product.images[0] %>" alt="<%= product.name %> Image" id="zoom-lin"
-                        class="img-fluid">
-                </a>
-            </div>
-            <div class="image-gallery my-5 d-flex flex-column align-items-center">
-                <% product.images.forEach((image, index) => { %>
-                <img src="/<%= image %>" alt="<%= product.name %> Image"
-                    onclick="showImage('/<%= image %>')" class="img-fluid mb-2" />
-                <% }); %>
+            <div class="product-images">
+                
+                <div id="product-slider" class="tns-slider">
+                    <% product.images.forEach((image, index) => { %>
+                        <img src="/<%= image %>" alt="<%= product.name %> Image" class="img-fluid" />
+                    <% }); %>
+                </div>
             </div>
 
-            <div class="product-details">
+            <!-- Product Details Section -->
+            <div class="product-details-section">
                 <h1><%= product.name %></h1>
                 <p class="price">Rs.<%= product.price.toFixed(2) %></p>
                 <div class="description">
@@ -230,14 +253,14 @@
                 </div>
                 <div class="buttons-row">
                     <% if (product.stock > 0) { %>
-                    <a href="/addtocart/<%= product._id %>"><button class="btn btn-primary">
-                            <span class="fas fa-shopping-cart"></span> Add to Cart
-                        </button></a>
-                        <% } else { %>
-                            <button class="btn btn-danger" disabled>
-                                Out of Stock
-                            </button>
-                        <% } %>
+                        <a href="/addtocart/<%= product._id %>"><button class="btn btn-primary">
+                                <span class="fas fa-shopping-cart"></span> Add to Cart
+                            </button></a>
+                    <% } else { %>
+                        <button class="btn btn-danger" disabled>
+                            Out of Stock
+                        </button>
+                    <% } %>
                     <a href="/addtofavourites/<%=product._id%>"><button class="btn btn-secondary">
                             <span class="fas fa-heart"></span> Add to Wishlist
                         </button></a>
@@ -366,20 +389,23 @@
     <script src="https://cdn.rawgit.com/elevateweb/elevatezoom/master/src/jquery.elevatezoom.js"></script>
     <script src="/js/custom.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#zoom-link').elevateZoom({
-                zoomType: 'inner',
-                cursor: 'crosshair',
-                zoomWindowFadeIn: 500,
-                zoomWindowFadeOut: 500
+        document.addEventListener('DOMContentLoaded', function () {
+            var slider = tns({
+                container: '#product-slider',
+                items: 1,
+                slideBy: 'page',
+                autoplay: false,
+                controls: true,
+                nav: false,
+             
             });
         });
-
-        function showImage(imageUrl) {
-            document.getElementById('mainImage').src = imageUrl;
-        }
     </script>
+
+    
+       
 </body>
 
 </html>

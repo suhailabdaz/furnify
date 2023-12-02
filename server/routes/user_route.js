@@ -7,7 +7,13 @@ const checkout_controller=require("../controller/checkout_controller")
 const auth=require('../../middleware/isAuth')
 usrouter.get("/",user_controller.home)
 
+usrouter.post("/searchProducts",user_controller.searchProducts)
+
 usrouter.get("/shop",user_controller.shop)
+
+usrouter.get('/filterProducts',user_controller.filterProducts)
+
+usrouter.get('/sortProducts',user_controller.sortProducts)
 
 usrouter.get('/singleproduct/:id',user_controller.singleproduct)
 

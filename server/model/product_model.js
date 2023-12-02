@@ -14,6 +14,10 @@ const proschema=new mongoose.Schema({
       ref: 'categories', 
       required: true,
   },
+  type:
+  {
+      type:String
+  },
     price:{
         type:Number,
         required:true

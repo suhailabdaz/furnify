@@ -54,15 +54,18 @@ const newproduct = async (req, res) => {
 
 const addproduct = async (req, res) => {
     try {
-        const { productName, parentCategory, images, stock,price, description } = req.body
+        const { productName, parentCategory, images,productType, stock,price, description } = req.body
         const newproduct = new productModel({
             name: productName,
             category: parentCategory,
+            type:productType,
             price: price,
             images: req.files.map(file => file.path),
             stock: stock,
             description: description
         })
+        console.log(parentCategory)
+        await categoryModel.updateOne({_id:parentCategory} ,{ $addToSet: { types: productType } },{ upsert: true })
 
         await newproduct.save()
         res.redirect('/admin/product')

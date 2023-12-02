@@ -11,6 +11,10 @@ const catschema=new mongoose.Schema({
         type:String,
         required:true
     },
+    types:{
+        type: Array,
+        default: ['All'],
+    },
     status:{
         type:Boolean,
         required:true,

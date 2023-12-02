@@ -64,68 +64,81 @@
 
 
 		<!-- Start Header/Navigation -->
-		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
-
-			<div class="container">
-				<a class="navbar-brand" href="/">Furnify<span>.</span></a>
-
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-
-				<div class="collapse navbar-collapse" id="navbarsFurni">
-					<!-- <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-						<li class="nav-item active">
-							<a class="nav-link" href="index.html">Home</a>
-						</li>
-						<li><a class="nav-link" href="/shop">Shop</a></li>
-						<li><a class="nav-link" href="contact.html">Contact us</a></li>
-					</ul> -->
-				<div class="search-bar">
-						<input type="text" class="search-input" placeholder="Search...">
-						<button class="search-button"><img src="images/searcharrow.png"></button>
-					  </div>
-
-					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li><a class="nav-link" href="/"><img src="images/homesvg.svg"></a></li>
-						<li><a class="nav-link" href="/profile"><img src="images/user.svg"></a></li>
-						<li><a class="nav-link" href="/cartpage"><img src="images/cart.svg"></a></li>
-					</ul>
-				</div>
-			</div>
-			
-           
-				
-		</nav>
-		<div class="select-line" style="background-color: #3b5d50;">
-			<ul class="custom-horizontal-list navbar-nav ms-auto mb-2 mb-md-0" style="display: flex; list-style: none; flex-direction: row; justify-content: center; gap: 23px;">
-				<% categories.filter(category => category.status !== false).forEach(category => { %>
-					<li class="nav-item">
-					  <a class="nav-link" href="/shop?category=<%= category._id %>" style="color: #F0EAD6; font-size: 150%;">
-						<%= category.name %>
-					  </a>
-					</li>
-				  <% }); %>
-				  
-			</ul>
-		</div>
+		<%-include('userpartials/nav')%>
 		<!-- End Header/Navigation -->
 
 		<!-- Start Hero Section -->
-			<div class="hero">
-				<div class="container">
-					<div class="row justify-content-between">
-						<div class="col-lg-5">
-							<div class="intro-excerpt">
-								<h1><%=categoryName%></h1>
-							</div>
+		<div class="hero">
+			<div class="container">
+				<div class="row justify-content-between align-items-center">
+					<div class="col-lg-5">
+						<div class="intro-excerpt">
+							<h1><%= categoryName %></h1>
 						</div>
-						<div class="col-lg-7">
-							
+					</div>
+					<div class="col-lg-7 d-flex justify-content-end align-items-center">
+						<div class="sorting-filtering-options">
+							<!-- Sorting Options -->
+							<div class="sorting-options">
+                            <form id="sortform" action="/sortProducts" method="GET">
+								<select id="sortSelect"  name="sortPro" class="form-control-lg" onchange="submitSortForm()">
+									<% if (locals.sorting) { %>
+									<option value="default" disabled selected><%=sorting%></option>
+									<% } else { %>
+										<option value="default" disabled selected>Sort-by</option>
+										<% } %>
+
+									<option value="Newest">New Arrivals</option>
+									<option value="1">Price: Low To High</option>
+									<option value="-1">Price: High To Low</option>
+
+									<!-- Add more options based on your needs -->
+								</select>
+								<input type="hidden" name="category" value="<%= selectedCategory %>">
+								<% if (locals.selectedType) { %>
+								<input type="hidden" name="type" value="<%= selectedType || 'All'%>">
+								<% } else { %>
+									<input type="hidden" name="type" value="All">
+
+									<% } %>
+							</form>
+
+							</div>
+		        
+							<!-- Filtering Options -->
+							<div class="filtering-options">
+								<form id="filterForm" action="/filterProducts" method="GET">
+									
+									<select id="filterSelect" name="filterType" class="form-control-lg" onchange="submitFilterForm()">
+										<% if (locals.selectedType) { %>
+										<option value="default" disabled selected><%=selectedType%></option>
+										<% } else { %>
+											<option value="default" disabled selected>Filter-by</option>
+											<% } %>
+
+										<% console.log("categoryItem", theCategory); %>
+										<% if (theCategory && theCategory[0].types) { %>
+											<% console.log("categoryItem"); %>
+											<% theCategory[0].types.forEach(function(option) { %>
+												<option value="<%= option %>"><span><%= option %></span></option>
+											<% }); %>
+										<% } %>
+										
+									</select>
+									<input type="hidden" name="category" value="<%= selectedCategory %>">
+								</form>
+							</div>
+		
+							<!-- Add styling and additional UI elements as needed -->
+							<!-- For example, you can use buttons, icons, etc. -->
+		
+							<!-- Example button -->
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+		
 		<!-- End Hero Section -->
 
 		
@@ -134,8 +147,8 @@
 		    <div class="container">
 				<div class="row">
 					<% products.forEach(product => { %>
-					  <div class="col-12 col-md-4 col-lg-3 mb-5">
-						<a class="product-item" href="/singleproduct/<%= product._id %>">
+					  <div class="col-12 col-md-4 col-lg-3 mb-5 product-item" >
+						<a class="product-item" href="/singleproduct/<%= product._id %>" data-types="<%= product.type %>">
 						  <img src="<%= product.images[0] %>" class="img-fluid product-thumbnail" style="width: 100%; height: 200px";>
 						  <h3 class="product-title"><%= product.name %></h3>
 						  <strong class="product-price">₹<%= product.price.toFixed(2) %></strong>
@@ -233,7 +246,7 @@
 							</div>
 						</div>
 					</div>
-
+                    
 				</div>
 
 				<div class="border-top copyright">
@@ -256,8 +269,16 @@
 			</div>
 		</footer>
 		<!-- End Footer Section -->	
-
-
+        
+		<script>
+			 function submitFilterForm() {
+        document.getElementById('filterForm').submit();
+    }
+	function submitSortForm() {
+        document.getElementById('sortform').submit();
+    }
+			</script>
+			
 		<script src="js/bootstrap.bundle.min.js"></script>
 		<script src="js/tiny-slider.js"></script>
 		<script src="js/custom.js"></script>

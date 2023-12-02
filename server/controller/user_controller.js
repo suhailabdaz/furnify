@@ -14,6 +14,7 @@ const {nameValid,
     confirmpasswordValid}=require("../../utils/validators/signup_Validators")
 const { Email, pass } = require('../../.env');
 const otpModel = require("../model/user_otp_model");
+const { category } = require("./admin_controller");
 console.log(Email,pass)
 
 
@@ -35,9 +36,87 @@ const shop = async (req, res) => {
     const categories = await categoryModel.find();
     const ctCategory = categories.find(cat => cat._id.toString() === category);
     const categoryName =ctCategory ? ctCategory.name : null;
-
-    res.render("users/shop", { categoryName,categories,products, selectedCategory: category });
+    const theCategory = await categoryModel.find({_id:category})
+    res.render("users/shop", {theCategory, categoryName,categories,products, selectedCategory: category });
+    console.log("ipooooo",theCategory)
   };
+
+const filterProducts=async(req,res)=>{
+ try{
+    const category=req.query.category;
+    const selectedType=req.query.filterType;
+    let products
+    console.log(selectedType)
+
+if(selectedType=='All'){
+    products = await productModel.find({$and:[{category},{status:true}] }).exec();
+
+}
+    else{
+    products = await productModel.find({$and:[{category},{status:true}],type:selectedType }).exec();
+    }
+    const categories = await categoryModel.find();
+    const ctCategory = categories.find(cat => cat._id.toString() === category);
+    const categoryName =ctCategory ? ctCategory.name : null;
+    const theCategory = await categoryModel.find({_id:category})
+    res.render("users/shop", {selectedType,theCategory, categoryName,categories,products, selectedCategory: category });
+    console.log("ipooooo",theCategory)
+    
+    
+    
+ }
+ catch(err){
+    console.log(err)
+ }
+}
+
+const sortProducts=async (req,res)=>{
+    try{
+        const sortOption=req.query.sortPro
+        
+        const selectedType=req.query.type
+        const category=req.query.category
+
+        let productse;
+        
+
+        if(selectedType=="All")
+        {
+           
+        productse=await productModel.find({$and:[{category:category},{status:true}]}).sort({price:sortOption}).exec()
+
+        }
+        else{
+    
+            productse=await productModel.find({$and:[{category:category},{type:selectedType},{status:true}]}).sort({price:sortOption}).exec()
+
+        
+        }
+        let sorting
+        if(sortOption=="-1"){
+            sorting="Price: High To Low"
+        }
+        else if(sortOption=="1"){
+            sorting="Price: Low To High"
+        }
+        console.log("ererererer",productse)
+        const categories = await categoryModel.find();
+        const ctCategory = categories.find(cat => cat._id.toString() === category);
+        const categoryName =ctCategory ? ctCategory.name : null;
+        const theCategory = await categoryModel.find({_id:category})
+        res.render("users/shop", {selectedType,theCategory, categoryName,categories,products:productse, selectedCategory: category ,sorting});
+        console.log("ipooooo",theCategory)
+        
+        
+
+        
+
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+
   
   const singleproduct=async(req,res)=>{
     try{
@@ -47,7 +126,7 @@ const shop = async (req, res) => {
         product.images = product.images.map(image => image.replace(/\\/g, '/'));
         console.log('Image Path:', product.images[0]);
         res.render('users/singleproduct',{categories,product:product})
-            
+        
     }
     catch(err){
         console.log("Shopping Page Error:",err);
@@ -323,7 +402,6 @@ const forgotpasspost=async (req, res) => {
     try {
         const email=req.body.email
         const emailexist= await usersModel.findOne({email:email})
-        // req.session.id=emailexist._id
         console.log(emailexist);
         if(emailexist){
             req.session.forgot=true
@@ -405,6 +483,51 @@ const reset_password = async (req, res) => {
 }
 
 
+const searchProducts = async (req, res) => {
+    try {
+    const searchProduct = req.body.searchProducts;
+  
+    
+      const data = await categoryModel.findOne({
+        name: { $regex: new RegExp(`^${searchProduct}`, 'i') },
+      });
+
+      const productdata=await productModel.findOne({
+        name:{$regex: new RegExp(`^${searchProduct}`, 'i')}
+      });
+  
+  
+      
+      if (data){
+        const categoryId=data._id
+        return res.redirect(`/shop?category=${categoryId}`)
+      }
+      else if(productdata){
+        const productId=productdata._id
+        return res.redirect(`/singleproduct/${productId}`)
+      }
+      else{
+        res.redirect('/')
+      }
+      
+    } catch (err) {
+      console.error(err);
+  
+      // Sending a more informative error response
+      res.status(500).json({ error: 'Internal Server Error', message: err.message });
+    }
+  };
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+
 
 module.exports={home,shop,profile,signup,generateotp,signupotp,otp,verifyotp,loginaction,resendotp,forgotpassword
-,forgotpasspost,new_password,reset_password,singleproduct,logout}
+,forgotpasspost,new_password,reset_password,singleproduct,logout,searchProducts,
+filterProducts,sortProducts}

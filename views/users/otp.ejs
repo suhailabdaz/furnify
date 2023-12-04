@@ -24,6 +24,8 @@
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
             padding: 20px;
             width: 300px;
+            text-align: center;
+            margin-top: 50px;
         }
 
         h1 {
@@ -71,8 +73,13 @@
         }
 
         button:hover {
-            background-color: #444;
+            background-color: #5f5c5c;
             color: #fff;
+           
+           
+        }
+        #resendButton{
+            margin-left: 12px;
         }
     </style>
 </head>
@@ -88,7 +95,10 @@
     
     <form method="post" action="/resendotp">
       <button id="resendButton"type="submit">Resend OTP</button>
-      <span>Resend OTP in</spans><span id="timer">30</span>Seconds
+      <p id="textintimer">Resend OTP in&nbsp;<span id="timer">30</span>&nbsp;Seconds</p>
+      <% if(expressFlash.otperror){ %>
+        <div class="alert text-danger text-start" style="color: red;"><%= expressFlash.otperror %></div>
+    <% } %>
     </form>
   </div>
 </body>
@@ -101,13 +111,13 @@
     
             // Hide the Resend OTP button when the timer reaches 0
             const resendButton = document.getElementById('resendButton');
-            const timerElement = document.getElementById('timer');
+            const timerElement = document.getElementById('textintimer');
             
             if (remainingTime === 0) {
-                resendButton.style.display = 'none';
+                resendButton.style.display = 'block';
                 timerElement.style.display = 'none';
             } else {
-                resendButton.style.display = 'block';
+                resendButton.style.display = 'none';
                 timerElement.style.display = 'inline';
             }
         }

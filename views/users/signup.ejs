@@ -227,41 +227,47 @@ input:checked + .slider:before {
                             <form class="frm" action="/signupotp" method="post">
                                 <div class="form-group">
                                     <input type="text" class="form-control" id="firstName" name="firstname" required placeholder="First Name">
-                                    <% if(locals.nameerror){%>
-                                        <div class="alter text-danger text-start"><%= nameerror%></div>
+                                    <% if(expressFlash.nameerror){%>
+                                        <div class="alter text-danger text-start"><%= expressFlash.nameerror%></div>
                                     <%}%>
                                 </div>
 
                                 <div class="form-group">
                                     <input type="text" class="form-control" id="lastname" name="lastname" required
                                         placeholder="Last Name">
-                                    <% if(locals.nameerror){%>
-                                        <div class="alter text-danger text-start"><%= nameerror%></div>
+                                    <% if(expressFlash.lnameerror){%>
+                                        <div class="alter text-danger text-start"><%= expressFlash.lnameerror%></div>
                                     <%}%>
                                 </div>
                                 <div class="form-group">
                                     <input type="email" class="form-control" id="email" name="email" required placeholder="Email">
-                                    <% if(locals.emailerror){%>
-                                        <div class="alter text-danger text-start"><%= emailerror%></div>
+                                    <% if(expressFlash.emailerror){%>
+                                        <div class="alter text-danger text-start"><%= expressFlash.emailerror%></div>
+                                    <%}%>
+                                    <% if(expressFlash.emailerrorinvalid){%>
+                                        <div class="alter text-danger text-start"><%= expressFlash.emailerrorinvalid%></div>
                                     <%}%>
                                 </div>
                                 <div class="form-group">
 <input type="tel" class="form-control" id="phone" name="phone" required placeholder="Phone Number">                                   
- <% if(locals.phoneerror){%>
-                                        <div class="alter text-danger text-start"><%= phoneerror%></div>
+                                <% if(expressFlash.phoneerror){%>
+                                        <div class="alter text-danger text-start"><%= expressFlash.phoneerror%></div>
+                                    <%}%>
+                                    <% if(expressFlash.phonexists){%>
+                                        <div class="alter text-danger text-start"><%= expressFlash.phoneexists%></div>
                                     <%}%>
                                 </div>
             
                                 <div class="form-group">
                                     <input type="password" class="form-control" id="password" name="password" required placeholder="Password">                                 
-                                       <% if(locals.passworderror){%>
-                                        <div class="alter text-danger text-start"><%= passworderror%></div>
+                                    <% if(expressFlash.passworderror){%>
+                                        <div class="alter text-danger text-start"><%= expressFlash.passworderror%></div>
                                     <%}%>
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control" id="confirm_password" name="confirm_password" required placeholder="Confirm Password">
-                                       <% if(locals.cpassworderror){%>
-                                        <div class="alter text-danger text-start"><%= cpassworderror%></div>
+                                    <% if(expressFlash.cpassworderror){%>
+                                        <div class="alter text-danger text-start"><%= expressFlash.cpassworderror%></div>
                                     <%}%>
                                 </div>
                                 

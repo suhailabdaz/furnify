@@ -43,6 +43,8 @@
                     <% product.images.forEach(item=>{ %>
                         <img style=" width: 100px;height: 100px;"src="/<%= item %>">
                          <a href="/admin/deleteimg?pid=<%= product._id %>&filename=<%= item %>" class="btn btn-danger btn-xs">Delete</a>
+                       
+                         <a href="/admin/resizeimg?pid=<%= product._id %>&filename=<%= item %>" class="btn btn-primary btn-xs">Resize</a>
                          <% }) %>
                          <div class="mb-3">
                             <label for="images" class="form-label">Add New Images:</label>

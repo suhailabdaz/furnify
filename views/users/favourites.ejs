@@ -23,6 +23,12 @@
   <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
 
   <style>
+    .hero{
+      height: 1vh;
+    }
+    body{
+      background-color: #3b5d50;
+    }
     .add-to-cart-button {
       display: inline-block;
       padding: 10px 20px;
@@ -31,15 +37,15 @@
       text-decoration: none;
       cursor: pointer;
       border-radius: 25px;
-      background-color: #000407;
+      background-color: #2c2525;
       color: #fff;
-      border: 2px solid #462c2c;
+      border: 2px solid #036414;
       transition: background-color 0.3s, color 0.3s;
     }
 
     .add-to-cart-button:hover {
-      background-color: rgb(31, 77, 42);
-      border-color: #000000;
+      background-color: rgb(39, 96, 52);
+      border-color: rgb(39, 96, 52);
       color: #fff;
     }
     .remove-from-cart-button {
@@ -50,9 +56,9 @@
       text-decoration: none;
       cursor: pointer;
       border-radius: 25px;
-      background-color: #000000;
+      background-color: #2c2525;
       color: #fff;
-      border: 2px solid #dcd7d7;
+      border: 2px solid #8d0000;
       transition: background-color 0.3s, color 0.3s;
     }
 
@@ -121,7 +127,7 @@
       </div>
     </div>
   </nav>
-  <div class="select-line" style="background-color: #3b5d50;">
+  <div class="select-line" style="background-color: #3b5d50;margin-bottom: 1px;margin-top: 1px;">
     <ul class="custom-horizontal-list navbar-nav ms-auto mb-2 mb-md-0" style="display: flex; list-style: none; flex-direction: row; justify-content: center; gap: 23px;">
       <% categories.filter(category => category.status !== false).forEach(category => { %>
         <li class="nav-item">
@@ -138,22 +144,27 @@
   <!-- Start Hero Section -->
   <div class="hero">
     <div class="container">
-      <div class="row justify-content-between">
+      <div class="row justify-content-between align-items-center">
         <div class="col-lg-5">
           <div class="intro-excerpt">
-            <h1>Favourites</h1>
+            <h1 style="font-size: 100px; color: #efeeee;margin-bottom: 1px;">Favourites</h1>
+            
+              <h4 style="color: #efeeee;">"Curated Just for You: Explore Your <span style="color:rgb(193, 157, 66);">Favorites</span>."</h4>
+            
           </div>
         </div>
         <div class="col-lg-7">
+        
         </div>
       </div>
     </div>
   </div>
+ 
 
 
   <div class="untree_co-section before-footer-section">
     <div class="container">
-      <div class="row mb-5">
+      <div style="background-color: #efeeee;" class="row mb-5">
         <form class="col-md-12" method="post">
           <div class="site-blocks-table">
 			<table class="table">
@@ -169,17 +180,17 @@
 				<tbody>
 				  <% if (fav && fav.item && fav.item.length > 0) { %>
 					<% fav.item.forEach((item, index) => { %>
-					  <tr>
+					  <tr >
 						<td class="product-thumbnail">
-						  <img src="<%= item.productId.images[0] %>" alt="Image" class="img-fluid">
+						  <img style="max-height: 12vh;" src="<%= item.productId.images[0] %>" alt="Image" class="img-fluid">
 						</td>
 						<td class="product-name">
-						  <h2 class="h5 text-black"><%= item.productId.name %></h2>
+						  <h1 class="h1 text-black"><%= item.productId.name %></h1>
 						</td>
-						<td><%= item.productId.price %></td>
-						 <td><a href="/addtocartviafav/<%= item.productId._id%>" class="add-to-cart-button">Add To Cart</a></td>
+						<td class="h1 text-black"><%= item.productId.price %></td>
+						 <td><a href="/addtocartviafav/<%= item.productId._id%>" class="add-to-cart-button"><span style="font-size: larger;">Add To Cart</span></a></td>
 
-        <td><a href="/deletefav/<%= item._id %>" class="remove-from-cart-button">Remove</a></td>
+        <td><a href="/deletefav/<%= item._id %>" class="remove-from-cart-button"><span style="font-size: larger;">Remove</span></a></td>
 
 					  </tr>
 					<% }); %>

@@ -222,7 +222,7 @@ input:checked + .slider:before {
                         </div>
 
                         <div class="heading">
-                            <div class="toplogin"><h2>Login to your account<h2>
+                            <div class="toplogin"><h2>Login to your account</h2>
                             <p class="pclass">For faster checkout, managing orders and account-only exclusives.<p>
                         </div>
                         </div>
@@ -231,17 +231,18 @@ input:checked + .slider:before {
                                 <div class="form-group">
                                     <input type="email" class="form-control" id="email" name="email" required
                                         placeholder="Your E-mail Address">
-                                    <% if(locals.emailerror){%>
-                                        <div class="alter text-danger text-start"><%= emailerror%></div>
+                                    <% if(expressFlash.emailpasserror){%>
+                                        <div class="alter text-danger text-start"><%= expressFlash.emailpasserror%></div>
+                                    <%}%>
+                                    <% if(expressFlash.blockerror){%>
+                                        <div class="alter text-danger text-start"><%= expressFlash.blockerror%></div>
                                     <%}%>
                                 </div>
 
                                 <div class="form-group">
                                     <input type="password" class="form-control" id="password" name="password" required
                                         placeholder="Enter your Password">
-                                    <% if(locals.passworderror){%>
-                                        <div class="alter text-danger text-start"><%= passworderror%></div>
-                                    <%}%>
+                                   
                                 </div>
                                 <button type="submit" class="btn btn-primary">Login</button><br><br>
                             </form>

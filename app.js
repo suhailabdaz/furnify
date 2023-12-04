@@ -7,7 +7,9 @@ const usrouter=require("./server/routes/user_route")
 const adrouter=require("./server/routes/admin_route")
 const path=require("path")
 const ejs=require("ejs")
+const sharp=require('sharp')
 const nocache=require("nocache")
+const flash=require("express-flash")
 
 
 const app=express()
@@ -22,6 +24,7 @@ app.use(session({
 
 app.use(bodyParser.json()); 
 app.use(express.urlencoded({extended:true}))
+app.use(flash());
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/public/usersassets'));

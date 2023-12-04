@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image-Resize</title>
+</head>
+<body>
+    <form action="">
+
+        
+
+        <label for="Height">Height</label>
+        <input type="range"name="height"min=
+        "1" max="1200" step="10" value="100" oninput="resizeImage()"><span id="height-value">Px</span>
+        <label for="Width">Width</label>
+        <input type="range"name="width"min=
+        "1" max="1200" step="10" value="100" oninput="resizeImage()"><span id="width-value">Px</span>
+
+        <img src="<%= imagePath %>" alt="Uploaded Image">
+
+    </form>
+</body>
+</html>

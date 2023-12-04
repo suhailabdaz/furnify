@@ -41,6 +41,7 @@ adrouter.get('/deletepro/:id',auth.loggedadmin,product_controller.deletepro)
 adrouter.get('/updatepro/:id',auth.loggedadmin,product_controller.updatepro)
 adrouter.get('/editimg/:id',auth.loggedadmin,product_controller.editimg)
 adrouter.get('/deleteimg',auth.loggedadmin,product_controller.deleteimg)
+adrouter.get('/resizeimg',auth.loggedadmin,product_controller.resizeImage)
 adrouter.post('/updateimg/:id',auth.loggedadmin,upload.array('images'),product_controller.updateimg)
 adrouter.post('/updateproduct/:id',auth.loggedadmin,product_controller.updateproduct)
 

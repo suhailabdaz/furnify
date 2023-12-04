@@ -301,7 +301,6 @@ const addToFvourites= async (req, res) => {
 
     const userId = req.session.userId;
     const price = product.price;
-    const quantity = 1;
   
     let fav;
     if (userId) {
@@ -322,9 +321,8 @@ const addToFvourites= async (req, res) => {
     const productExist = fav.item.findIndex((item) => item.productId == pid);
     
     if (productExist !== -1) {
-      fav.item[productExist].quantity += 1;
-      fav.item[productExist].total =
-        fav.item[productExist].quantity * price;
+      
+      
     } else {
       const newItem = {
         productId: pid,
@@ -388,10 +386,8 @@ const deletefav=async(req,res)=>{
       const result=await favModel.updateOne({userId:userId},{$pull:{item:{_id:pid}}})
       console.log('Update result:', result);
       const updatedFav = await favModel.findOne({ userId: userId });
-      const newTotal = updatedFav.item.reduce((acc, item) => acc + item.total, 0);
-      updatedFav.total = newTotal;
       await updatedFav.save();
-     res.redirect('/favouritespage')
+      res.redirect('/favouritespage')
   }
   catch(err) {
       console.log(err);

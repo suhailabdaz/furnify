@@ -81,8 +81,8 @@
     <form method="post" action="/forgotpasspost">
       <label for="email">Enter Email</label>
       <input type="email" id="email" name="email" required>
-      <% if(locals.emaile){ %>
-        <div class="alert text-start"><%= emaile %></div>
+      <% if(expressFlash.emaile){ %>
+        <div class="alert text-start"><%= expressFlash.emaile %></div>
       <% } %>
       <button type="submit">Submit</button>
     </form>

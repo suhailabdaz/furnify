@@ -2,6 +2,7 @@ const fs=require('fs')
 const path=require('path')
 const productModel = require('../model/product_model')
 const categoryModel = require('../model/category_model')
+const sharp=require('sharp')
 
 
 const products = async (req, res) => {
@@ -17,26 +18,6 @@ const products = async (req, res) => {
         res.send("Error Occured")
     }
 }
-
-// const newproduct = async (req, res) => {
-//     try {
-//         const category = await categoryModel.find()
-//         const subcat = await subcatModel.find().populate('p_category');
-
-//         const subcatData = subcat.map(item => ({ _id: item._id, parentCategoryId: item.p_category, subcategoryName: item.name }));
-
-
-//         console.log("Categories:", category);
-//         console.log("Subcategories:", subcat);
-//         console.log("SubcatData:", JSON.stringify(subcatData));
-
-//         res.render('admin/newproduct', { category: category, subcat: subcat, subcatData: JSON.stringify(subcatData) })
-//     }
-//     catch (err) {
-//         console.log(err);
-//         res.send("Error Occured")
-//     }
-// }
 
 const newproduct = async (req, res) => {
     try {
@@ -55,6 +36,9 @@ const newproduct = async (req, res) => {
 const addproduct = async (req, res) => {
     try {
         const { productName, parentCategory, images,productType, stock,price, description } = req.body
+
+
+
         const newproduct = new productModel({
             name: productName,
             category: parentCategory,
@@ -64,6 +48,7 @@ const addproduct = async (req, res) => {
             stock: stock,
             description: description
         })
+
         console.log(parentCategory)
         await categoryModel.updateOne({_id:parentCategory} ,{ $addToSet: { types: productType } },{ upsert: true })
 
@@ -175,6 +160,22 @@ const deleteimg=async(req,res)=>{
         res.send("Error Occured")
     }
 }
+
+
+const resizeImage=async(req,res)=>{
+    try{
+
+        const pid=req.query.pid
+        const filename=req.query.filename
+        const imagePath=path.join(filename)
+        res.render('admin/resizeImg',{imagePath})
+        console.log(imagePath)
+
+    }
+    catch(err){
+        console.log(err);
+    }
+}
 const updateproduct = async (req, res) => {
     try {
         const id = req.params.id
@@ -202,6 +203,7 @@ module.exports = {
     deletepro,
     updatepro,
     deleteimg,
+    resizeImage,
     editimg,
     updateimg,
     updateproduct

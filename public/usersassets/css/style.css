@@ -509,8 +509,8 @@ a {
       .testimonial-slider-wrap .tns-nav button:hover:before, .testimonial-slider-wrap .tns-nav button.tns-nav-active:before {
         background-color: #3b5d50; }
 
-.before-footer-section {
-  padding: 7rem 0 12rem 0 !important; }
+/* .before-footer-section {
+  padding: 7rem 0 12rem 0 !important; } */
 
 .blog-section {
   padding: 7rem 0 12rem 0; }

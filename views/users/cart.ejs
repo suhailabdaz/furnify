@@ -23,6 +23,9 @@
   <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
 
   <style>
+    body{
+      background-color: #efeeee;
+    }
     .category-options {
       display: none;
     }
@@ -68,7 +71,7 @@
 <body>
 
   <!-- Start Header/Navigation -->
-  <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+  <nav style="background-color: #efeeee;" class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
     <div class="container">
       <a class="navbar-brand" href="/">Furnify<span>.</span></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,11 +92,11 @@
       </div>
     </div>
   </nav>
-  <div class="select-line" style="background-color: #3b5d50;">
+  <div class="select-line" style="background-color:#3b5d50;">
     <ul class="custom-horizontal-list navbar-nav ms-auto mb-2 mb-md-0" style="display: flex; list-style: none; flex-direction: row; justify-content: center; gap: 23px;">
       <% categories.filter(category => category.status !== false).forEach(category => { %>
         <li class="nav-item">
-          <a class="nav-link" href="/shop?category=<%= category._id %>" style="color: #F0EAD6; font-size: 150%;">
+          <a class="nav-link" href="/shop?category=<%= category._id %>" style="color:#F0EAD6; font-size: 150%;">
             <%= category.name %>
           </a>
         </li>
@@ -104,23 +107,22 @@
   <!-- End Header/Navigation -->
 
   <!-- Start Hero Section -->
-  <div class="hero">
+  <div style="background-color: #efeeee;margin-bottom: 1px;padding-bottom: 1px;" class="hero">
     <div class="container">
       <div class="row justify-content-between">
         <div class="col-lg-5">
           <div class="intro-excerpt">
-            <h1>Cart</h1>
+            <h1 style="font-size: 100px; color:#3b5d50;">Cart</h1>
+            <h4 style="color:#3b5d50;">"Savor the <span style="color:rgb(193, 157, 66);">Cart</span>: Where Choices Meet Checkout."</h4>
           </div>
         </div>
-        <div class="col-lg-7">
-          <!-- ... (additional content if needed) ... -->
-        </div>
+        
       </div>
     </div>
   </div>
   <!-- End Hero Section -->
 
-  <div class="untree_co-section before-footer-section">
+  <div style="padding-top: 2px;" class="untree_co-section before-footer-section">
     <div class="container">
       <div class="row mb-5">
         <form class="col-md-12" method="post">
@@ -145,7 +147,7 @@
            
 					  <tr>
 						<td class="product-thumbnail">
-						  <img src="<%= item.productId.images[0] %>" alt="Image" class="img-fluid">
+						  <img style="max-height: 12vh;" src="<%= item.productId.images[0] %>" alt="Image" class="img-fluid">
 						</td>
 						<td class="product-name">
 						  <h2 class="h5 text-black"><%= item.productId.name %></h2>

@@ -80,7 +80,17 @@ const profileUpdate=async(req,res)=>{
 const newAddress=async(req,res)=>{
     try{
         const categories = await categoryModel.find();
-        res.render('users/newAddress',{categories})
+        res.render('users/newAddress',{categories,expressFlash:{
+            fullnameerror:req.flash('fullnameerror'),
+            saveaserror:req.flash("saveaserror"),
+            adnameerror:req.flash("adnameerror"),
+            streeterror:req.flash("streeterror"),
+            pincodeerror:req.flash("pincodeerror"),
+            cityerror:req.flash("cityerror"),
+            stateerror:req.flash("stateerror"),
+            countryerror:req.flash("countryerror"),
+            phoneerror:req.flash("phoneerror")
+        }})
     }
     catch(err){
         res.status(500).send('error occured')
@@ -105,29 +115,51 @@ const addressUpdate = async (req, res) => {
         const stateValid=bnameValid(state)
         const countryValid=bnameValid(country)
         const phoneValid=adphoneValid(phone)
-        if(!fullnamevalid)
+if(!fullnamevalid)
 {
-    res.render("users/newAddress",{nameerror:"Enter valid name",categories})
+req.flash("fullnameerror","Enter a valid name")
+res.redirect('/addAddress')
 }
 if(!saveasvalid)
 {
-    res.render("users/newAddress",{saveaserror:"Enter valid Type",categories})
+req.flash("saveaserror","Enter a valid addresstype")
+res.redirect('/addAddress')
 }
 if(!adnameValid)
 {
-    res.render("users/newAddress",{adnameerror:"Enter valid housename",categories})
+req.flash("adnameerror","Enter a valid address")
+res.redirect('/addAddress')
 }
 if(!streetValid)
 {
-    res.render("users/newAddress",{streeterror:"Enter valid street",categories})
+req.flash("streeterror","enter a valid street")
+res.redirect('/addAddress')
+
 }
 if(!pincodevalid)
 {
-    res.render("users/newAddress",{pincodeerror:"Enter valid housename",categories})
+req.flash("pincodeerror","Enter a valid Pincode")
+res.redirect('/addAddress')
 }
+
 if(!cityValid)
 {
-    res.render("users/newAddress",{cityerror:"Enter valid housename",categories})
+req.flash("cityerror","Enter Valid City")
+res.redirect('/addAddress')
+
+}
+if(!stateValid){
+    req.flash("stateerror","Enter valid state")
+    res.redirect('/addAddress')
+}
+if(!countryValid){
+    req.flash("countryerror",'Enter valid country')
+    res.redirect('/addAddress')
+}
+if(!phoneValid){
+    req.flash("phoneerror","Enter valid country ")
+    res.redirect('/addAddress')
+
 }
         if (existingUser) {
     
@@ -340,7 +372,7 @@ const orderHistory=async (req,res)=>{
                     ...order,
                     items: order.items.map(item => ({
                       ...item,
-                      productDetails: order.productDetails.find(product => product._id.toString() === item.productId.toString()),
+                    productDetails: order.productDetails.find(product => product._id.toString() === item.productId.toString()),
                     })),
                   }));
                 

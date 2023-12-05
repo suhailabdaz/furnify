@@ -12,6 +12,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="author" content="Untree.co">
   <link rel="shortcut icon" href="favicon.png">
+  <!-- Add this to include Tiny Slider CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
+
 
   <meta name="description" content="" />
   <meta name="keywords" content="bootstrap, bootstrap4" />
@@ -73,8 +77,10 @@
 						<div class="col-lg-5">
 							<div class="intro-excerpt">
 								<h1>Modern Interior <span clsas="d-block">Design Studio</span></h1>
-								<p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
-								<
+								<p class="mb-4">"Furnify: Elevate Your Space with Timeless Elegance and Unmatched Comfort!"</p>
+								<p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a></p>
+								
+								
 							</div>
 						</div>
 						<div class="col-lg-7">
@@ -90,61 +96,17 @@
 		<!-- Start Product Section -->
 		<div class="product-section">
 			<div class="container">
-				<div class="row">
-
-					<!-- Start Column 1 -->
-					<div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
-						<h2 class="mb-4 section-title">Crafted with excellent material.</h2>
-						<p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. </p>
-						<p><a href="shop.html" class="btn">Explore</a></p>
-					</div> 
-					<!-- End Column 1 -->
-
-					<!-- Start Column 2 -->
-					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" href="cart.html">
-							<img src="images/product-1.png" class="img-fluid product-thumbnail">
-							<h3 class="product-title">Nordic Chair</h3>
-							<strong class="product-price">$50.00</strong>
-
-							<span class="icon-cross">
-								<img src="images/cross.svg" class="img-fluid">
-							</span>
-						</a>
-					</div> 
-					<!-- End Column 2 -->
-
-					<!-- Start Column 3 -->
-					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" href="cart.html">
-							<img src="images/product-2.png" class="img-fluid product-thumbnail">
-							<h3 class="product-title">Kruzo Aero Chair</h3>
-							<strong class="product-price">$78.00</strong>
-
-							<span class="icon-cross">
-								<img src="images/cross.svg" class="img-fluid">
-							</span>
-						</a>
-					</div>
-					<!-- End Column 3 -->
-
-					<!-- Start Column 4 -->
-					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" href="cart.html">
-							<img src="images/product-3.png" class="img-fluid product-thumbnail">
-							<h3 class="product-title">Ergonomic Chair</h3>
-							<strong class="product-price">$43.00</strong>
-
-							<span class="icon-cross">
-								<img src="images/cross.svg" class="img-fluid">
-							</span>
-						</a>
-					</div>
-					<!-- End Column 4 -->
-
-				</div>
+			  <div class="category-slider"> <!-- Match the container class here -->
+				<% categories.filter(category => category.status !== false).forEach(category => { %>
+				  <div class="product-item vertical">
+					<a href="/shop?category=<%= category._id %>">
+					  <h1 style="font-size: 150px;" class="product-title"><%= category.name %></h1>
+					</a>
+				  </div>
+				<% }); %>
+			  </div>
 			</div>
-		</div>
+		  </div>
 		<!-- End Product Section -->
 
 		<!-- Start Why Choose Us Section -->
@@ -331,7 +293,19 @@
 		</footer>
 		<!-- End Footer Section -->	
 
-
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+			  var slider = tns({
+				container: '.category-slider',
+				items: 1,
+				axis: 'horizontal', // Set the axis to vertical
+				slideBy: 'page',
+				autoplay: true, // Set to true for automatic sliding
+				nav: false,
+				controls:false
+			  });
+			});
+		  </script>
 		<script src="js/bootstrap.bundle.min.js"></script>
 		<script src="js/tiny-slider.js"></script>
 		<script src="js/custom.js"></script>

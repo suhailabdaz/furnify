@@ -329,6 +329,7 @@
 		<!-- End Footer Section -->	
 		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 		<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 		
 
 		
@@ -340,15 +341,15 @@
 					// Get the selected address ID from the data attribute
 					var selectedAddressId = $(this).data('address-id');
 					
-					$('#selectedAddressId').val(selectedAddressId);
-		
+					
+					$('#selectedAddressId').val(selectedAddressId)
 					// Hide other address details (if needed)
 					$('.address-details').slideUp();
 					$(this).closest('.address-item').find('.address-details').slideDown();
 				});
 			});
 			function updateHiddenField(selectedRadio) {
-        document.getElementById('selectedPaymentOption').value = selectedRadio.value;
+            document.getElementById('selectedPaymentOption').value = selectedRadio.value;
 			}
 			</script>
 			<script>
@@ -356,7 +357,47 @@
 	{
 		let amountToPay=document.getElementById('cartotal').innerText
 		var pay=document.querySelector('input[name="paymentOption"]:checked');
-		if(pay.value=='Razorpay'){
+		var addressTo=document.querySelector('input[name="selectedAddress"]:checked');
+
+
+		if(!pay){
+			Swal.fire({
+//   title: 'Error!',
+  text: 'please select a payment option',
+  icon: 'error',
+  confirmButtonText: 'OK',
+  customClass: {
+    title: 'text-danger',
+    popup: 'swal2-popup-custom',
+    confirmButton: 'btn btn-danger'
+  },
+  showCancelButton: false,
+  showCloseButton: true,
+  showLoaderOnConfirm: false,
+  timer: 3000 
+});
+
+		}
+		else if(!addressTo){
+			Swal.fire({
+//   title: 'Error!',
+  text: 'please select an address',
+  icon: 'error',
+  confirmButtonText: 'OK',
+  customClass: {
+    title: 'text-danger',
+    popup: 'swal2-popup-custom',
+    confirmButton: 'btn btn-danger'
+  },
+  showCancelButton: false,
+  showCloseButton: true,
+  showLoaderOnConfirm: false,
+  timer: 3000 
+});
+
+		}
+		
+		else if(pay.value=='Razorpay'){
 console.log("upi total","ppppppp");
 
 var options = {
@@ -411,7 +452,7 @@ $(document).ready(function(){
     "amount": amountToPay*100
   }),
 };
-
+;
 //creates new orderId everytime
 $.ajax(settings).done(function (response) {
 

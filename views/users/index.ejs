@@ -100,7 +100,7 @@
 				<% categories.filter(category => category.status !== false).forEach(category => { %>
 				  <div class="product-item vertical">
 					<a href="/shop?category=<%= category._id %>">
-					  <h1 style="font-size: 150px;" class="product-title"><%= category.name %></h1>
+					  <h1 style="font-size: 70px;" class="product-title"><%= category.name %></h1>
 					</a>
 				  </div>
 				<% }); %>
@@ -297,7 +297,7 @@
 			document.addEventListener('DOMContentLoaded', function () {
 			  var slider = tns({
 				container: '.category-slider',
-				items: 1,
+				items: 3,
 				axis: 'horizontal', // Set the axis to vertical
 				slideBy: 'page',
 				autoplay: true, // Set to true for automatic sliding

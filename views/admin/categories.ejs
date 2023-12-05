@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="/adminassets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" />
     <link rel="stylesheet" href="/adminassets/css/style.css" />
     <link rel="shortcut icon" href="/adminassets/images/favicon.png" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
   </head>
   <body>
     <div class="container-scroller">
@@ -71,8 +73,8 @@
                         <td><%= data.name %></td>
                         <td><%= data.description %></td>
                         <td><%= data.status? 'Listed' : 'Unlisted' %></td>
-                        <td>
-                          <a href="/admin/unlistcat/<%= data._id%>" class="btn btn-secondary btn-sm"><%= data.status? 'Unlist':'List' %></a></td>
+                        <td><a  class="btn btn-secondary btn-sm" onclick="confirmUnlist('<%= data._id %>')"><%= data.status ? 'Unlist' : 'List' %></a></td>
+
                         <td><a href="/admin/updatecat/<%= data._id%>" class="btn btn-primary btn-sm">Edit</a></td>
                        
                         
@@ -107,9 +109,11 @@
     <script src="/adminassets/vendors/flot/jquery.flot.resize.js"></script>
     <script src="/adminassets/vendors/flot/jquery.flot.categories.js"></script>
     <script src="/adminassets/vendors/flot/jquery.flot.fillbetween.js"></script>
-    <script src="assets/vendors/flot/jquery.flot.stack.js"></script>
+    <script src="/adminassets/vendors/flot/jquery.flot.stack.js"></script>
+
     <script src="/adminassets/vendors/flot/jquery.flot.pie.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <!-- End plugin js for this page -->
     <!-- inject:js -->
@@ -120,5 +124,29 @@
     <!-- Custom js for this page -->
     <script src="/adminassets/js/dashboard.js"></script>
     <!-- End custom js for this page -->
+
+    <script>
+     
+     function confirmUnlist(itemId) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure you want to proceed?",
+        icon: "warning",
+        showCancelButton: true,  
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Confirm",
+        cancelButtonText: "Cancel",  
+        dangerMode: true,
+    })
+    .then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/admin/unlistcat/" + itemId;
+        } else {
+            console.log("User canceled");
+        }
+    });
+}
+  </script>
   </body>
 </html>

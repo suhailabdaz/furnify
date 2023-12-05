@@ -40,7 +40,7 @@ const shop = async (req, res) => {
     const theCategory = await categoryModel.find({_id:category})
     res.render("users/shop", {theCategory, categoryName,categories,products, selectedCategory: category });
     console.log("ipooooo",theCategory)
-  };
+};
 
 const filterProducts=async(req,res)=>{
  try{
@@ -118,8 +118,8 @@ const sortProducts=async (req,res)=>{
     }
 }
 
-  
-  const singleproduct=async(req,res)=>{
+
+const singleproduct=async(req,res)=>{
     try{
         const id=req.params.id
         const product=await productModel.findOne({_id:id}) 
@@ -586,16 +586,10 @@ const searchProducts = async (req, res) => {
       // Sending a more informative error response
       res.status(500).json({ error: 'Internal Server Error', message: err.message });
     }
-  };
- 
-  
-  
-  
-  
-  
-  
-  
-  
+};
+
+
+
 
 
 module.exports={home,shop,profile,signup,generateotp,signupotp,otp,verifyotp,loginaction,resendotp,forgotpassword

@@ -1,134 +1,372 @@
-<!-- UserProfile Page -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="author" content="Untree.co">
-  <link rel="shortcut icon">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Untree.co">
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap4" />
 
-  <meta name="description" content="" />
-  <meta name="keywords" content="bootstrap, bootstrap4" />
+    <!-- Bootstrap CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="/css/tiny-slider.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+      
+   
 
-  <!-- Bootstrap CSS -->
-  <link href="/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link href="/css/tiny-slider.css" rel="stylesheet">
-  <link href="/css/style.css" rel="stylesheet">
-  <title>Profile-Furnify</title>
-
-  <style>
-    .username{
+    .order-tracking h1 {
+        color: #3b5d50;
+        font-size: 28px;
         font-weight: 600;
-        color: #F0EAD6;
-    }
-.heroprofile{
-    max-height: 100px;
-}
-    .welcome{
-        color: #efeeee;
-        font-weight: 200;
-    }
-    .category-options {
-      display: none;
-    }
-    .search-bar {
-      background-color: #3b5d50;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 35px;
-      margin: 0;
-      display: flex;
-      border: 2px solid #efeeee;
-      border-radius: 30px;
-      overflow: hidden;
+        margin-bottom: 20px;
     }
 
-    .search-input {
-      border: none;
-      padding: 10px;
-      width: 800px;
-      background-color: #3b5d50;
-      color: white;
+    .tracking-dots {
+        display: flex;
+        justify-content: space-between;
     }
 
-    .search-button {
-      background-color: #3d5d50;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-top-right-radius: 20px;
-      border-bottom-right-radius: 20px;
-      cursor: pointer;
+    .dot {
+        width: 20px;
+        height: 20px;
+        background-color: #3b5d50;
+        border-radius: 50%;
+        animation: moveDot 1s infinite alternate;
     }
-  </style>
+
+   
+        body {
+            background-color:#3b5d50;
+          
+            color:#3b5d50;
+            margin: 0;
+            padding: 0;
+        }
+
+        .search-bar {
+            background-color: #3b5d50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 35px;
+            margin: 0;
+            display: flex;
+            border: 2px solid #efeeee;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .search-input {
+            border: none;
+            padding: 10px;
+            width: 800px;
+            background-color: #3b5d50;
+            color: white;
+        }
+
+        .search-button {
+            background-color: #3d5d50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            cursor: pointer;
+        }
+
+        .hero {
+            background-color: #3b5d50;
+            color: #fff;
+            padding: 100px 0;
+        }
+
+        .order_details {
+            padding: 60px 0;
+        }
+
+        .title_confirmation {
+            color: #3b5d50;
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .order_d_inner {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .details_item h4 {
+            color: #3b5d50;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .details_item ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .details_item ul li {
+            margin-bottom: 15px;
+        }
+
+        .order_details_table {
+            margin-top: 50px;
+        }
+
+        .order_details_table h2 {
+            color: #3b5d50;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .table th,
+        .table td {
+            border: none;
+        }
+
+        .table th {
+            background-color: #3b5d50;
+            color: #fff;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .order-info {
+            margin-bottom: 30px;
+        }
+
+        .order-address,
+        .order-tracking {
+           
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .order-address h3,
+        .order-tracking h3 {
+            color: #3b5d50;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .order-total {
+            margin-top: 30px;
+        }
+    </style>
+    <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
 </head>
 
 <body>
 
     <!-- Start Header Area -->
-    <%- include('userpartials/nav')%>
-        <!-- End Header Area -->
-        <div class="hero">
-            <div class="container">
-                <div class="row justify-content-between">
-                    <div class="col-lg-5">
-                        <div class="intro-excerpt">
-                            <h1>Order Details</h1>
+    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+        <div class="container">
+            <a class="navbar-brand" href="/">Furnify<span>.</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsFurni">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Search...">
+                    <button class="search-button"><img src="/images/searcharrow.png"></button>
+                </div>
+
+                <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                    <li><a class="nav-link" href="/"><img src="/images/homesvg.svg"></a></li>
+                    <li><a class="nav-link" href="/profile"><img src="/images/user.svg"></a></li>
+                    <li><a class="nav-link" href="/cartpage"><img src="/images/cart.svg"></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="select-line" style="background-color: #3b5d50;margin-bottom: 1px;margin-top: 1px;">
+        <ul class="custom-horizontal-list navbar-nav ms-auto mb-2 mb-md-0"
+            style="display: flex; list-style: none; flex-direction: row; justify-content: center; gap: 23px;">
+            <% categories.filter(category => category.status !== false).forEach(category => { %>
+            <li class="nav-item">
+                <a class="nav-link" href="/shop?category=<%= category._id %>"
+                    style="color: #F0EAD6; font-size: 150%;">
+                    <%= category.name %>
+                </a>
+            </li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <!-- End Header Area -->
+
+    <div class="hero"style="margin-bottom:1px">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="intro-excerpt">
+                      
+                      <div class="order-info">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h2>Order ID: <%= order.orderId %></h2>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="btn-action text-md-end">
+                                    <a style="background-color: #efeeee;color: #3b5d50;" href="#" class="btn btn-primary">Download Invoice</a>
+                                </div>
+                            </div>
                         </div>
+                    
+                        <!-- Payment Method Section (Add actual payment method data) -->
+                        <p><strong>Payment Method:</strong> <%=order.paymentMethod%></p>
                     </div>
-                    <div class="col-lg-7">
-                        
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background-color: #efeeee; border: solid #3b5d50;border-radius: 50px;margin-bottom: 10px;" class="container order-details">
+        <div class="row">
+            <!-- Order Address Section (Add actual address data) -->
+            <div style="color:#3b5d50;" class="col-md-6">
+                <div class="order-address">
+                    <h3>Order Address</h3>
+                    <p style="font-size: 20px;"><%=order.shippingAddress.fullname%><br><%=order.shippingAddress.adname%>&nbsp;,&nbsp;<%=order.shippingAddress.street%><br><%=order.shippingAddress.city%>&nbsp;,&nbsp;<%=order.shippingAddress.pincode%><br><%=order.shippingAddress.phonenumber%></p>
+                    <a href="#" class="btn btn-link">Edit Address</a>
+                </div>
+            </div>
+
+            <!-- Order Tracking Section -->
+            <div class="col-md-6">
+                <div class="order-tracking">
+                    <h1>Order Status: <span id="orderStatus"></span></h1>
+                    <p>Updated at: <span id="updatedAt"></span></p>
+                    <div class="tracking-dots" id="trackingDots">
+                        <div class="dot" id="pendingDot" data-step="1"></div>
+                        <div class="dot" id="processingDot" data-step="2"></div>
+                        <div class="dot" id="shippedDot" data-step="3"></div>
+                        <div class="dot" id="deliveredDot" data-step="4"></div>
+                    </div>
+                   
                 </div>
             </div>
         </div>
 
 
-        
-
-        <div class="order-details">
-          <h2>Order Details</h2>
-        
-          <% if (order) { %>
-            <div class="order-info">
-              <p><strong>Order ID:</strong> <%= order.orderId %></p>
-              <p><strong>Total Amount:</strong> ₹<%= order.totalPrice %></p>
-              <p><strong>Status:</strong> <%= order.status %></p>
-              <p><strong>Placed At:</strong> <%= order.createdAt.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }) %></p>
-        
-              <!-- Add more essential details here -->
-        
-              <!-- Order Tracking Section -->
-              <div class="order-tracking">
-                <h3>Order Tracking</h3>
-                <!-- Implement your order tracking UI, e.g., dots moving -->
-                <!-- You can use CSS animations or JavaScript for dynamic tracking -->
-              </div>
-              <% if (order.status !== 'Cancelled' && order.status !== 'Delivered') { %>
-                <form method="post" action="/cancelorder/<%= order._id %>">
-                  <button type="submit">Cancel Order</button>
-                </form>
-              <% } %>
-             
-            </div>
-          <% } else { %>
-            <p>No order found.</p>
-          <% } %>
-        
+        <!-- Order Items Section (Add actual order items data) -->
+        <div class="order-items">
+            <h3>Order Items</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Item Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <% order.items.forEach(item =>{%>
+                    <tr>
+                        <td><%=item.productName%></td>
+                        <td><%=item.singleprice%></td>
+                        <td><%=item.quantity%></td>
+                        <td><%=item.price%></td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
         </div>
 
+        <!-- Order Total Section (Add actual order total data) -->
+        <div class="order-total">
+            
+            <h2><strong>Total Amount:</strong><%=order.totalPrice%></h2>
+        </div>
+        <a href="#" class="btn btn-link">Cancel Order</a>
+    </div>
 
+    <!-- Include footer and scripts -->
+    <% include('userpartials/footer') %>
+   <!-- JavaScript to update order status and move dots -->
+<script>
+  // Simulating order with status changes
+  const order = {
+      status: '<%= order.status %>', // Set the initial order status
+      updatedAt: '<%= order.updatedAt %>'
+  };
 
+  // Function to update order status and move dots
+  function updateOrderStatus() {
+      // Reset animation for all dots
+      resetDotsAnimation();
 
+      // Move the corresponding dot based on the order status
+      switch (order.status.toLowerCase()) {
+          case 'pending':
+              moveDot('pendingDot');
+              break;
+          case 'processing':
+              moveDot('pendingDot');
+              moveDot('processingDot');
+              break;
+          case 'shipped':
+              moveDot('pendingDot');
+              moveDot('processingDot');
+              moveDot('shippedDot');
+              break;
+          case 'delivered':
+              moveDot('pendingDot');
+              moveDot('processingDot');
+              moveDot('shippedDot');
+              moveDot('deliveredDot');
+              break;
+          // Add more cases for other order statuses
+      }
 
-        <%- include('userpartials/footer')%>
+      // Display order status and updatedAt dynamically
+      document.getElementById('orderStatus').innerText = order.status;
+      document.getElementById('updatedAt').innerText = order.updatedAt;
+  }
 
-        <script src="/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/tiny-slider.js"></script>
-        <script src="/js/custom.js"></script>
+  // Function to move a specific dot
+  function moveDot(dotId) {
+      const dot = document.getElementById(dotId);
+      dot.style.backgroundColor = '#00FF00'; // Set green color
+  }
+
+  // Function to reset animation for all dots
+  function resetDotsAnimation() {
+      const dots = document.getElementsByClassName('dot');
+      for (const dot of dots) {
+          dot.style.backgroundColor = '#3b5d50'; // Reset to default color
+      }
+  }
+
+  // Initial call to update the order status
+  updateOrderStatus();
+</script>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/tiny-slider.js"></script>
+    <script src="/js/custom.js"></script>
 
 </body>
 

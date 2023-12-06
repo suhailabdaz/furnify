@@ -209,6 +209,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Product</th>
+                                    <th scope="col">price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Total</th>
                                 </tr>
@@ -220,10 +221,13 @@
                                         <p><%= item.productName %></p>
                                     </td>
                                     <td>
+                                        <p><%= item.singleprice %></p>
+                                    </td>
+                                    <td>
                                         <p> x <%= item.quantity %></p>
                                     </td>
                                     <td>
-                                        <p><%= item.quantity * item.price %></p>
+                                        <p><%=item.price %></p>
                                     </td>
                                 </tr>
                                 <% }) %>

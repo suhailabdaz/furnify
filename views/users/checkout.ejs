@@ -255,22 +255,28 @@
 		                <table class="table site-block-order-table mb-5">
 		                  <thead>
 		                    <th>Product</th>
+							<th>Price&nbsp&&nbspQty</th>
 		                    <th>Total</th>
 		                  </thead>
 		                  <tbody>
                             <% cartItems.forEach(cartItem => { %>
 							<tr>
-                                <td ><span id="productname"><%= cartItem.productName %></span><strong class="mx-2">x</strong><span id="itemquantity"> <%= cartItem.quantity %></span></td>
+                                <td ><span id="productname"><%= cartItem.productName %></span></td>
+								<td id="itemprice"><%= cartItem.price %><strong class="mx-2">x</strong><span id="itemquantity"> <%= cartItem.quantity %></span></td>
+
                                 <td id="itemtotal"><%= cartItem.itemTotal %></td>
                                 </tr>
                             <% }); %>
 		                    <tr>
 		                      <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
+							  <td></td>
 		                      <td id="subt" class="text-black"><%= cart.total %></td>
 		                    </tr>
 		                    <tr>
 		                      <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-		                      <td id="cartotal" class="text-black font-weight-bold"><strong> <%= cart.total %></strong></td>
+							  <td></td>
+		                      <td id="cartotal" class="text-black font-weight-bold"><strong><mark>
+								<%= cart.total %></mark></strong></td>
 		                    </tr>
 						
 		                  </tbody>
@@ -298,6 +304,8 @@
 							<input type="hidden" name="selectedProductIds[]" class="selectedProductIds[]" value="<%= cartItem.productId ? cartItem.productId.toString() : '' %>">
 
 							<input type="hidden" name="selectedProductNames[]" class="selectedProductNames[]" value="<%= cartItem.productName %>">
+							<input type="hidden" name="selectedProductPrices[]" class="selectedProductPrices[]" value="<%= cartItem.price %>">
+
 							<input type="hidden" name="selectedQuantities[]" class="selectedQuantities[]" value="<%= cartItem.quantity %>">
 							<input type="hidden" name="selectedCartTotals[]" class="selectedCartTotals[]" value="<%= cartItem.itemTotal %>">
 							<!-- Add other hidden fields for additional cart item properties as needed -->

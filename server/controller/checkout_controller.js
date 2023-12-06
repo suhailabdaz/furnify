@@ -124,6 +124,7 @@ const placeOrder = async (req, res) => {
     const items = req.body.selectedProductNames.map((productName, index) => ({
       productName: req.body.selectedProductNames[index],
       productId: new mongoose.Types.ObjectId(req.body.selectedProductIds[index]),
+      singleprice:parseInt(req.body.selectedProductPrices[index]),
       quantity: parseInt(req.body.selectedQuantities[index]),
       price: parseInt(req.body.selectedCartTotals[index]),
     }));

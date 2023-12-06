@@ -197,13 +197,8 @@ const signup=async(req,res)=>{
 
             }
           })
-    }
+}
 
-
-
-    
-    
-    
 
 const sendmail = async (email, otp) => {
     try {

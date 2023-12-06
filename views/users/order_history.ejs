@@ -19,6 +19,11 @@
   <title>Profile-Furnify</title>
 
   <style>
+    .eachorder{
+      border: solid  #3b5d50;
+      border-radius: 20px;
+    }
+    
     .username{
         font-weight: 600;
         color: #F0EAD6;
@@ -91,37 +96,35 @@
               <% orders.forEach(order => { %>
               
                 
-                  <div class="list-group-item mb-3">
+                  <div class="list-group-item mb-3  eachorder">
                     
                     <div class="d-flex justify-content-between">
                      
-                      <h5>Order ID: <%= order.orderId %></h5>
-                      <% if (order.status !== 'Cancelled' && order.status !== 'Delivered' && order.status !== 'Returned') { %>
-                        <a href="/cancelorder/<%= order._id %>">Cancel</a>
-                      <% } %>
-                      <% if (order.status =='Delivered'){ %>
-                        <a href="/returnorder/<%= order._id %>">Return</a>
-                        <% } %>
+                      <h6>Order ID: <%= order.orderId %></h6>
+                      <p style="font-size: 20px;margin-top: 2px;"><strong><%= order.status %>&nbsp;On&nbsp;<%= order.updatedAt.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></strong></p>
+
+                     
                     </div>
                     <a href="/singleorder/<%= order._id %>">
-                    <p>Amount: ₹<%= order.totalPrice %></p>
-                    <p>Status: <%= order.status %></p>
+                    <p style="font-size: 20px;">Amount: ₹<%= order.totalPrice %></p>
             
-                    <!-- Order Items Section -->
-                    <div class="order-section">
-                      <!-- Display order details here if needed -->
-                      <ul class="list-group">
-                        
-                        <% order.items.forEach(item => { %>
-                          
-                          <li class="list-group-item">
-                            <img src="/<%= item.productDetails.images[0] %>" alt="" style="height: 100px; width: 100px;">
-                            <p>Product Name: <%= item.productDetails.name %></p>
-                            <p>Quantity: <%= item.quantity %></p>
-                          </li>
-                        <% }); %>
-                      </ul>
-                    </div>
+                   <div class="order-section">
+  <!-- Display order details here if needed -->
+  <ul class="list-group">
+    <% order.items.forEach(item => { %>
+      <li class="list-group-item d-flex align-items-center">
+        <!-- Product Image -->
+        <img src="/<%= item.productDetails.images[0] %>" alt="" style="height: 100px; width: 100px; margin-right: 15px;">
+
+        <!-- Product Details -->
+        <div class=" d-flex">
+          <p  style="font-size: 30px;color: #3b5d50;" class="mb-0"><%= item.productDetails.name %></p>
+          <p  style="margin-left: 120px;font-size: 25px;" class="mb-0">Qty:<%= item.quantity %></p>
+        </div>
+      </li>
+    <% }); %>
+  </ul>
+</div>
                   </a>
                     <!-- End Order Items Section -->
                   </div>

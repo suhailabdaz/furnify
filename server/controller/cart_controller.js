@@ -277,6 +277,7 @@ const checkoutpage = async (req, res) => {
     const cartItems = (cart.item || []).map((cartItem) => ({
       productId:cartItem.productId._id,
       productName: cartItem.productId.name,
+      price:cartItem.productId.price,
       quantity: cartItem.quantity,
       itemTotal: cartItem.total,
     }));

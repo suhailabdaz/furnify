@@ -14,6 +14,8 @@
     <link href="/css/tiny-slider.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
     <style>
+
+        
       
    
 
@@ -29,14 +31,57 @@
         justify-content: space-between;
     }
 
-    .dot {
-        width: 20px;
-        height: 20px;
-        background-color: #3b5d50;
-        border-radius: 50%;
-        animation: moveDot 1s infinite alternate;
-    }
+    .tracking-lines {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
 
+.line {
+    flex: 1;
+    height: 3px;
+    background-color: #008000; /* Set the color of the connecting line */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: -1; /* Set the z-index to position the lines behind the dots */
+}
+
+.dot {
+    width: 30px;
+    height: 30px;
+    background-color: #f7faf9;
+    border-radius: 50%;
+    animation: moveDot 1s infinite alternate;
+    position: relative;
+    z-index: 1; /* Set the z-index to position the dots on top of the lines */
+}
+
+/* Add specific styling for each dot */
+#pendingDot::before {
+    content: '';
+    width: calc(100% - 30px); /* Adjust the width of the line based on your design */
+    left: 50%;
+    transform: translateX(-50%);
+}
+#processingDot::before {
+    content: '';
+    width: calc(100% - 60px); /* Adjust the width of the line based on your design */
+    left: 50%;
+    transform: translateX(-50%);
+}
+#shippedDot::before {
+    content: '';
+    width: calc(100% - 90px); /* Adjust the width of the line based on your design */
+    left: 50%;
+    transform: translateX(-50%);
+}
+#deliveredDot::before {
+    content: '';
+    width: calc(100% - 120px); /* Adjust the width of the line based on your design */
+    left: 50%;
+    transform: translateX(-50%);
+}
    
         body {
             background-color:#3b5d50;
@@ -152,7 +197,6 @@
 
         .order-address,
         .order-tracking {
-           
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             padding: 30px;
@@ -215,7 +259,7 @@
 
     <!-- End Header Area -->
 
-    <div class="hero"style="margin-bottom:1px">
+    <div style="margin-bottom: 1px;" class="hero"style="margin-bottom:1px">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
@@ -224,17 +268,17 @@
                       <div class="order-info">
                         <div class="row">
                             <div class="col-lg-6">
-                                <h2>Order ID: <%= order.orderId %></h2>
+                                <h2 style="font-size: 30px;">Order ID: <%= order.orderId %></h2>
                             </div>
                             <div class="col-lg-6">
                                 <div class="btn-action text-md-end">
-                                    <a style="background-color: #efeeee;color: #3b5d50;" href="#" class="btn btn-primary">Download Invoice</a>
+                                    <a href="/download-invoice/<%= order.orderId %>" style="background-color: #efeeee;color: #3b5d50;" href="#" class="btn btn-primary">Download Invoice</a>
                                 </div>
                             </div>
                         </div>
                     
-                        <!-- Payment Method Section (Add actual payment method data) -->
                         <p><strong>Payment Method:</strong> <%=order.paymentMethod%></p>
+                        <p><strong>Ordered On:</strong><%= order.createdAt.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })%>
                     </div>
                     </div>
                 </div>
@@ -242,13 +286,14 @@
         </div>
     </div>
 
-    <div style="background-color: #efeeee; border: solid #3b5d50;border-radius: 50px;margin-bottom: 10px;" class="container order-details">
+    <div style="background-color: #efeeee; border: solid #3b5d50;border-radius: 50px;margin-bottom: 10px;margin-top: 1px;" class="container order-details">
         <div class="row">
             <!-- Order Address Section (Add actual address data) -->
             <div style="color:#3b5d50;" class="col-md-6">
                 <div class="order-address">
                     <h3>Order Address</h3>
                     <p style="font-size: 20px;"><%=order.shippingAddress.fullname%><br><%=order.shippingAddress.adname%>&nbsp;,&nbsp;<%=order.shippingAddress.street%><br><%=order.shippingAddress.city%>&nbsp;,&nbsp;<%=order.shippingAddress.pincode%><br><%=order.shippingAddress.phonenumber%></p>
+
                     <a href="#" class="btn btn-link">Edit Address</a>
                 </div>
             </div>
@@ -259,10 +304,10 @@
                     <h1>Order Status: <span id="orderStatus"></span></h1>
                     <p>Updated at: <span id="updatedAt"></span></p>
                     <div class="tracking-dots" id="trackingDots">
-                        <div class="dot" id="pendingDot" data-step="1"></div>
-                        <div class="dot" id="processingDot" data-step="2"></div>
-                        <div class="dot" id="shippedDot" data-step="3"></div>
-                        <div class="dot" id="deliveredDot" data-step="4"></div>
+                        <div class="dot" id="pendingDot" data-step="1"><p></p></div>
+                        <div class="dot" id="processingDot" data-step="2"><p></p></div>
+                        <div class="dot" id="shippedDot" data-step="3"><p></p></div>
+                        <div class="dot" id="deliveredDot" data-step="4"><p></p></div>
                     </div>
                    
                 </div>
@@ -299,8 +344,19 @@
         <div class="order-total">
             
             <h2><strong>Total Amount:</strong><%=order.totalPrice%></h2>
+            <div style="margin-top: 30px; margin-bottom:12px;margin-left: 500px;">
+                <% if (order.status !== 'Cancelled' && order.status !== 'Returned' && order.status !== 'Delivered') { %>
+                    <!-- Code to execute if the condition is true -->
+                <a style="background-color: rgb(181, 0, 0);width: 350px;" href="/cancelorder/<%=order._id%>" class="btn btn-danger">Cancel</a>
+                <% } else if (order.status === 'Delivered') { %>
+                    <!-- Code to execute if the condition is false -->
+                    <a style="background-color: rgb(198, 3, 3)(172, 53, 53);" href="/returnorder/<%=order._id%>" class="btn btn-danger">Return</a>
+                <% } %>
+            
+            </div>
         </div>
-        <a href="#" class="btn btn-link">Cancel Order</a>
+        
+        
     </div>
 
     <!-- Include footer and scripts -->
@@ -338,6 +394,8 @@
               moveDot('shippedDot');
               moveDot('deliveredDot');
               break;
+              
+
           // Add more cases for other order statuses
       }
 
@@ -349,14 +407,17 @@
   // Function to move a specific dot
   function moveDot(dotId) {
       const dot = document.getElementById(dotId);
-      dot.style.backgroundColor = '#00FF00'; // Set green color
+      dot.style.backgroundColor = '#008000'; // Set green color
+      
+
   }
 
   // Function to reset animation for all dots
   function resetDotsAnimation() {
       const dots = document.getElementsByClassName('dot');
       for (const dot of dots) {
-          dot.style.backgroundColor = '#3b5d50'; // Reset to default color
+          dot.style.backgroundColor = '	#F4B400'; 
+          dot.style.border='solid 1px black'// Reset to default color
       }
   }
 

@@ -89,6 +89,8 @@ usrouter.get('/deletefav/:id',auth.islogged,cart_controller.deletefav)
 
 usrouter.get("/addtocartviafav/:id",auth.islogged,cart_controller.addtocartviafav)
 
+usrouter.get("/download-invoice/:orderId",auth.islogged,profile_controller.downloadInvoice)
+
 //checkoutsection
 
 usrouter.post("/applyCoupon",checkout_controller.applyCoupon)

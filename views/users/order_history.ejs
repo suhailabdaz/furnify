@@ -99,16 +99,13 @@
                   <div class="list-group-item mb-3  eachorder">
                     
                     <div class="d-flex justify-content-between">
-                     
                       <h6>Order ID: <%= order.orderId %></h6>
                       <p style="font-size: 20px;margin-top: 2px;"><strong><%= order.status %>&nbsp;On&nbsp;<%= order.updatedAt.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></strong></p>
-
-                     
                     </div>
                     <a href="/singleorder/<%= order._id %>">
                     <p style="font-size: 20px;">Amount: ₹<%= order.totalPrice %></p>
             
-                   <div class="order-section">
+                  <div class="order-section">
   <!-- Display order details here if needed -->
   <ul class="list-group">
     <% order.items.forEach(item => { %>

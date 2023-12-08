@@ -26,11 +26,7 @@ const usersSchema = new mongoose.Schema({
           country:{type:String},
           phonenumber:{type:Number}
         }]},
-        wallet:{
-            type:Number,
-            default:0
-
-        },
+     
     isAdmin:{
         type:Boolean,
         default:false,

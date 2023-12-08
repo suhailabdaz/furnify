@@ -91,6 +91,7 @@ usrouter.get("/addtocartviafav/:id",auth.islogged,cart_controller.addtocartviafa
 
 usrouter.get("/download-invoice/:orderId",auth.islogged,profile_controller.downloadInvoice)
 
+usrouter.get('/wallet',auth.islogged,profile_controller.wallet)
 //checkoutsection
 
 usrouter.post("/applyCoupon",checkout_controller.applyCoupon)

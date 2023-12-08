@@ -347,11 +347,11 @@
             <div style="margin-top: 30px; margin-bottom:12px;margin-left: 500px;">
                 <% if (order.status !== 'Cancelled' && order.status !== 'Returned' && order.status !== 'Delivered') { %>
                     <!-- Code to execute if the condition is true -->
-                <a style="background-color: rgb(181, 0, 0);width: 350px;" href="/cancelorder/<%=order._id%>" class="btn btn-danger">Cancel</a>
+                <a style="background-color: rgb(181, 0, 0);width: 350px;" href="/cancelorder/<%=order._id%>" class="btn btn-danger">Cancel Order</a>
                 <% } else if (order.status === 'Delivered') { %>
                     <!-- Code to execute if the condition is false -->
-                    <a style="background-color: rgb(198, 3, 3)(172, 53, 53);" href="/returnorder/<%=order._id%>" class="btn btn-danger">Return</a>
-                <% } %>
+                    <a style="background-color: rgb(181, 0, 0);width: 350px;" href="/returnorder/<%=order._id%>" class="btn btn-danger">Retrur Order</a>
+                    <% } %>
             
             </div>
         </div>

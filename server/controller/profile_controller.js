@@ -2,6 +2,7 @@ const categoryModel=require('../model/category_model')
 const userModel=require('../model/user_model')
 const orderModel=require('../model/order_model')
 const productModel=require('../model/product_model')
+const walletModel=require('../model/wallet_model')
 const cartModel=require('../model/cart_model')
 const bcrypt=require("bcrypt")
 const puppeteer=require('puppeteer')
@@ -351,24 +352,26 @@ const orderHistory=async (req,res)=>{
                 od.forEach(order => {
                   allOrderItems.push(...order.items);
                 });
-                const orders=await orderModel.aggregate([
+                const orders = await orderModel.aggregate([
                     {
-                        $match: {
-                            userId: userId,
-                        }
-                    },
-                    // {
-                    //     $unwind: '$items'
-                    // },
-                    {
-                        $lookup: {
-                            from: 'products',
-                            localField: 'items.productId',
-                            foreignField: '_id',
-                            as: 'productDetails'
-                        }
-                    },
-                ])
+    $match: {
+      userId: userId,
+    },
+  },
+  {
+    $sort: {
+      createdAt: -1, // Sort in ascending order (use -1 for descending order)
+    },
+  },
+  {
+    $lookup: {
+      from: 'products',
+      localField: 'items.productId',
+      foreignField: '_id',
+      as: 'productDetails',
+    },
+  },
+]);
                 const updatedOrders = orders.map(order => ({
                     ...order,
                     items: order.items.map(item => ({
@@ -396,13 +399,31 @@ const ordercancelling=async(req,res)=>{
        const id= req.params.id
        const userId=req.session.userId
        const update=await orderModel.updateOne({_id:id},{status:"Cancelled"})
-       const result=await orderModel.findOne({_id:id})
-       if(result.paymentMethod=='Razorpay'){
-        const user=await userModel.findOne({_id:userId})
+        const result=await orderModel.findOne({_id:id})
+        if(result.paymentMethod=='Razorpay'){
+        const user=await walletModel.findOne({userId:userId})
+       
         const refund=result.totalPrice;
+       
         const currentWallet = user.wallet; 
+        console.log(currentWallet);
+        
         const newWallet = currentWallet + refund;
-        const amountUpdate = await userModel.updateOne({ _id: userId }, { wallet: newWallet });
+        console.log(newWallet);
+        const amountUpdate = await walletModel.updateOne(
+            { userId: userId },
+            {
+              $set: { wallet: newWallet },
+              $push: {
+                walletTransactions: {
+                  date: new Date(),
+                  type: 'Credited', // or 'debit' depending on your use case
+                  amount: refund, // Replace with the actual amount you want to add
+                },
+              },
+            }
+          );        
+        
 
 
        }
@@ -436,7 +457,7 @@ const orderreturning=async(req,res)=>{
         const id= req.params.id
         const update=await orderModel.updateOne({_id:id},{status:"Returned"})
         const order=await orderModel.findOne({_id:id})
-        const user=await userModel.findOne({_id:userId})
+        const user=await walletModel.findOne({userId:userId})
         
         console.log("paranja order",order)
         const refund=order.totalPrice;
@@ -444,7 +465,19 @@ const orderreturning=async(req,res)=>{
 
         const currentWallet = user.wallet; 
         const newWallet = currentWallet + refund;
-        const amountUpdate = await userModel.updateOne({ _id: userId }, { wallet: newWallet });
+        const amountUpdate = await walletModel.updateOne(
+            { userId: userId },
+            {
+              $set: { wallet: newWallet },
+              $push: {
+                walletTransactions: {
+                  date: new Date(),
+                  type: 'Credited', // or 'debit' depending on your use case
+                  amount: refund, // Replace with the actual amount you want to add
+                },
+              },
+            }
+          );   
 
         const result=await orderModel.findOne({_id:id})
         
@@ -714,7 +747,7 @@ const downloadInvoice = async (req, res) => {
     <body>
     
         <!-- Start Header Area -->
-        
+        <h1>Furnify<h1>
     
         <!-- End Header Area -->
     
@@ -887,6 +920,27 @@ const downloadInvoice = async (req, res) => {
   }
 };
 
+const wallet = async (req, res) => {
+    try {
+    const userId = req.session.userId;
+    const categories = await categoryModel.find({});
+    const user = await walletModel.findOne({ userId: userId }).sort({ 'walletTransactions.date': -1});
+    
+    if (!user) {
+        user = await walletModel.create({ userId: userId });
+    }
+    
+    console.log("User: ", user);
+    const userWallet = user.wallet;
+    const usertransactions=user.walletTransactions
+    console.log(usertransactions);
+    
+    res.render("users/wallet", { categories, userWallet ,usertransactions});
+    } catch (err) {
+    console.log(err);
+      res.status(500).send("Internal Server Error");
+    }
+  };
 
 
 
@@ -899,4 +953,4 @@ const downloadInvoice = async (req, res) => {
 
 module.exports={userdetails,profileEdit,profileUpdate,newAddress,addressUpdate,changepassword
 ,editaddress,updateAddress,deleteAddress,orderHistory,ordercancelling,
-singleOrderPage,orderreturning,downloadInvoice}
+singleOrderPage,orderreturning,downloadInvoice,wallet}

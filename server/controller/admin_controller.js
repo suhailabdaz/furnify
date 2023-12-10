@@ -1,6 +1,7 @@
 const bcrypt=require("bcrypt")
 const usersModel=require("../model/user_model")
 const categoryModel=require("../model/category_model")
+const orderModel=require('../model/order_model')
 
 
 
@@ -48,6 +49,81 @@ const adminpanel=async(req,res)=>{
         console.log(err);
         res.send("Error Occured")
     }
+}
+
+
+const chartData=async(req,res)=>{
+    try {
+        const selected=req.body.selected
+        console.log(selected);
+        if(selected=='month'){
+            const orderByMonth= await orderModel.aggregate([
+                {
+                    $group:{
+                        _id:{
+                            month:{$month:'$createdAt'},
+                        },
+                        count:{$sum:1},
+                    }
+                }
+            ])
+            const salesByMonth= await orderModel.aggregate([
+                {
+                    $group:{
+                        _id:{
+                            month:{$month:'$createdAt'},
+                        },
+                        totalAmount: { $sum: '$amount' },
+                        
+                    }
+                }
+            ])
+            console.log('order2',orderByMonth);
+            console.log('sales2',salesByMonth);
+            const responseData = {
+                order: orderByMonth,
+                sales: salesByMonth
+              };
+              
+              
+              res.status(200).json(responseData);
+        }
+        else if(selected=='year'){
+            const orderByYear= await orderModel.aggregate([
+                {
+                    $group:{
+                        _id:{
+                            year:{$year:'$createdAt'},
+                        },
+                        count:{$sum:1},
+                    }
+                }
+            ])
+            const salesByYear= await orderModel.aggregate([
+                {
+                    $group:{
+                        _id:{
+                            year:{$year:'$createdAt'},
+                        },
+                        totalAmount: { $sum: '$amount' },
+                    }
+                }
+            ])
+            console.log('order1',orderByYear);
+            console.log('sales1',salesByYear);
+            const responseData={
+                order:orderByYear,
+                sales:salesByYear,
+            }
+            res.status(200).json(responseData);
+        }
+        
+      }
+    catch(err){
+      console.log(err);
+      res.send("Error Occured")
+    }
+
 }
 
 const userslist=async(req,res)=>{
@@ -250,4 +326,4 @@ const updatecategory=async(req,res)=>{
 
 
 module.exports={login,adminloginpost,adminpanel,userslist,userupdate,searchUser,searchview,filter,category,
-newcat,addcategory,updatecat,updatecategory,unlistcat}
+newcat,addcategory,updatecat,updatecategory,unlistcat,chartData}

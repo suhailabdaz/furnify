@@ -92,6 +92,12 @@ usrouter.get("/addtocartviafav/:id",auth.islogged,cart_controller.addtocartviafa
 usrouter.get("/download-invoice/:orderId",auth.islogged,profile_controller.downloadInvoice)
 
 usrouter.get('/wallet',auth.islogged,profile_controller.wallet)
+
+usrouter.post('/walletcreate/orderId',auth.islogged,profile_controller.walletupi)
+
+usrouter.post('/walletTopup',auth.islogged,profile_controller.walletTopup)
+
+
 //checkoutsection
 
 usrouter.post("/applyCoupon",checkout_controller.applyCoupon)
@@ -100,8 +106,9 @@ usrouter.post('/checkoutreload',auth.islogged,checkout_controller.checkoutreload
 
 usrouter.post('/placeOrder',auth.islogged,checkout_controller.placeOrder)
 
-usrouter.post('/create/orderId',auth.islogged,checkout_controller.upi)
+usrouter.post('/wallettransaction',auth.islogged,checkout_controller.wallettransaction)
 
+usrouter.post('/create/orderId',auth.islogged,checkout_controller.upi)
 
 
 

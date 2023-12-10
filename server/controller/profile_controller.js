@@ -4,8 +4,10 @@ const orderModel=require('../model/order_model')
 const productModel=require('../model/product_model')
 const walletModel=require('../model/wallet_model')
 const cartModel=require('../model/cart_model')
+const Razorpay=require("razorpay")
 const bcrypt=require("bcrypt")
 const puppeteer=require('puppeteer')
+const {key_id,key_secret}=require("../../.env")
 
 const {nameValid,
     lnameValid,
@@ -472,8 +474,8 @@ const orderreturning=async(req,res)=>{
               $push: {
                 walletTransactions: {
                   date: new Date(),
-                  type: 'Credited', // or 'debit' depending on your use case
-                  amount: refund, // Replace with the actual amount you want to add
+                  type: 'Credited', 
+                  amount: refund, 
                 },
               },
             }
@@ -930,18 +932,58 @@ const wallet = async (req, res) => {
         user = await walletModel.create({ userId: userId });
     }
     
-    console.log("User: ", user);
     const userWallet = user.wallet;
     const usertransactions=user.walletTransactions
-    console.log(usertransactions);
     
     res.render("users/wallet", { categories, userWallet ,usertransactions});
     } catch (err) {
     console.log(err);
       res.status(500).send("Internal Server Error");
     }
-  };
+};
 
+
+
+
+
+
+const instance=new Razorpay({key_id:key_id,key_secret:key_secret})
+
+const walletupi = async (req, res) => {
+  console.log('body:', req.body);
+  var options = {
+      amount: 500,
+      currency: "INR",
+      receipt: "order_rcpt"
+  };
+  instance.orders.create(options, function (err, order) {
+      console.log("order1 :", order);
+      res.send({ orderId: order.id })
+    })
+}
+
+  
+  
+const walletTopup= async(req,res)=>{
+    try {
+        const userId = req.session.userId;
+        const { razorpay_payment_id, razorpay_order_id } = req.body;
+    const Amount=parseFloat(req.body.Amount)
+    console.log(Amount);
+        const wallet = await walletModel.findOne({ userId :userId});
+    
+        
+        wallet.wallet += Amount;
+        wallet.walletTransactions.push({ type: 'Credited', amount:Amount, date: new Date() });
+    
+      
+        await wallet.save();
+        res.redirect("/wallet")
+      } catch (error) {
+        console.error('Error handling Razorpay callback:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+}
 
 
 
@@ -953,4 +995,4 @@ const wallet = async (req, res) => {
 
 module.exports={userdetails,profileEdit,profileUpdate,newAddress,addressUpdate,changepassword
 ,editaddress,updateAddress,deleteAddress,orderHistory,ordercancelling,
-singleOrderPage,orderreturning,downloadInvoice,wallet}
+singleOrderPage,orderreturning,downloadInvoice,wallet,walletupi,walletTopup}

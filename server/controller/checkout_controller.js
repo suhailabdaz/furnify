@@ -4,6 +4,7 @@ const cartModel=require('../model/cart_model')
 const orderModel=require('../model/order_model')
 const productModel=require('../model/product_model')
 const couponModel=require('../model/coupon_model')
+const walletModel=require('../model/wallet_model')
 const bcrypt=require("bcrypt")
 const shortid=require("shortid")
 const mongoose=require("mongoose")
@@ -182,7 +183,39 @@ const upi = async (req, res) => {
       res.send({ orderId: order.id })
     })
 }
+const wallettransaction = async (req, res) => {
+  try {
+    console.log("iiiiide ethi mwone..........")
+     const userId=req.session.userId
+     const amount=req.body.amount 
+     const user=await walletModel.findOne({userId:userId})
+     console.log("user",user)
+     console.log("amount",amount);
+     const wallet=user.wallet
+     console.log("wallet",wallet);
 
+     if(user.wallet>=amount){
+      user.wallet-=amount
+      await user.save();
+
+      const wallet=await walletModel.findOne({userId:userId})
+      
+      
+          wallet.walletTransactions.push({type:"Debited",
+          amount:amount,
+          date:new Date()})
+          await wallet.save();
+      
+      res.json({success:true})
+     }
+     else{
+      res.json({success:false,message:"don't have enought money"})
+     }
+  } catch (err) {
+      console.error(err);
+      res.redirect('/error')
+    }
+}
 
 const applyCoupon = async (req, res) => {
   try {
@@ -211,5 +244,6 @@ const applyCoupon = async (req, res) => {
     checkoutreload,
     placeOrder,
     upi,
-    applyCoupon
+    applyCoupon,
+    wallettransaction
   }

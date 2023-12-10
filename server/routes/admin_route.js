@@ -25,6 +25,7 @@ adrouter.post('/searchUser',auth.loggedadmin,admin_controller.searchUser)
 adrouter.get('/searchview',auth.loggedadmin,admin_controller.searchview)
 adrouter.get('/filter/:option',auth.loggedadmin,admin_controller.filter)
 adrouter.get('/adminlogout',auth.logouting)
+adrouter.post('/chartData',auth.loggedadmin,admin_controller.chartData)
 
 adrouter.get('/category',auth.loggedadmin,admin_controller.category)
 adrouter.get('/newcat',auth.loggedadmin,admin_controller.newcat)

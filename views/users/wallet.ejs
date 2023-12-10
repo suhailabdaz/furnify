@@ -21,13 +21,14 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
+      margin-bottom: 100px;
     }
 
     .responsive-table th,
     .responsive-table td {
       padding: 15px;
       text-align: left;
-      font-size: 18px;
+      font-size: 30px;
     }
 
     .responsive-table th {
@@ -35,11 +36,11 @@
     }
 
     .credited {
-      color: red;
+      color:green;
     }
 
     .debited {
-      color: green;
+      color: red;
     }
 
     @media screen and (max-width: 600px) {
@@ -126,19 +127,22 @@
   </div>
   <!-- End Hero Section -->
 
-  <div>
+  
     <div style="text-align: center;">
       <section class="user-details-section mt-4 section-container">
         <div style="display: inline-block; text-align: center; margin-left: 32%;">
           <h1>Wallet&nbsp;:&nbsp;</h4>
-            <h1 style="display: inline-block; font-size: 100px;"><span>Rs.&nbsp;</span><span style="font-weight: bolder;"><%= userWallet %></span></h1>
+            <h1 style="display: inline-block; font-size: 50px;"><span>Rs.&nbsp;</span><span style="font-weight: bolder;"><%= userWallet %></span></h1>
         </div>
+        
+  <form id="orderForm">
+    <input type="number" id="Amount" name="Amount">
+    <button onclick="RazorpayWallet(event)">Add To Wallet</button>
+  </form>
       </section>
     </div>
 
-    <div style="text-align: center;">
-      <section class="user-details-section mt-4 section-container">
-        <div style="display: inline-block; text-align: center; margin-left: 38%;">
+      <section  class="user-details-section mt-4 section-container">
           <h1>Wallet history&nbsp;</h4>
             <table class="responsive-table">
               <thead>
@@ -153,21 +157,120 @@
                   <tr>
                     <td><%= transaction.date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }) %></td>
                     <td class="<%= transaction.type === 'Credited' ? 'credited' : 'debited' %>"><%= transaction.type %></td>
-                    <td class="<%= transaction.type === 'Credited' ? 'credited' : 'debited' %>"><%= transaction.type === 'Credited' ? '-' : '+' %><%= transaction.amount %></td>
+                    <td class="<%= transaction.type === 'Credited' ? 'credited' : 'debited' %>"><%= transaction.type === 'Credited' ? '+' : '-' %><%= transaction.amount %></td>
                   </tr>
                 <% }); %>
               </tbody>
             </table>
-        </div>
+        
       </section>
-    </div>
-  </div>
+    
+  
 
   <%-include('userpartials/footer')%>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/tiny-slider.js"></script>
   <script src="js/custom.js"></script>
+  <script>
+    async function  RazorpayWallet()
+	{
+    event.preventDefault()
+    console.log("ivide function");
+		let amountToPay=document.getElementById('Amount').value
+    console.log(amountToPay);
+		if(!amountToPay){
+			Swal.fire({
+    text: 'please enter an amount',
+    icon: 'error',
+  confirmButtonText: 'OK',
+  customClass: {
+    title: 'text-danger',
+    popup: 'swal2-popup-custom',
+    confirmButton: 'btn btn-danger'
+  },
+  showCancelButton: false,
+  showCloseButton: true,
+  showLoaderOnConfirm: false,
+  timer: 3000 
+});
+
+		}
+		
+		
+		
+		else {
+console.log("upi total","ppppppp");
+
+var options = {
+"key": 'rzp_test_tY3tynQ51qUYZR', // Enter the Key ID generated from the Dashboard
+"amount":  amountToPay*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+"currency": "INR",
+"name": "Furnify",
+"description": "Test Transaction",
+"image": "Urban Sole",
+"order_id": orderId, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+"handler": function (response){
+alert(response.razorpay_payment_id);
+document.getElementById('orderForm').action = '/walletTopup';
+document.getElementById('orderForm').method = 'post'; // Replace with your actual URL
+
+// Submit the form
+document.getElementById('orderForm').submit();
+
+},
+
+
+"theme": {
+"color": "orange"
+},
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+    rzp1.open();
+
+
+    e.preventDefault();
+
+
+                var orderId ;
+$(document).ready(function(){
+    var settings = {
+  "url": "/walletcreate/orderId",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "data": JSON.stringify({
+    "amount": amountToPay*100
+  }),
+};
+
+
+$.ajax(settings).done(function (response) {
+
+  orderId=response.orderId;
+  console.log(orderId);
+  $("button").show();
+});
+});
+
+            }
+		
+		}
+
+  </script>
 </body>
 
 </html>

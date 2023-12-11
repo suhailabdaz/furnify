@@ -3,6 +3,7 @@ const admin_controller=require('../controller/admin_controller')
 const product_controller=require("../controller/product_controller")
 const order_controller=require("../controller/order_controller")
 const coupon_controller=require("../controller/coupon_controller")
+const banner_controller=require("../controller/banner_controller")
 const auth=require("../../middleware/isAuth")
 const multer=require('multer')
 const upload=multer({dest:'uploads/'})
@@ -26,6 +27,7 @@ adrouter.get('/searchview',auth.loggedadmin,admin_controller.searchview)
 adrouter.get('/filter/:option',auth.loggedadmin,admin_controller.filter)
 adrouter.get('/adminlogout',auth.logouting)
 adrouter.post('/chartData',auth.loggedadmin,admin_controller.chartData)
+adrouter.post('/downloadsales',auth.loggedadmin,admin_controller.downloadsales)
 
 adrouter.get('/category',auth.loggedadmin,admin_controller.category)
 adrouter.get('/newcat',auth.loggedadmin,admin_controller.newcat)
@@ -57,7 +59,9 @@ adrouter.get('/newcoupon',auth.loggedadmin,coupon_controller.addcouponpage)
 adrouter.post('/add_coupon',auth.loggedadmin,coupon_controller.createCoupon)
 
 
-
+adrouter.get('/bannerList',auth.loggedadmin,banner_controller.bannerList)
+adrouter.get('/newbanner',auth.loggedadmin,banner_controller.addbanner)
+adrouter.post('/addBanner',auth.loggedadmin,banner_controller.addBannerPost)
 
 
 

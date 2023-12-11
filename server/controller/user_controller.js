@@ -42,35 +42,62 @@ const shop = async (req, res) => {
     console.log("ipooooo",theCategory)
 };
 
-const filterProducts=async(req,res)=>{
- try{
-    const category=req.query.category;
-    const selectedType=req.query.filterType;
-    let products
-    console.log(selectedType)
+const filterProducts = async (req, res) => {
+    try {
+        const category = req.query.category;
+        const selectedType = req.query.filterType;
+        const sortOption = req.query.sortoption; // Get the sorting option from the query parameters
 
-if(selectedType=='All'){
-    products = await productModel.find({$and:[{category},{status:true}] }).exec();
+        let products;
 
-}
-    else{
-    products = await productModel.find({$and:[{category},{status:true}],type:selectedType }).exec();
+        const filterConditions = {
+            category: category,
+            status: true,
+        };
+
+        if (selectedType && selectedType !== 'All') {
+            filterConditions.type = selectedType;
+        }
+
+        // Sort the products based on the sorting option
+        if (sortOption === '-1') {
+            products = await productModel.find(filterConditions).sort({ price: -1 }).exec();
+        } else if (sortOption === '1') {
+            products = await productModel.find(filterConditions).sort({ price: 1 }).exec();
+        } else {
+            products = await productModel.find(filterConditions).exec();
+        }
+
+        const categories = await categoryModel.find();
+        const ctCategory = categories.find(cat => cat._id.toString() === category);
+        const categoryName = ctCategory ? ctCategory.name : null;
+        const theCategory = await categoryModel.find({ _id: category });
+
+        res.render("users/shop", {
+            selectedType,
+            theCategory,
+            categoryName,
+            categories,
+            products,
+            selectedCategory: category,
+            sorting: getSortingLabel(sortOption), // Pass the sorting label to the view
+        });
+
+        console.log("ipooooo", theCategory);
+    } catch (err) {
+        console.log(err);
     }
-    const categories = await categoryModel.find();
-    const ctCategory = categories.find(cat => cat._id.toString() === category);
-    const categoryName =ctCategory ? ctCategory.name : null;
-    const theCategory = await categoryModel.find({_id:category})
-    res.render("users/shop", {selectedType,theCategory, categoryName,categories,products, selectedCategory: category });
-    console.log("ipooooo",theCategory)
-    
-    
-    
- }
- catch(err){
-    console.log(err)
- }
-}
+};
 
+function getSortingLabel(sortOption) {
+    if (sortOption === '-1') {
+        return 'Price: High To Low';
+    } else if (sortOption === '1') {
+        return 'Price: Low To High';
+    } else {
+        return 'Default Sorting'; // Add more labels based on your sorting options
+    }
+}
 const sortProducts=async (req,res)=>{
     try{
         const sortOption=req.query.sortPro
@@ -105,7 +132,7 @@ const sortProducts=async (req,res)=>{
         const ctCategory = categories.find(cat => cat._id.toString() === category);
         const categoryName =ctCategory ? ctCategory.name : null;
         const theCategory = await categoryModel.find({_id:category})
-        res.render("users/shop", {selectedType,theCategory, categoryName,categories,products:productse, selectedCategory: category ,sorting});
+        res.render("users/shop", {selectedType,theCategory, categoryName,categories,products:productse,sortoption:sortOption, selectedCategory: category ,sorting});
         console.log("ipooooo",theCategory)
         
         
@@ -560,13 +587,59 @@ const searchProducts = async (req, res) => {
       const productdata=await productModel.findOne({
         name:{$regex: new RegExp(`^${searchProduct}`, 'i')}
       });
-  
-  
+
+      const result = await categoryModel.aggregate([
+        {
+          $match: {
+            types: {
+              $elemMatch: {
+                $regex: new RegExp(`^${searchProduct}`, 'i')
+              }
+            }
+          }
+        },
+        {
+          $unwind: "$types"
+        },
+        {
+          $match: {
+            "types": {
+              $regex: new RegExp(`^${searchProduct}`, 'i')
+            }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            categoryName: "$name", // Add other fields as needed
+            matchingType: "$types"
+          }
+        }
+      ]);
+      console.log("nskbvbnsc ",result);
+      
+      
+      
+      
+    
+    
       
       if (data){
         const categoryId=data._id
         return res.redirect(`/shop?category=${categoryId}`)
       }
+      else if (result.length!==0) {
+        const categoryData=result[0].matchingType
+        const foundCategory = await categoryModel.findOne({
+            types: {
+              $in: [categoryData]
+            }
+          });
+      
+        res.redirect(`/filterProducts?category=${foundCategory._id}&filterType=${categoryData}`);
+
+      }
+      
       else if(productdata){
         const productId=productdata._id
         return res.redirect(`/singleproduct/${productId}`)
@@ -574,8 +647,8 @@ const searchProducts = async (req, res) => {
       else{
         res.redirect('/')
       }
-      
-    } catch (err) {
+    }
+    catch (err) {
       console.error(err);
   
       // Sending a more informative error response

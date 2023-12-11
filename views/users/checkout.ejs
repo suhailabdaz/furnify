@@ -241,6 +241,9 @@
 		                  <div class="input-group-append">
 		                    <button class="btn btn-black btn-sm" type="button" id="button-addon2" onclick="couponApply()">Apply</button>
 		                  </div>
+						  <div >
+		                    <button style="color: black;border: solid black;margin-left: 3px;" class="btn btn-white-outline btn-sm" type="button" id="button-addon3" onclick="couponRevoke()">Clear</button>
+		                  </div>
 		                </div>
 					</form>
 
@@ -270,12 +273,18 @@
 		                    <tr>
 		                      <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
 							  <td></td>
-		                      <td id="subt" class="text-black"><%= cart.total %></td>
+							  
+		                      <td id="subt" style="font-weight: 700;"><%= cart.total %></td>
 		                    </tr>
+							<tr>
+								<td class="text-black font-weight-bold"><strong>Discount Amount</strong></td>
+								<td></td>
+								<td id="dicprice" style="color: green; font-weight: 500;">0</td>
+							</tr>
 		                    <tr>
 		                    <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
 							  <td></td>
-		                      <td id="cartotal" class="text-black font-weight-bold"><strong><mark>
+		                      <td id="cartotal" style="font-weight: 700;"><strong><mark>
 								<%= cart.total %></mark></strong></td>
 		                    </tr>
 						
@@ -538,15 +547,27 @@ function couponApply() {
     .then(data => {
         if (data.success) {
 			console.log("ivideumethi")
+			document.getElementById('dicprice').innerText="-"+data.dicprice
            document.getElementById('cartotal').innerText=data.price
 		   document.getElementById('carttotal').value=data.price
 
 
-            // Update the Order Total dynamically
-            // const orderTotalElement = document.querySelector('.orderTotal');
-            // orderTotalElement.innerHTML = `<strong>$${data.totalAmount}</strong>`;
+       
         } else {
-            alert(data.message);
+			Swal.fire({
+          text: "Invalid Coupon",
+          icon: 'error',
+          confirmButtonText: 'OK',
+          customClass: {
+            title: 'text-danger',
+            popup: 'swal2-popup-custom',
+            confirmButton: 'btn btn-danger'
+          },
+          showCancelButton: false,
+          showCloseButton: true,
+          showLoaderOnConfirm: false,
+          timer: 3000
+        });
         }
     })
     .catch(error => {
@@ -554,6 +575,12 @@ function couponApply() {
         alert('An error occurred while applying the coupon. Please try again.');
     });
 }
+
+    function couponRevoke() {
+        
+        location.reload();
+    }
+
 
 		</script>
 		

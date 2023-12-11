@@ -132,8 +132,7 @@
 								<input type="hidden" name="type" value="<%= selectedType || 'All'%>">
 								<% } else { %>
 									<input type="hidden" name="type" value="All">
-
-									<% } %>
+							    <% } %>
 							</form>
 
 							</div>
@@ -159,6 +158,9 @@
 										
 									</select>
 									<input type="hidden" name="category" value="<%= selectedCategory %>">
+									<% if (locals.sortoption) { %>
+										<input type="hidden" name="sortoption" value="<%= sortoption%>">
+										<% } %>
 								</form>
 							</div>
 		

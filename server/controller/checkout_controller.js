@@ -219,19 +219,26 @@ const wallettransaction = async (req, res) => {
 
 const applyCoupon = async (req, res) => {
   try {
-     const {couponCode,subtotal}=req.body
-     const coupon=await couponModel.findOne({couponCode:couponCode})
-     console.log(coupon);
-     if(coupon.expiry > new Date() && coupon.minimumPrice <= subtotal){
-      console.log("cpnokke");
-      const dicprice=(subtotal*coupon.discount)/100
-      const price=subtotal-dicprice;
-      console.log(price)
-      res.json({success:true,price})
-     }
-     else{
-      res.json({success:false,message:"Invalid Coupon"})
-     }
+    const { couponCode, subtotal } = req.body;
+    const coupon = await couponModel.findOne({ couponCode: couponCode });
+    console.log(coupon);
+    
+    if (coupon) {
+        // Coupon is not null
+        if (coupon.expiry > new Date() && coupon.minimumPrice <= subtotal) {
+            console.log("Coupon is valid");
+            const dicprice = (subtotal * coupon.discount) / 100;
+            const price = subtotal - dicprice;
+            console.log(price);
+            res.json({ success: true, dicprice, price });
+        } else {
+            res.json({ success: false, message: "Invalid Coupon" });
+        }
+    } else {
+        // Coupon is null
+        res.json({ success: false, message: "Coupon not found" });
+    }
+    
   } catch (err) {
       console.error(err);
       res.status(500).send('Error occurred');

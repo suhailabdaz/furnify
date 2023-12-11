@@ -2,6 +2,7 @@ const bcrypt=require("bcrypt")
 const usersModel=require("../model/user_model")
 const categoryModel=require("../model/category_model")
 const orderModel=require('../model/order_model')
+const ExcelJS = require('exceljs');
 
 
 
@@ -73,7 +74,7 @@ const chartData=async(req,res)=>{
                         _id:{
                             month:{$month:'$createdAt'},
                         },
-                        totalAmount: { $sum: '$amount' },
+                        totalAmount: { $sum: '$totalPrice' },
                         
                     }
                 }
@@ -105,7 +106,7 @@ const chartData=async(req,res)=>{
                         _id:{
                             year:{$year:'$createdAt'},
                         },
-                        totalAmount: { $sum: '$amount' },
+                        totalAmount: { $sum: '$totalPrice' },
                     }
                 }
             ])
@@ -324,6 +325,61 @@ const updatecategory=async(req,res)=>{
 
 }
 
+const downloadsales=async(req,res)=>{
+    try {
+       const {startDate,endDate}= req.body
+
+       const salesData = await orderModel.aggregate([
+        {
+            $match: {
+                createdAt: {
+                    $gte: new Date(startDate),
+                    $lt: new Date(endDate),
+                },
+            },
+        },
+        {
+            $group: {
+                _id: null,
+                totalOrders: { $sum: 1 },
+                totalAmount: { $sum: '$totalPrice' },
+            },
+        },
+    ]);
+
+    let workbook;
+        try {
+            workbook = await ExcelJS.readFile('SalesReport.xlsx');
+        } catch (error) {
+            workbook = new ExcelJS.Workbook();
+        }
+
+        const worksheet = workbook.getWorksheet('Sales Report') || workbook.addWorksheet('Sales Report');
+
+        worksheet.addRow(['Start Date', 'End Date', 'Total Orders', 'Total Amount']);
+        worksheet.addRow([new Date(startDate), new Date(endDate), '', '']);
+
+        salesData.forEach(entry => {
+            worksheet.addRow(['', '', entry.totalOrders, entry.totalAmount]);
+        });
+
+       
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', 'attachment; filename=SalesReport.xlsx');
+
+      
+        await workbook.xlsx.write(res);
+
+        console.log('Sales report updated successfully.');
+    
+    }
+    catch(err){
+      console.log(err);
+      res.send("Error Occured")
+    }
+
+}
+
 
 module.exports={login,adminloginpost,adminpanel,userslist,userupdate,searchUser,searchview,filter,category,
-newcat,addcategory,updatecat,updatecategory,unlistcat,chartData}
+newcat,addcategory,updatecat,updatecategory,unlistcat,chartData,downloadsales}

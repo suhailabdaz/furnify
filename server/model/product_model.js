@@ -18,6 +18,10 @@ const proschema=new mongoose.Schema({
   {
       type:String
   },
+  mrp:{
+     type:Number,
+     required:true
+  },
     price:{
         type:Number,
         required:true
@@ -39,7 +43,39 @@ const proschema=new mongoose.Schema({
     description:{
         type:String,
         required:true
-    }
+    },
+    
+        height: {
+          type: Number,
+          default: 0,
+        },
+        width:{
+            type:Number,
+            default:0
+        },
+        sidelength:{
+            type:Number,
+            default:0
+
+        },
+        weight: {
+          type: Number,
+          default: 0,
+        },
+        madeOf: {
+          type: String,
+          default: '',
+        },
+        color: {
+          type: String,
+          default: '',
+        },
+        manufacturer: {
+          type: String,
+          default: '',
+        },
+        
+      
     
 })
 

@@ -35,7 +35,7 @@ const newproduct = async (req, res) => {
 
 const addproduct = async (req, res) => {
     try {
-        const { productName, parentCategory, images,productType, stock,price, description } = req.body
+        const { productName, parentCategory, images,productType, stock,price, description , mrp,height,width,sidelength,weight,madeOf,color,manufacturer} = req.body
 
 
 
@@ -46,7 +46,16 @@ const addproduct = async (req, res) => {
             price: price,
             images: req.files.map(file => file.path),
             stock: stock,
-            description: description
+            description: description,
+            mrp:mrp,
+            height:height,
+            weight:weight,
+            width:width,
+            sidelength:sidelength,
+            madeOf:madeOf,
+            manufacturer:manufacturer,
+            color:color
+
         })
 
         console.log(parentCategory)
@@ -179,12 +188,21 @@ const resizeImage=async(req,res)=>{
 const updateproduct = async (req, res) => {
     try {
         const id = req.params.id
-        const { productName,stock,productprice,description } = req.body
+        const { productName,stock,productprice,description,mrp,height,weight,width,sidelength,color,madeOf,manufacturer } = req.body
         const product=await productModel.findOne({_id:id})
         product.name = productName;
         product.price = productprice;
         product.stock = stock;
         product.description = description;
+        product.mrp=mrp;
+        product.height=height;
+        product.width=width;
+        product.weight=weight;
+        product.sidelength=sidelength;
+        product.color=color;
+        product.madeOf=madeOf;
+        product.manufacturer=manufacturer;
+
 
         await product.save()
         res.redirect('/admin/product')

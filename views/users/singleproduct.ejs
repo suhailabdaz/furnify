@@ -193,6 +193,47 @@
         .product-image {
             width: 500px;
         }
+
+        .similar-products-section {
+    padding: 20px;
+}
+
+.product-item {
+    text-decoration: none;
+    color: #333;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+    border-bottom: 1px solid #ddd;
+}
+
+.card-body {
+    padding: 10px;
+    text-align: center;
+}
+
+.product-title {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.product-price {
+    font-size: 1rem;
+    color: #e44d26;
+    margin-bottom: 0;
+}
+
     </style>
 </head>
 
@@ -237,6 +278,7 @@
 
         </ul>
     </div>
+    <div>
     <div class="fulldiv my-5 d-flex justify-content-center">
         <div class="product-container">
             <div class="product-images">
@@ -251,11 +293,45 @@
             <!-- Product Details Section -->
             <div class="product-details-section">
                 <h1><%= product.name %></h1>
-                <p class="price">Rs.<%= product.price.toFixed(2) %></p>
+                <p class="price"><span style="text-decoration: line-through;color: #857b79;">Rs.<%= product.mrp.toFixed(2) %></span>&nbsp;&nbsp;&nbsp;Rs.<%= product.price.toFixed(2) %></p>
                 <div class="description">
                     <p><strong>Description:</strong></p>
                     <p><%= product.description %></p>
                 </div>
+
+<!-- Specifications Section -->
+<div class="specifications">
+    <p><strong>Specifications:</strong></p>
+    <ul>
+        <% if (product.height || product.width || product.sidelength) { %>
+            <li><strong>Dimensions:</strong>
+                <% if (product.height) { %>
+                    <%= product.height %> cm (H)
+                <% } %>
+                <% if (product.width) { %>
+                    x <%= product.width %> cm (W)
+                <% } %>
+                <% if (product.sidelength) { %>
+                    x <%= product.sidelength %> cm (Sidelength)
+                <% } %>
+            </li>
+        <% } %>
+        <% if (product.weight) { %>
+            <li><strong>Weight:</strong> <%= product.weight %> kg</li>
+        <% } %>
+        <% if (product.color) { %>
+            <li><strong>color:</strong> <%= product.color %> </li>
+        <% } %>
+        <% if (product.madeOf) { %>
+            <li><strong>Materials:</strong> <%= product.madeOf %> </li>
+        <% } %>
+        <% if (product.manufacturer) { %>
+            <li><strong>manufacturer:</strong> <%= product.manufacturer %> </li>
+        <% } %>
+        <!-- Add more specifications as needed -->
+    </ul>
+</div>
+
                 <div class="buttons-row">
                     <% if (product.stock > 0) { %>
                         <a href="/addtocart/<%= product._id %>"><button class="btn btn-primary">
@@ -272,7 +348,35 @@
                 </div>
             </div>
         </div>
+        
     </div>
+    <!-- Similar Products Section -->
+    <% if (locals.similar && locals.similar.length > 0) { %>
+        <div class="similar-products-section ml-3 mt-5">
+            <h1 style="text-align: center; margin-bottom: 30px;">Similar Products</h1>
+            <div class="row similar-products-container">
+                <% locals.similar.forEach(product => { %>
+                    <div class="col-12 col-md-4 col-lg-3 mb-4 product-item">
+                        <a class="product-item" href="/singleproduct/<%= product._id %>" data-types="<%= product.type %>">
+                            <div class="card">
+                                <img src="/<%= product.images[0] %>" class="card-img-top img-fluid product-thumbnail" alt="<%= product.name %>" style="height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h3 class="card-title product-title"><%= product.name %></h3>
+                                    <p class="card-text product-price">₹<%= product.price.toFixed(2) %></p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    <% } %>
+    
+    </div>
+    
+
+
+    
 
     <footer>
         <!-- Start Footer Section -->

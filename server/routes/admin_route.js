@@ -54,6 +54,7 @@ adrouter.post('/updateOrderStatus',auth.loggedadmin,order_controller.updateOrder
 adrouter.get('/unlistBanner/:id',auth.loggedadmin,banner_controller.unlistBanner)
 adrouter.get('/updateBanner/:id',auth.loggedadmin,banner_controller.updateBanner)
 adrouter.post('/updateBannerPost/:id', upload.single('newImage'),auth.loggedadmin,banner_controller.updateBannerPost)
+adrouter.get('/deleteBanner/:id',auth.loggedadmin,banner_controller.deleteBanner)
 
 
 

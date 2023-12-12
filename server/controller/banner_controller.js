@@ -108,11 +108,25 @@ const updateBannerPost = async (req, res) => {
     }
 }
 
+const deleteBanner=async(req,res)=>{
+    try{
+        const bannerId = req.params.id;
+        const deletedBanner = await bannerModel.findByIdAndDelete(bannerId);
+        res.redirect('/admin/bannerList')
+
+    }
+    catch(err){
+        console.log(err);
+        res.send('error occured')
+    }
+}
+
 module.exports={
     bannerList,
     addbanner,
     addBannerPost,
     unlistBanner,
     updateBanner,
-    updateBannerPost
+    updateBannerPost,
+    deleteBanner
 }

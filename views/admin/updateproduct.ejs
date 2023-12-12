@@ -46,13 +46,18 @@
                     </div>
 
                     <div class="mb-3">
+                      <label for="categoryName" class="form-label">MRP:</label>
+                      <input type="number" class="form-control" id="mrp" name="mrp" value="<%= product.mrp %>" required>
+                  </div>
+
+                    <div class="mb-3">
                         <label for="categoryName" class="form-label">Price:</label>
-                        <input type="text" class="form-control" id="categoryName" name="productprice" value="<%= product.price %>" required>
+                        <input type="number" class="form-control" id="categoryName" name="productprice" value="<%= product.price %>" required>
                     </div>
                     <div class="mb-3 d-flex">
                         <label for="categoryName" class="form-label">Product stock:</label>
                         
-                          <label for="categoryName" class="form-label ml-2"></label>
+                   
                         <input type="text" class="form-control ml-2" id="categoryName" name="stock" value="<%= product.stock %>" style="height:15px;width: 50px;" required>
                         
                     </div>
@@ -61,6 +66,43 @@
                       <label for="description" class="form-label">Description:</label>
                       <textarea class="form-control" id="description" name="description" rows="4" required><%= product.description%></textarea>
                     </div>
+
+                    <div class="mb-3">
+                      <label for="categoryName" class="form-label">Height:</label>
+                      <input type="number" class="form-control" id="categoryName" name="height" value="<%= product.height %>" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="categoryName" class="form-label">Width:</label>
+                    <input type="number" class="form-control" id="categoryName" name="width" value="<%= product.width %>" required>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="categoryName" class="form-label">weight:</label>
+                  <input type="number" class="form-control" id="categoryName" name="weight" value="<%= product.weight %>" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="categoryName" class="form-label">sidelength:</label>
+                <input type="number" class="form-control" id="categoryName" name="sidelength" value="<%= product.sidelength %>" required>
+            </div>
+
+            
+            <div class="mb-3">
+              <label for="categoryName" class="form-label">madeOf:</label>
+              <input type="text" class="form-control" id="categoryName" name="madeof" value="<%= product.madeOf %>" required>
+          </div>
+
+           
+          <div class="mb-3">
+            <label for="categoryName" class="form-label">color:</label>
+            <input type="text" class="form-control" id="categoryName" name="color" value="<%= product.color %>" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="categoryName" class="form-label">manufacturer:</label>
+          <input type="text" class="form-control" id="categoryName" name="manufacturer" value="<%= product.manufacturer %>" required>
+      </div>
 
                     <div class="mb-3">
                       <label for="description" class="form-label">Images:</label>

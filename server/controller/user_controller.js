@@ -151,11 +151,17 @@ const sortProducts=async (req,res)=>{
 const singleproduct=async(req,res)=>{
     try{
         const id=req.params.id
-        const product=await productModel.findOne({_id:id}) 
+        const product=await productModel.findOne({_id:id})
+        const type= product.type;
+        console.log("type",type);
+        const similar = await productModel
+        .find({ type: type, _id: { $ne: id } })
+        .limit(4);
+        console.log("similar",similar);
         const categories = await categoryModel.find();
         product.images = product.images.map(image => image.replace(/\\/g, '/'));
         console.log('Image Path:', product.images[0]);
-        res.render('users/singleproduct',{categories,product:product})
+        res.render('users/singleproduct',{categories,product:product,similar})
         
     }
     catch(err){

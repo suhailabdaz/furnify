@@ -328,6 +328,7 @@ const updatecategory=async(req,res)=>{
 const downloadsales=async(req,res)=>{
     try {
        const {startDate,endDate}= req.body
+       
 
        const salesData = await orderModel.aggregate([
         {
@@ -357,8 +358,12 @@ const downloadsales=async(req,res)=>{
         const worksheet = workbook.getWorksheet('Sales Report') || workbook.addWorksheet('Sales Report');
 
         worksheet.addRow(['Start Date', 'End Date', 'Total Orders', 'Total Amount']);
-        worksheet.addRow([new Date(startDate), new Date(endDate), '', '']);
-
+        worksheet.addRow([
+            new Date(startDate).toLocaleDateString(), 
+            new Date(endDate).toLocaleDateString(), 
+            '', 
+            ''
+        ]);
         salesData.forEach(entry => {
             worksheet.addRow(['', '', entry.totalOrders, entry.totalAmount]);
         });

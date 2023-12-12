@@ -16,6 +16,7 @@ const {nameValid,
 const { Email, pass } = require('../../.env');
 const otpModel = require("../model/user_otp_model");
 const { category } = require("./admin_controller");
+const bannerModel = require("../model/banner_model");
 console.log(Email,pass)
 
 
@@ -24,8 +25,9 @@ console.log(Email,pass)
 const home = async (req, res) =>{
     try {
         const categories = await categoryModel.find();
+        const banners=await bannerModel.find();
 
-        res.render("users/index", { categories });
+        res.render("users/index", { categories ,banners});
     } catch (error) {
         console.error("Error fetching categories:", error);
         res.status(500).send("Internal Server Error");

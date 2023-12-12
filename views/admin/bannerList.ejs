@@ -63,12 +63,14 @@
                         <th>Image</th>
                       
                         <th>Status</th>
+
+                        <th>Action</th>
                         
                         
                     </tr>
                 </thead>
                 <tbody>
-                    <% if(locals.banners) { %>
+                    <% if(banners) { %>
                     <% banners.forEach(function(data,index) { %>
                     <tr>
                        
@@ -78,15 +80,15 @@
                           
                       
                       <td>
-                        <% if ( data.images.length > 0) { %>
-                        <img style="border-radius: 0%; width: 100px;height: 100px;"src="/<%= data.image %>"></td>
-                        <% } %>
+                        
+                          <img style="border-radius: 0%; width: 100px; height: 100px;" src="<%= data.image.url %>">
+                          
                       <!-- <td><%= data.description %></td> -->
-                      <td><%= data.status? 'Listed' : 'Unlisted' %></td>
+                      <td><%= data.active? 'Listed' : 'Unlisted' %></td>
                         <td>
-                          <a  class="btn btn-secondary btn-sm" onclick="confirmUnlist('<%= data._id %>')"><%= data.status ? 'Unlist' : 'List' %></a>
+                          <a  class="btn btn-secondary btn-sm" onclick="confirmUnlist('<%= data._id %>')"><%= data.active ? 'Unlist' : 'List' %></a>
 
-                          <a href="/admin/updatebanner/<%= data._id%>" class="btn btn-primary btn-sm">Edit</a>
+                          <a href="/admin/updateBanner/<%= data._id%>" class="btn btn-primary btn-sm">Edit</a>
                         </td>
                        
                         
@@ -111,17 +113,7 @@
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script>
-      function updateStock(select, stockJson,rowIndex) {
-    const selectedSize = parseInt(select.value);
-    const stock = JSON.parse(stockJson); // Parse the JSON string into an array
-    const stockDiv = document.getElementById(`stock_${rowIndex}`);
-    const selectedStock = stock.find(item => item.size === selectedSize);
-    if (selectedStock) {
-        stockDiv.textContent = ` ${selectedStock.quantity}`;
-    } else {
-        stockDiv.textContent = 'No stock available for the selected size.';
-    }
-}
+    
 
 function confirmUnlist(itemId) {
     Swal.fire({
@@ -137,9 +129,9 @@ function confirmUnlist(itemId) {
     })
     .then((result) => {
         if (result.isConfirmed) {
-            window.location.href = "/admin/unlist/" + itemId;
+            window.location.href = "/admin/unlistBanner/" + itemId;
         } else {
-            console.log("User canceled");
+            console.log("Banner unlisted");
         }
     });
 }

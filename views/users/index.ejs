@@ -296,6 +296,16 @@
 		<script src="js/tiny-slider.js"></script>
 		<script src="js/custom.js"></script>
 		<script src="js/togglenav.js"></script>
-	</body>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-GLhlTQ8iK1u6o9d6swnf7D90qwgwR4O/4XBDlB1Fm/E=" crossorigin="anonymous"></script>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				// Automatic sliding every 3 seconds (adjust as needed)
+				setInterval(function() {
+					document.querySelector('.carousel-control-next').click();
+				}, 1);
+			});
+		</script>
+		</body>
 
 </html>

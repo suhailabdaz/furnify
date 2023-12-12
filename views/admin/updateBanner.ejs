@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>newbanner</title>
+    <title>StepEra Admin</title>
     <link rel="stylesheet" href="/adminassets/vendors/mdi/css/materialdesignicons.min.css" />
     <link rel="stylesheet" href="/adminassets/vendors/flag-icon-css/css/flag-icon.min.css" />
     <link rel="stylesheet" href="/adminassets/vendors/css/vendor.bundle.base.css" />
@@ -12,16 +12,10 @@
     <link rel="stylesheet" href="/adminassets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" />
     <link rel="stylesheet" href="/adminassets/css/style.css" />
     <link rel="shortcut icon" href="/adminassets/images/favicon.png" />
-
-    
-     
-     
-  
     
   </head>
   <body>
     <div class="container-scroller">
-      
       <%- include('partials/sidebar')%>
       <div class="container-fluid page-body-wrapper">
         <div id="theme-settings" class="settings-panel">
@@ -40,37 +34,37 @@
           </div>
         </div>
         <%- include('partials/nav')%>
-
         <div class="main-panel">
          
             <div class="container form-container">
-                <h1 class="mb-4">Add Banner</h1>
+                <h1 class="mb-4">Update Banner</h1>
         
-                <form action="/admin/addBanner" method="post" enctype="multipart/form-data">
+                <form action="/admin/updateBannerPost/<%= banner._id %>" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <label for="productName" class="form-label">label:</label>
-                        <input type="text" class="form-control" id="bannerLabel" name="bannerLabel" required>
+                        <label for="bannerLabel" class="form-label">Banner Label:</label>
+                        <input type="text" class="form-control" id="bannerLabel" name="bannerLabel" value="<%= banner.label %>" required>
                     </div>
 
                     <div class="mb-3">
-                      <label for="parentCategory" class="form-label">title:</label>
-                      <input type="text" class="form-control" id="bannerTitle" name="bannerTitle" required>
-
-                     
+                        <label for="bannerTitle" class="form-label">Banner Title</label>
+                        <input type="text" class="form-control" id="bannerTitle" name="bannerTitle" value="<%=banner.title %>" required>
+                    </div>
                     
-                  </div>
-                  <div class="mb-3">
-                    <label for="productType" class="form-label">Subtitle:</label>
-                    <input type="text" class="form-control" id="bannerSubtitle" name="bannerSubtitle" required>
-                </div>
-                  
+        
+                    <div class="mb-3">
+                      <label for="bannerSubtitle" class="form-label">Banner Subtitle:</label>
+                      <textarea class="form-control" id="bannerSubtitle" name="bannerSubtitle" rows="4" required><%= banner.subtitle%></textarea>
+                    </div>
 
-                  <div class="mb-3">
-                    <label for="images" class="form-label">Image:</label>
-                    <input type="file" class="form-control" id="bannerimage" name="image" accept="image/*" required>
-                </div>
-                    <button type="submit" class="btn btn-primary">Add Banner</button>
-                </form>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Image:</label>
+                        <img id="bannerImage" style="width: 100px; height: 100px;" src="<%= banner.image.url %>">
+                        <a href="#" class="btn btn-danger btn-xs" onclick="replaceImage('<%= banner._id %>')">Replace Images</a>
+                        <input name="newImage" type="file" id="newImage" style="display: none;" accept="image/*" onchange="updateImagePreview()">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+
+                  </form>
             </div>
           
 
@@ -83,8 +77,6 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
-    </script>
-  
     
     <script src="/adminassets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
@@ -108,6 +100,26 @@
     <!-- Custom js for this page -->
     <script src="/adminassets/js/dashboard.js"></script>
     <!-- End custom js for this page -->
-   
+    <script>
+    function replaceImage(bannerId) {
+        // Display the new image input
+        document.getElementById('newImage').style.display = 'block';
+    }
+
+    function updateImagePreview() {
+        // Get the selected file
+        const selectedFile = document.getElementById('newImage').files[0];
+
+        if (selectedFile) {
+            // Read the file as a Data URL
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // Update the image preview
+                document.getElementById('bannerImage').src = e.target.result;
+            };
+            reader.readAsDataURL(selectedFile);
+        }
+    }
+</script>
   </body>
 </html>

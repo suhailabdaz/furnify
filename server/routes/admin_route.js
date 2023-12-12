@@ -51,6 +51,10 @@ adrouter.post('/updateproduct/:id',auth.loggedadmin,product_controller.updatepro
 adrouter.get('/orderPage',auth.loggedadmin,order_controller.orderPage)
 adrouter.post('/updateOrderStatus',auth.loggedadmin,order_controller.updateOrderStatus)
 
+adrouter.get('/unlistBanner/:id',auth.loggedadmin,banner_controller.unlistBanner)
+adrouter.get('/updateBanner/:id',auth.loggedadmin,banner_controller.updateBanner)
+adrouter.post('/updateBannerPost/:id', upload.single('newImage'),auth.loggedadmin,banner_controller.updateBannerPost)
+
 
 
 
@@ -61,7 +65,7 @@ adrouter.post('/add_coupon',auth.loggedadmin,coupon_controller.createCoupon)
 
 adrouter.get('/bannerList',auth.loggedadmin,banner_controller.bannerList)
 adrouter.get('/newbanner',auth.loggedadmin,banner_controller.addbanner)
-adrouter.post('/addBanner',auth.loggedadmin,banner_controller.addBannerPost)
+adrouter.post('/addBanner',upload.single('image'),auth.loggedadmin,banner_controller.addBannerPost)
 
 
 

@@ -17,8 +17,47 @@
 
     <!-- ElevateZoom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-elevatezoom/3.0.8/jquery.elevatezoom.min.css">
-
+    <script>
+        function getStars(rating) {
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 !== 0;
+    
+            const stars = '★'.repeat(fullStars) + (halfStar ? '½' : '');
+    
+            return stars;
+        }
+    </script>
     <style>
+.user-ratings-section {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.user-rating {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.user-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.rating {
+  color: #ffc107; /* Star color */
+  margin-bottom: 10px;
+}
+
+.review {
+  margin-bottom: 0;
+}
+
+hr {
+  border: 0.5px solid #ddd;
+}
 
 .custom-image {
     width: 300px; /* Set the desired width */
@@ -294,6 +333,8 @@
             <div class="product-details-section">
                 <h1><%= product.name %></h1>
                 <p class="price"><span style="text-decoration: line-through;color: #857b79;">Rs.<%= product.mrp.toFixed(2) %></span>&nbsp;&nbsp;&nbsp;Rs.<%= product.price.toFixed(2) %></p>
+                <p><strong>Rating:</strong> <%= averageRating %> <%= '★'.repeat(Math.floor(averageRating)) + (averageRating % 1 !== 0 ? '½' : '') %><span class="mt-1"> (<%= totalRatings %>)</span></p>
+
                 <div class="description">
                     <p><strong>Description:</strong></p>
                     <p><%= product.description %></p>
@@ -350,6 +391,26 @@
         </div>
         
     </div>
+
+    <div class="user-ratings-section">
+        <h2>User Ratings:</h2>
+      
+        <% product.userRatings.forEach(userRating => { %>
+          <div class="user-rating">
+            <p class="user-name"><strong>User:</strong> <%= userRating.userId.firstname %></p>
+            <div class="rating">
+              <p><strong>Rating:</strong> <%= userRating.rating %> <%= '★'.repeat(Math.floor(userRating.rating)) + (userRating.rating % 1 !== 0 ? '½' : '') %></p>
+            </div>
+            <p class="review"><strong>Review:</strong> <%= userRating.review %></p>
+            <hr>
+          </div>
+        <% }); %>
+      
+        
+      </div>
+      
+      
+
     <!-- Similar Products Section -->
     <% if (locals.similar && locals.similar.length > 0) { %>
         <div class="similar-products-section ml-3 mt-5">
@@ -491,11 +552,12 @@
         </footer>
         <!-- End Footer Section -->
 
-    </footer>
+        
     <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script src="/js/tiny-slider.js"></script>
     <script src="https://cdn.rawgit.com/elevateweb/elevatezoom/master/src/jquery.elevatezoom.js"></script>
+    
     <script src="/js/custom.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
@@ -511,7 +573,11 @@
              
             });
         });
+
+
+       
     </script>
+    
 
     
        

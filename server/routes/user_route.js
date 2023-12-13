@@ -4,6 +4,7 @@ const user_controller=require("../controller/user_controller")
 const cart_controller=require("../controller/cart_controller")
 const profile_controller=require("../controller/profile_controller")
 const checkout_controller=require("../controller/checkout_controller")
+const rating_controller=require("../controller/rating_controller")
 const auth=require('../../middleware/isAuth')
 usrouter.get("/",user_controller.home)
 
@@ -80,6 +81,12 @@ usrouter.get('/singleOrder/:id',auth.islogged,profile_controller.singleOrderPage
 usrouter.get('/cancelorder/:id',auth.islogged,profile_controller.ordercancelling)
 
 usrouter.get('/returnorder/:id',auth.islogged,profile_controller.orderreturning)
+
+usrouter.get('/cancelitem/:id/:orderId',auth.islogged,profile_controller.itemcancelling)
+
+usrouter.get('/returnitem/:id/:orderId',auth.islogged,profile_controller.itemreturning)
+
+usrouter.get('/rateAndReview',auth.islogged,rating_controller.ratePage)
 
 usrouter.get('/favouritespage',auth.islogged,cart_controller.favouritespage)
 

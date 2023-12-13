@@ -16,6 +16,28 @@
   <meta name="description" content="" />
   <meta name="keywords" content="bootstrap, bootstrap4" />
   <style>
+
+.dropdown {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: black;
+      color: white;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+	  width: 200px;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    
 	 .address-list {
             display: flex;
             flex-wrap: wrap;
@@ -234,6 +256,17 @@
 		            <div class="col-md-12">
 		              <h2 class="h3 mb-3 text-black">Coupon Code</h2>
 		              <div class="p-3 p-lg-5 border bg-white">
+						<div class="dropdown" onclick="toggleDropdown()">
+							<h2>Available Coupons:</h2>
+							<div class="dropdown-content">
+							  <ul>
+								<% availableCoupons.forEach(coupon => { %>
+								  <li><%= coupon.couponCode %> &nbsp;&nbsp;Offer: <%= coupon.discount %>%</li>
+								<% }); %>
+							  </ul>
+							</div>
+						  </div>
+						
                         <form>
 		                <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
 		                <div class="input-group w-75 couponcode-wrap">
@@ -352,6 +385,14 @@
 		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 		<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+		<script>
+			function toggleDropdown() {
+			  var dropdownContent = document.querySelector('.dropdown-content');
+			  dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+			}
+		  </script>
 <script>
 			$(document).ready(function () {
 				$('.address-radio').change(function () {
@@ -555,7 +596,7 @@ function couponApply() {
        
         } else {
 			Swal.fire({
-          text: "Invalid Coupon",
+          text: data.message,
           icon: 'error',
           confirmButtonText: 'OK',
           customClass: {

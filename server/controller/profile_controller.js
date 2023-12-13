@@ -503,6 +503,139 @@ const orderreturning=async(req,res)=>{
     }
 }
 
+const itemcancelling=async(req,res)=>{
+    try{
+    const id=req.params.id
+    const orderId=req.params.orderId
+
+    const order = await orderModel.findOne({ _id:orderId });
+
+    const itemIndex = order.items.findIndex(item => item.productId == id);
+
+    if (itemIndex === -1) {
+        return res.status(404).send("Item not found in the order");
+    }
+
+
+    if (!order) {
+        return res.status(404).send("Order not found");
+    }
+
+
+    const nonCancelledItems = order.items.filter(item => item.status !== 'cancelled');
+
+
+    if (nonCancelledItems.length < 2) {
+
+        order.status='Cancelled'
+
+        await orderModel.updateOne(
+            { _id: orderId ,'items.productId': order.items[itemIndex].productId},
+            {
+              $set: {
+                'items.$.status': 'cancelled', // Update the status of the specific item in the array
+                updatedAt: new Date(),
+              },
+            }
+          );
+    
+
+         await order.save()
+       return res.redirect(`/singleOrder/${orderId}`)
+       
+           }
+
+  
+ 
+    const result = await orderModel.updateOne(
+        { _id: orderId ,'items.productId': order.items[itemIndex].productId},
+        {
+          $set: {
+            'items.$.status': 'cancelled', // Update the status of the specific item in the array
+            totalPrice: order.totalPrice - order.items[itemIndex].price,
+            updatedAt: new Date(),
+          },
+        }
+      );
+
+    res.redirect(`/singleOrder/${orderId}`)
+
+
+    
+    }
+    catch(err){
+        console.log(err);
+        res.send("couldnt cancel")
+    }
+}
+
+const itemreturning=async(req,res)=>{
+    try{
+        const id=req.params.id
+        const orderId=req.params.orderId
+    
+        const order = await orderModel.findOne({ _id:orderId });
+
+
+        
+        const itemIndex = order.items.findIndex(item => item.productId == id);
+    
+        if (itemIndex === -1) {
+            return res.status(404).send("Item not found in the order");
+        }
+    
+    
+        if (!order) {
+            return res.status(404).send("Order not found");
+        }
+    
+
+        const nonReturnedItems = order.items.filter(item => item.status !== 'returned');
+
+
+        if (nonReturnedItems.length < 2) {
+
+            order.status='Returned'
+
+            await orderModel.updateOne(
+                { _id: orderId ,'items.productId': order.items[itemIndex].productId},
+                {
+                  $set: {
+                    'items.$.status': 'returned', 
+                    updatedAt: new Date(),
+                  },
+                }
+              );
+
+         await order.save()
+       return res.redirect(`/singleOrder/${orderId}`)
+          
+        }
+    
+     
+        const result = await orderModel.updateOne(
+            { _id: orderId ,'items.productId': order.items[itemIndex].productId},
+            {
+              $set: {
+                'items.$.status': 'returned', 
+                totalPrice: order.totalPrice - order.items[itemIndex].price,
+                updatedAt: new Date(),
+              },
+            }
+          );
+    
+        res.redirect(`/singleOrder/${orderId}`)
+    
+    
+        
+        }
+        catch(err){
+            console.log(err);
+            res.send("couldnt cancel")
+        }
+}
+
+
 
 const singleOrderPage=async (req,res)=>{
     try{
@@ -995,4 +1128,4 @@ const walletTopup= async(req,res)=>{
 
 module.exports={userdetails,profileEdit,profileUpdate,newAddress,addressUpdate,changepassword
 ,editaddress,updateAddress,deleteAddress,orderHistory,ordercancelling,
-singleOrderPage,orderreturning,downloadInvoice,wallet,walletupi,walletTopup}
+singleOrderPage,orderreturning,downloadInvoice,wallet,walletupi,walletTopup,itemcancelling,itemreturning}

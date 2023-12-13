@@ -36,7 +36,9 @@ const usersSchema = new mongoose.Schema({
         type:Boolean,
         default:false,
         required:true
-    }
+    },
+    usedCoupons:
+     [{ type: String }],
 
 
 })

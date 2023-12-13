@@ -220,16 +220,31 @@ const wallettransaction = async (req, res) => {
 const applyCoupon = async (req, res) => {
   try {
     const { couponCode, subtotal } = req.body;
+    const userId=req.session.userId
     const coupon = await couponModel.findOne({ couponCode: couponCode });
     console.log(coupon);
     
     if (coupon) {
         // Coupon is not null
-        if (coupon.expiry > new Date() && coupon.minimumPrice <= subtotal) {
+
+        const user = await userModel.findById(userId);
+
+        if (user && user.usedCoupons.includes(couponCode)) {
+          // User has already used this coupon
+          console.log("nvjksadnjkghakjvajkvnasdmvbasfhvb");
+          res.json({ success: false, message: "Already Redeemed" });
+        }
+        else if (coupon.expiry > new Date() && coupon.minimumPrice <= subtotal) {
             console.log("Coupon is valid");
             const dicprice = (subtotal * coupon.discount) / 100;
             const price = subtotal - dicprice;
             console.log(price);
+
+            await userModel.findByIdAndUpdate(
+              userId,
+              { $addToSet: { usedCoupons: couponCode } },
+              { new: true }
+            );
             res.json({ success: true, dicprice, price });
         } else {
             res.json({ success: false, message: "Invalid Coupon" });

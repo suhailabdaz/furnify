@@ -5,7 +5,9 @@ const usersModel=require("../model/user_model")
 const userotp = require('../model/user_otp_model')
 const categoryModel=require('../model/category_model')
 const productModel=require('../model/product_model')
+const mongoose=require('mongoose')
 const flash=require("express-flash")
+const ObjectId = mongoose.Types.ObjectId;
 
 const {nameValid,
     lnameValid,
@@ -151,9 +153,44 @@ const sortProducts=async (req,res)=>{
 const singleproduct=async(req,res)=>{
     try{
         const id=req.params.id
-        const product=await productModel.findOne({_id:id})
+        console.log("haywan",id);
+        const product = await productModel
+        .findOne({ _id: id })
+        .populate({
+          path: 'userRatings.userId',
+          select: 'firstname'
+        });        
         const type= product.type;
-        console.log("type",type);
+
+        const convertedId = new ObjectId(id);
+        
+
+        const result = await productModel.aggregate([
+            {
+              $match: {_id:convertedId }
+            },
+            {
+              $unwind:{ path:"$userRatings",
+              preserveNullAndEmptyArrays: true
+            }
+            },
+            {
+              $group: {
+                _id: null,
+                averageRating: { $avg: "$userRatings.rating" },
+                totalRatings: { $sum: 1 }
+              }
+            }
+          ]);
+          
+          const averageRating = result.length > 0 ? result[0].averageRating : 0;
+          const totalRatings = result.length > 0 ? result[0].totalRatings : 0;
+
+          console.log('hey there',result);
+
+          console.log(averageRating,totalRatings);
+
+
         const similar = await productModel
         .find({ type: type, _id: { $ne: id } })
         .limit(4);
@@ -161,7 +198,7 @@ const singleproduct=async(req,res)=>{
         const categories = await categoryModel.find();
         product.images = product.images.map(image => image.replace(/\\/g, '/'));
         console.log('Image Path:', product.images[0]);
-        res.render('users/singleproduct',{categories,product:product,similar})
+        res.render('users/singleproduct',{categories,product:product,similar,averageRating,totalRatings})
         
     }
     catch(err){

@@ -15,8 +15,42 @@
     <link href="/css/style.css" rel="stylesheet">
     <style>
 
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
         
-      
+.cancelled-row {
+    filter: blur(2px); /* Adjust the blur effect as needed */
+    background-color: lightgray; /* Adjust the background color for cancelled rows */
+    color: red; /* Adjust the text color for cancelled rows */
+}
    
 
     .order-tracking h1 {
@@ -286,6 +320,13 @@
         </div>
     </div>
 
+
+
+    
+
+
+
+
     <div style="background-color: #efeeee; border: solid #3b5d50;border-radius: 50px;margin-bottom: 10px;margin-top: 1px;" class="container order-details">
         <div class="row">
             <!-- Order Address Section (Add actual address data) -->
@@ -325,6 +366,8 @@
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Item Total</th>
+                        <th>Action</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -334,6 +377,40 @@
                         <td><%=item.singleprice%></td>
                         <td><%=item.quantity%></td>
                         <td><%=item.price%></td>
+                        <td>  <% if (order.status !== 'Cancelled' && order.status !== 'Returned' && order.status !== 'Delivered' && item.status !== 'cancelled' && item.status !=='returned') { %>
+                        <a style="background-color: rgb(228, 135, 135); font-size: 20px;" onclick="confirmDialogue('/cancelitem/<%=item.productId%>/<%=order._id%>')" >Cancel Item</a>
+                        <% } else if (order.status === 'Delivered'  && item.status !== 'cancelled' && item.status !=='returned') { %>
+                            <a style="background-color: rgb(209, 140, 140);font-size: 20px;" onclick="confirmDialogue('/returnitem/<%=item.productId%>/<%=order._id%>')" >Return item</a>
+                        <% }  else if (item.status == 'cancelled' || order.status=='Cancelled') { %>
+                            <a style="background-color: rgb(209, 140, 140);font-size: 20px;"  >Cancelled</a>
+                        <% }else if (item.status == 'returned' || order.status =='Returned' ) { %>
+                            <a style="background-color: rgb(209, 140, 140);font-size: 20px;"  >Returned</a>&nbsp;&nbsp;&nbsp;
+                        <% } %>
+
+
+                        <% if (item.status !== 'cancelled' && order.status =='Delivered' ) { %>
+                            <a  style="background-color: rgb(208, 210, 70);font-size: 20px;" onclick="openModal()">Rate the product</a>
+                            <% } %>
+                        </td>
+                        
+    <div class="modal" id="rateAndReviewModal">
+        <div class="modal-content">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h2>Rate and Review</h2>
+          <form  method="get" action="/rateAndReview" id="rateAndReviewForm">
+            <label for="rating">Rating:</label>
+            <input type="number" id="rating" name="rating" min="1" max="5" required>
+            
+            <label for="review">Review:</label>
+            <textarea id="review" name="review" rows="4" required></textarea>
+
+            <input type="hidden" name="id" value="<%= item.productId %>">
+
+            
+            <button type="submit" >Submit</button>
+          </form>
+        </div>
+      </div>
                     </tr>
                     <% }); %>
                 </tbody>
@@ -347,10 +424,10 @@
             <div style="margin-top: 30px; margin-bottom:12px;margin-left: 500px;">
                 <% if (order.status !== 'Cancelled' && order.status !== 'Returned' && order.status !== 'Delivered') { %>
                     <!-- Code to execute if the condition is true -->
-                <a style="background-color: rgb(181, 0, 0);width: 350px;" href="/cancelorder/<%=order._id%>" class="btn btn-danger">Cancel Order</a>
+                <a style="background-color: rgb(181, 0, 0);width: 350px;" onclick="confirmDialogue('/cancelorder/<%=order._id%>')" class="btn btn-danger">Cancel Order</a>
                 <% } else if (order.status === 'Delivered') { %>
                     <!-- Code to execute if the condition is false -->
-                    <a style="background-color: rgb(181, 0, 0);width: 350px;" href="/returnorder/<%=order._id%>" class="btn btn-danger">Retrur Order</a>
+                    <a style="background-color: rgb(181, 0, 0);width: 350px;" onclick="confirmDialogue('/returnorder/<%=order._id%>')" class="btn btn-danger">Retrur Order</a>
                     <% } %>
             
             </div>
@@ -362,6 +439,9 @@
     <!-- Include footer and scripts -->
     <% include('userpartials/footer') %>
    <!-- JavaScript to update order status and move dots -->
+   <!-- Add this to your HTML file -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
   // Simulating order with status changes
   const order = {
@@ -423,6 +503,41 @@
 
   // Initial call to update the order status
   updateOrderStatus();
+
+  function confirmDialogue(route) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Are you sure you want to proceed?",
+        icon: "warning",
+        showCancelButton: true,  
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Confirm",
+        cancelButtonText: "Cancel",  
+        dangerMode: true,
+    })
+    .then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = route;
+        } else {
+            console.log("Banner deleted");
+        }
+    });
+}
+
+
+
+
+
+function openModal() {
+  document.getElementById('rateAndReviewModal').style.display = 'block';
+}
+
+function closeModal() {
+  document.getElementById('rateAndReviewModal').style.display = 'none';
+}
+
+
 </script>
 
     <script src="/js/bootstrap.bundle.min.js"></script>

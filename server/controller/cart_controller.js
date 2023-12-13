@@ -3,6 +3,7 @@ const cartModel=require('../model/cart_model')
 const productModel=require('../model/product_model');
 const usersModel = require('../model/user_model');
 const favModel=require('../model/favourites_model')
+const couponModel=require('../model/coupon_model')
 
 
 
@@ -248,6 +249,12 @@ const checkoutpage = async (req, res) => {
     const categories = await categoryModel.find();
     const cartId = req.query.cartId;
     const userId = req.session.userId;
+    const user = await usersModel.findById(userId);
+    const availableCoupons = await couponModel.find({
+      couponCode: { $nin: user.usedCoupons }
+    });
+    console.log("coupons",availableCoupons);
+
 
     const addresslist = await usersModel.findOne({ _id: userId });
 
@@ -286,7 +293,7 @@ const checkoutpage = async (req, res) => {
 
     console.log('Cart Total:', cart.total);
 
-    res.render('users/checkout', { addresses, cartItems, categories, cart,cartId });
+    res.render('users/checkout', {availableCoupons, addresses, cartItems, categories, cart,cartId });
   
   
 }catch(err) {

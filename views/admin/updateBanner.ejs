@@ -102,19 +102,19 @@
     <!-- End custom js for this page -->
     <script>
     function replaceImage(bannerId) {
-        // Display the new image input
+        
         document.getElementById('newImage').style.display = 'block';
     }
 
     function updateImagePreview() {
-        // Get the selected file
+        
         const selectedFile = document.getElementById('newImage').files[0];
 
         if (selectedFile) {
-            // Read the file as a Data URL
+           
             const reader = new FileReader();
             reader.onload = function (e) {
-                // Update the image preview
+             
                 document.getElementById('bannerImage').src = e.target.result;
             };
             reader.readAsDataURL(selectedFile);

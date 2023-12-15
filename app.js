@@ -11,6 +11,7 @@ const sharp=require('sharp')
 const nocache=require("nocache")
 const flash=require("express-flash")
 
+require('dotenv').config
 
 const app=express()
 const port=3000

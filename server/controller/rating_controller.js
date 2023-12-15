@@ -8,11 +8,11 @@ const ratePage=async(req,res)=>{
         const userId=req.session.userId
 
        
-          
-          
+            
+            
             const productId = id;
-          
-         
+            
+            
             const product = await productModel.findById(productId);
           
             if (!product) {

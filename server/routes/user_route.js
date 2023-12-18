@@ -5,8 +5,11 @@ const cart_controller=require("../controller/cart_controller")
 const profile_controller=require("../controller/profile_controller")
 const checkout_controller=require("../controller/checkout_controller")
 const rating_controller=require("../controller/rating_controller")
+const banner_controller=require('../controller/banner_controller')
 const auth=require('../../middleware/isAuth')
 usrouter.get("/",user_controller.home)
+
+usrouter.get("/bannerURL",banner_controller.bannerURL)
 
 usrouter.post("/searchProducts",user_controller.searchProducts)
 

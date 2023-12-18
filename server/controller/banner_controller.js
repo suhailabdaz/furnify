@@ -1,4 +1,8 @@
-const bannerModel=require('../model/banner_model')
+const bannerModel=require('../model/banner_model');
+const categoryModel = require('../model/category_model');
+const productModel = require('../model/product_model');
+const couponModel=require('../model/coupon_model');
+const mongoose=require('mongoose');
 
 
 
@@ -15,7 +19,10 @@ const bannerList=async(req,res)=>{
 
 const addbanner = async (req, res) => {
     try {
-        res.render('admin/newBanner');
+        const categories=await categoryModel.find();
+        const products=await productModel.find();
+        const coupons=await couponModel.find();
+        res.render('admin/newBanner',{categories,products,coupons});
     } catch (err) {
         console.log(err);
         res.send("Error Occurred");
@@ -24,9 +31,24 @@ const addbanner = async (req, res) => {
 
 const addBannerPost=async(req,res)=>{
     try{
-        const { bannerLabel, bannerTitle, bannerimage,bannerSubtitle} = req.body
-       
+        
+        const { bannerLabel, bannerTitle, bannerimage,bannerSubtitle,bannerColor} = req.body
 
+        const isValidObjectId = mongoose.Types.ObjectId.isValid;
+        let bannerLink
+
+       if(bannerLabel=="category"){
+        bannerLink=req.body.category
+       }
+       else if(bannerLabel=="product"){
+        bannerLink=req.body.product
+       }
+       else if(bannerLabel=="coupon"){
+        bannerLink=req.body.coupon
+       }
+       else{
+        bannerLink="general"
+       }
         const newBanner = new bannerModel({
             label: bannerLabel,
             title: bannerTitle,
@@ -35,18 +57,17 @@ const addBannerPost=async(req,res)=>{
             image: {
                 public_id: req.file.filename, 
                 url: `/uploads/${req.file.filename}` 
-            }
+            },
+            color:bannerColor,
+            bannerlink:bannerLink
+
            
         })
          
-    newBanner.save()
-    .then(() => {
-        res.redirect('/admin/bannerList');
-    })
-    .catch((error) => {
-        res.status(500).send('Error uploading banner');
-        console.error(error);
-    });
+    await newBanner.save()
+    const banners=await bannerModel.find()
+    res.render("admin/bannerList",{banners:banners})
+   
     }
     catch(err){
         console.log(err);
@@ -75,8 +96,11 @@ const updateBanner = async (req, res) => {
     try {
         const id = req.params.id
         const banner = await bannerModel.findOne({ _id: id });
-        console.log(banner);
-        res.render('admin/updateBanner', { banner: banner })
+        const categories=await categoryModel.find();
+        const products=await productModel.find();
+        const coupons=await couponModel.find();
+       
+        res.render('admin/updateBanner', { banner: banner,categories:categories,products:products,coupons:coupons })
     } catch (err) {
         console.log(err);
         res.send("Error Occured")
@@ -89,13 +113,32 @@ const updateBannerPost = async (req, res) => {
         const { bannerLabel,bannerTitle,bannerSubtitle,bannerImage } = req.body
         console.log("the filke is here",req.file);
         const banner=await bannerModel.findOne({_id:id})
+
+        let bannerLink;
+
+        if(bannerLabel=="category"){
+            bannerLink=req.body.category
+           }
+           else if(bannerLabel=="product"){
+            bannerLink=req.body.product
+           }
+           else if(bannerLabel=="coupon"){
+            bannerLink=req.body.coupon
+           }
+           else{
+            bannerLink="general"
+           }
+
+
+        banner.bannerlink=bannerLink;
         banner.label = bannerLabel;
         banner.title = bannerTitle;
         banner.subtitle = bannerSubtitle;
+        banner.color=req.body.bannerColor
         if (req.file) {
             banner.image = {
-                public_id: req.file.filename, 
-                url: `/uploads/${req.file.filename}` 
+            public_id: req.file.filename, 
+            url: `/uploads/${req.file.filename}` 
         }
     }
 
@@ -121,6 +164,40 @@ const deleteBanner=async(req,res)=>{
     }
 }
 
+const bannerURL=async(req,res)=>{
+    try{
+
+        const bannerId=req.query.id
+        const banner=await bannerModel.findOne({_id:bannerId})
+        if(banner.label=="category"){
+            const categoryId=mongoose.Types.ObjectId(banner.bannerlink)
+            const  category=await categoryModel.findOne({_id: categoryId})
+            res.redirect(`/shop/?category=${categoryId}`)
+            
+        }
+        else if(banner.label=="product"){
+            const productId=new mongoose.Types.ObjectId(banner.bannerlink)
+            const  product=await productModel.findOne({_id: productId})
+            res.redirect(`/singleproduct/${productId}`)
+        
+        }
+        else if(banner.label=="coupon"){
+            const couponId=new mongoose.Types.ObjectId(banner.bannerlink)
+            const  coupon=await couponModel.findOne({_id: couponId})
+            res.redirect("/profile")
+        
+        }
+        else{
+            res.redirect("/")
+        }
+
+    }
+    catch(err){
+        console.log(err);
+        res.send(err)
+    }
+}
+
 module.exports={
     bannerList,
     addbanner,
@@ -128,5 +205,6 @@ module.exports={
     unlistBanner,
     updateBanner,
     updateBannerPost,
-    deleteBanner
+    deleteBanner,
+    bannerURL
 }

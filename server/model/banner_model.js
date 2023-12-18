@@ -31,11 +31,20 @@ const bannerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    bannerlink:{
+        type:String,
+        required:true
+    },
 
     active:{
         type: Boolean,
         default: true
+    },
+    color:{
+        type:String,
+        required:true
     }
+
 })
 
 const bannerModel=new mongoose.model("banners",bannerSchema)

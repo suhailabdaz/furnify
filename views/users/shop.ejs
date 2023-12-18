@@ -181,17 +181,19 @@
 		<div class="untree_co-section product-section before-footer-section">
 		    <div class="container">
 				<div class="row">
+					
 					<% products.forEach(product => { %>
 					  <div class="col-12 col-md-4 col-lg-3 mb-5 product-item" >
 						<a class="product-item" href="/singleproduct/<%= product._id %>" data-types="<%= product.type %>">
-						  <img src="<%= product.images[0] %>" class="img-fluid product-thumbnail" style="width: 100%; height: 200px";>
+						  <img src="<%= product.images[0] %>" class="img-fluid product-thumbnail" style="width: 100%; height: 200px;object-fit: cover;";>
 						  <h3 class="product-title"><%= product.name %></h3>
 						  <strong class="product-price">₹<%= product.price.toFixed(2) %></strong>
-				  
-						  <span class="icon-cross">
-							<img src="images/cross.svg" class="img-fluid">
-						  </span>
 						</a>
+						  <span class="icon-cross">
+							<a href="/addtocart/<%= product._id %>"><img src="images/cross.svg" class="img-fluid"></a>
+						  </span>
+						 
+						
 					  </div>
 					<% }); %>
 				  </div>

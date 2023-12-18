@@ -274,7 +274,10 @@ const checkoutpage = async (req, res) => {
       if (cartItem.quantity > product.stock) {
         
         console.log('Selected quantity exceeds available stock for productId:', cartItem.productId);
-        return res.render('users/cart',{cart,categories,message:"Some of the products quantity Exceeds StockLimit..!!"})
+        const nonitemid= cartItem.productId
+        const theitem=await productModel.findOne({_id:nonitemid})
+        const nameitem = theitem.name
+        return res.render('users/cart',{cart,categories,message:` The product ${nameitem}'s quantity Exceeds StockLimit..!!`})
       
       }
       
@@ -301,6 +304,10 @@ const checkoutpage = async (req, res) => {
     res.status(500).send('Error occurred');
   }
 };
+
+
+
+
 
 const addToFvourites= async (req, res) => {
   try {

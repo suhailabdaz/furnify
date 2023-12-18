@@ -327,9 +327,11 @@
                                 <h2 style="font-size: 30px;">Order ID: <%= order.orderId %></h2>
                             </div>
                             <div class="col-lg-6">
+                                <% if(order.status=="Delivered"){ %>
                                 <div class="btn-action text-md-end">
                                     <a href="/download-invoice/<%= order.orderId %>" style="background-color: #efeeee;color: #3b5d50;" href="#" class="btn btn-primary">Download Invoice</a>
                                 </div>
+                                <% } %>
                             </div>
                         </div>
                     

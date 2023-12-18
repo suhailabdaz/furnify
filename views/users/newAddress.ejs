@@ -15,7 +15,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link href="css/tiny-slider.css" rel="stylesheet">
   <link href="css/style.css" rel="stylesheet">
-  <title>Edit Profile - Furnify</title>
+  <title>Add Address-Furnify</title>
 
   <style>
     /* Your existing styles */
@@ -158,19 +158,22 @@
   
         <div class="form-group col-md-6">
           <label for="state">State</label>
-          <input type="text" id="state" name="state" class="form-control">
-          <% if(expressFlash.stateerror){ %>
-            <div class="alert text-danger text-start" style="color: red;"><%= expressFlash.streeterror %></div>
-        <% } %>
-        </div>
-  
-        <div class="form-group col-md-6">
+          <select id="state" name="state" class="form-control" required>
+            <option value="" disabled selected>Select a state</option>
+            <option value="Kerala">Kerala</option>
+            <option value="Karnataka">Karnataka</option>
+            <option value="TamilNadu">Tamil Nadu</option>
+          </select>
+          </div>
+      
+          <div class="form-group col-md-6">
           <label for="country">Country</label>
-          <input type="text" id="country" name="country" class="form-control">
-          <% if(expressFlash.countryerror){ %>
-            <div class="alert text-danger text-start" style="color: red;"><%= expressFlash.countryerror %></div>
-        <% } %>
-        </div>
+          <select id="country" name="country" class="form-control" required>
+            <option value="India">India</option>
+          </select>
+          </div>
+  
+       
   
         <div class="form-group col-md-6">
           <label for="phone">Phone Number</label>

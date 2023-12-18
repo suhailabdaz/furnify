@@ -8,16 +8,81 @@ const walletModel=require('../model/wallet_model')
 const bcrypt=require("bcrypt")
 const shortid=require("shortid")
 const mongoose=require("mongoose")
+const {bnameValid,
+  adphoneValid,
+  pincodeValid,
+  }=require("../../utils/validators/address_Validators")
 const Razorpay=require("razorpay")
 const {key_id,key_secret}=require("../../.env")
 
 const checkoutreload = async (req, res) => {
     try {
         const { saveas, fullname, adname, street, pincode, city, state, country, phone } = req.body;
+        const cartId = req.body.cartId;
+
         const userId = req.session.userId;
         console.log("id", userId);
+        const user = await userModel.findById(userId);
+        const availableCoupons = await couponModel.find({
+          couponCode: { $nin: user.usedCoupons }
+        });
 
         const existingUser = await userModel.findOne({ _id: userId });
+        const fullnamevalid=bnameValid(fullname)
+        const saveasvalid=bnameValid(saveas)
+        const adnameValid=bnameValid(adname)
+        const streetValid=bnameValid(street)
+        const pincodevalid=pincodeValid(pincode)
+        const cityValid=bnameValid(city)
+        const stateValid=bnameValid(state)
+        const countryValid=bnameValid(country)
+        const phoneValid=adphoneValid(phone)
+if(!fullnamevalid)
+{
+req.flash("fullnameerror","Enter a valid name")
+ return res.redirect(`/checkoutpage?cartId=${cartId}`)
+}
+if(!saveasvalid)
+{
+req.flash("saveaserror","Enter a valid addresstype")
+return res.redirect(`/checkoutpage?cartId=${cartId}`)
+}
+if(!adnameValid)
+{
+req.flash("adnameerror","Enter a valid address")
+return res.redirect(`/checkoutpage?cartId=${cartId}`)
+}
+if(!streetValid)
+{
+req.flash("streeterror","enter a valid street")
+return res.redirect(`/checkoutpage?cartId=${cartId}`)
+
+}
+if(!pincodevalid)
+{
+req.flash("pincodeerror","Enter a valid Pincode")
+return res.redirect(`/checkoutpage?cartId=${cartId}`)
+}
+
+if(!cityValid)
+{
+req.flash("cityerror","Enter Valid City")
+return res.redirect(`/checkoutpage?cartId=${cartId}`)
+
+}
+if(!stateValid){
+    req.flash("stateerror","Enter valid state")
+    return res.redirect(`/checkoutpage?cartId=${cartId}`)
+  }
+if(!countryValid){
+    req.flash("countryerror",'Enter valid country')
+    return res.redirect(`/checkoutpage?cartId=${cartId}`)
+  }
+if(!phoneValid){
+    req.flash("phoneerror","Enter valid country ")
+    return res.redirect(`/checkoutpage?cartId=${cartId}`)
+
+}
 
         if (existingUser) {
             // Corrected query to find existing address for the user
@@ -38,8 +103,7 @@ const checkoutreload = async (req, res) => {
             });
 
             if (existingAddress) {
-                // Address already exists, handle accordingly
-                // req.flash('address', 'This Address already existed');
+                
                 return res.redirect('/addAddress');
             }
 
@@ -59,7 +123,6 @@ const checkoutreload = async (req, res) => {
         }
 
         const categories = await categoryModel.find();
-        const cartId = req.body.cartId;
         const addresslist = await userModel.findOne({ _id: userId });
 
         if (!addresslist) {
@@ -93,7 +156,7 @@ const checkoutreload = async (req, res) => {
 
         console.log('Cart Total:', cart.total);
 
-        res.render('users/checkout', { addresses, cartItems, categories, cart });
+        res.render('users/checkout', { availableCoupons,addresses, cartItems, categories, cart });
     } catch (err) {
         console.error(err);
         res.status(500).send('Error occurred');

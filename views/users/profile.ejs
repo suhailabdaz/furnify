@@ -19,6 +19,20 @@
   <title>Profile-Furnify</title>
 
   <style>
+   
+    .routes{
+      color:rgb(63, 62, 62);
+
+     
+
+  text-decoration: none;
+    }
+    .routes:hover{
+      background-color: #51826f;
+      color: #F0EAD6;
+      
+    }
+   
     .username{
         font-weight: 600;
         color: #F0EAD6;
@@ -68,106 +82,74 @@
 
 <body>
 
-  <!-- Start Header/Navigation -->
-  <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
+  <%-include('userpartials/nav')%>
 
-    <div class="container">
-      <a class="navbar-brand" href="/">Furnify<span>.</span></a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarsFurni">
-        <div class="search-bar">
-          <input type="text" class="search-input" placeholder="Search...">
-          <button class="search-button"><img src="images/searcharrow.png"></button>
-        </div>
-
-        <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-          <li><a class="nav-link" href="/"><img src="images/homesvg.svg"></a></li>
-          <li><a class="nav-link" href="/userprofile"><img src="images/user.svg"></a></li>
-          <li><a class="nav-link" href="/cartpage"><img src="images/cart.svg"></a></li>
-        </ul>
-      </div>
-    </div>
-
-  </nav>
-  <div class="select-line" style="background-color: #3b5d50;">
-    <ul class="custom-horizontal-list navbar-nav ms-auto mb-2 mb-md-0" style="display: flex; list-style: none; flex-direction: row; justify-content: center; gap: 23px;">
-        <% categories.filter(category => category.status !== false).forEach(category => { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/shop?category=<%= category._id %>" style="color: #F0EAD6; font-size: 150%;">
-                <%= category.name %>
-              </a>
-            </li>
-          <% }); %>
-          
-    </ul>
-</div>
   <!-- End Header/Navigation -->
 
   <!-- Start Hero Section -->
-  <div class="hero">
-    <div class="container">
+  <div class="hero mb-5" style="height:20vh;" >
+    <div class="container ">
         <div class="row justify-content-between">
             <div class="col-lg-5">
-                <div class="intro-excerpt">
-                    <h2 class="welcome">Welcome,<span class="username"><%=name%></span></h2>
+              <div class="d-flex align-items-center">
+                <div  class="intro-excerpt">
+                  
+                    <h2 style="font-size: 60px;" class="welcome">Welcome,<span class="username"><%=name%></span></h2>
                 </div>
-            </div>
-            <div class="col-lg-7">
+                <div>
+                      <form style="margin-left: 30vh;" method="get"action="/logout">
+                    <button style="background-color: #3b5d50;border: solid 5px #efeeee; font-size: 20px;" class="btn btn-danger">Logout</button>
+                  </form>
+                </div>
                 
             </div>
+           </div>
         </div>
     </div>
 </div>
 <!-- End Hero Section -->
 
   <!-- User Profile Page Content -->
-  <div class="container mt-4">
+  <div  class="container mt-5 mb-5" >
     
 
     <!-- User Details Section -->
-    <a href="/userdetails"><section class="user-details-section mt-4">
-      <h3>User Details</h3>
-      <!-- Add user details content here -->
-    </section></a>
+    <section class="user-details-section mt-4">
+      <a href="/userdetails">
+      <h3  style=" font-size: 50px;"><a class=" routes" href="/userdetails">User Details </a></h3>
+   
+    </section>
 
     <!-- Favorites Section -->
-    <a href="/favouritespage">
+   
     <section class="favorites-section mt-4">
-      <h3>Favorites</h3>
+      <h3  style="font-size: 50px;"> <a class="routes" href="/favouritespage">Favorites</a></h3>
       <!-- Add favorites content here -->
     </section>
     </a>
 
     <!-- Your Cart Section -->
-    <a href="/cartpage">
+   
     <section class="your-cart-section mt-4">
-      <h3>Your Cart</h3>
+      <h3  style="font-size: 50px;"> <a class="routes" href="/cartpage">Your Cart</a></h3>
       <!-- Add cart content here -->
     </section></a>
 
     <!-- Your Orders Section -->
-    <a href="/orderHistory">
+   
     <section class="your-orders-section mt-4">
-      <h3>Your Orders</h3>
+      <h3  style="font-size: 50px;"> <a class="routes" href="/orderHistory">Your Orders</a></h3>
       <!-- Add orders content here -->
     </section></a>
 
-    <a href="/wallet">
+    
       <section class="your-orders-section mt-4">
-        <h3>Your Wallet</h3>
+        <h3 style="font-size: 50px;"><a class="routes" href="/wallet">Your Wallet</a></h3>
         <!-- Add orders content here -->
       </section></a>
 
     <!-- Logout Button -->
-    <section class="logout-section mt-4">
-        <form method="get"action="/logout">
-      <button class="btn btn-danger">Logout</button>
-    </form>
-    </section>
+    
   </div>
   <!-- End User Profile Page Content -->
 

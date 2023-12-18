@@ -1,6 +1,6 @@
 const bnameValid=(fullname)=>{
     nameRegex=/^[A-Za-z]+$/
-    return fullname.length >1 && nameRegex.test(firstname)
+    return fullname.length >1 && nameRegex.test(fullname)
 }
 
 const adphoneValid=(phone)=>{

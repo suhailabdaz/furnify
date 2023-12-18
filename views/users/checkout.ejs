@@ -168,6 +168,7 @@
 					<% } else { %>
 						<p>No addresses found.</p>
 					<% } %>
+					
 				
 		        
 
@@ -182,11 +183,24 @@
 
 
 		            <div class="form-group">
+
 		              <label for="c_ship_different_address" class="text-black" data-bs-toggle="collapse" href="#ship_different_address" role="button" aria-expanded="false" aria-controls="ship_different_address"><input type="checkbox" value="1" id="c_ship_different_address">Add a new Address</label>
 		              <div class="collapse" id="ship_different_address">
 						<div class="suso container mt-4">
 							<div class="edit-profile-form">
+								
+								
 							  <h2>Add New Address</h2>
+							  
+							  <p style="font-weight: 600; color: red;">!! The Address May not be saved if you enter invalid details </p>
+							
+							
+							
+							
+							
+							
+			
+							  
 						  
 							  <form action="/checkoutreload" id="addressForm" method="post" class="row">
 							 
@@ -222,14 +236,22 @@
 								</div>
 						  
 								<div class="form-group col-md-6">
-								  <label for="state">State</label>
-								  <input type="text" id="state" name="state" class="form-control">
-								</div>
+									<label for="state">State</label>
+									<select id="state" name="state" class="form-control" required>
+									  <option value="" disabled selected>Select a state</option>
+									  <option value="Kerala">Kerala</option>
+									  <option value="Karnataka">Karnataka</option>
+									  <option value="TamilNadu">Tamil Nadu</option>
+									</select>
+								  </div>
 						  
-								<div class="form-group col-md-6">
-								  <label for="country">Country</label>
-								  <input type="text" id="country" name="country" class="form-control">
-								</div>
+								  <div class="form-group col-md-6">
+									<label for="country">Country</label>
+									<select id="country" name="country" class="form-control" required>
+									  <option value="India">India</option>
+									</select>
+								  </div>
+								  
 						  
 								<div class="form-group col-md-6">
 								  <label for="phone">Phone Number</label>
@@ -242,6 +264,8 @@
 								  <button id="saveChangesButton" type="submit" class="btn btn-primary">Save Changes</button>
 								</div>
 							  </form>
+							
+							  
 							</div>
 						  </div>
 

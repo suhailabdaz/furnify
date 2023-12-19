@@ -13,7 +13,8 @@ const {bnameValid,
   pincodeValid,
   }=require("../../utils/validators/address_Validators")
 const Razorpay=require("razorpay")
-const {key_id,key_secret}=require("../../.env")
+const key_id=process.env.key_id;
+const key_secret=process.env.key_secret
 
 const checkoutreload = async (req, res) => {
     try {

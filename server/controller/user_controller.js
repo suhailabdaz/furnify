@@ -15,11 +15,12 @@ const {nameValid,
     phoneValid,
     passwordValid,
     confirmpasswordValid}=require("../../utils/validators/signup_Validators")
-const { Email, pass } = require('../../.env');
+const Email=process.env.Email
+const pass=process.env.pass
 const otpModel = require("../model/user_otp_model");
 const { category } = require("./admin_controller");
 const bannerModel = require("../model/banner_model");
-console.log(Email,pass)
+
 
 
 

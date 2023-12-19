@@ -241,6 +241,14 @@ hr {
     margin-bottom: 0;
 }
 
+.rating-container {
+    font-weight:700;
+    border: 1px solid #efeeee;
+    border-radius: 8px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
     </style>
 </head>
 
@@ -265,9 +273,15 @@ hr {
 
             <!-- Product Details Section -->
             <div class="product-details-section">
-                <h1><%= product.name %></h1>
+                <div class="row">
+                <h1 class="col-6"><%= product.name %></h1>
+                <p class="col-6 d-flex justify-content-end">
+                    <span id="ratingContainer"class="rating-container">
+                      ★&nbsp;<span id="avgrating"><%= averageRating %> </span>&nbsp;<span>(<%= totalRatings %>)</span>
+                    </span>
+                  </p>
+            </div>
                 <p class="price"><span style="text-decoration: line-through;color: #857b79;">Rs.<%= product.mrp.toFixed(2) %></span>&nbsp;&nbsp;&nbsp;Rs.<%= product.price.toFixed(2) %></p>
-                <p><strong>Rating:</strong> <%= averageRating %> <%= '★'.repeat(Math.floor(averageRating)) + (averageRating % 1 !== 0 ? '½' : '') %><span class="mt-1"> (<%= totalRatings %>)</span></p>
 
                 <div class="description">
                     <p><strong>Description:</strong></p>
@@ -419,6 +433,22 @@ hr {
     if (nextButton) {
         nextButton.innerHTML = '>'; 
     }
+
+    if (prevButton && nextButton) {
+            prevButton.style.background = 'black'; // Set your desired background color
+            prevButton.style.color = 'white'; // Set your desired text color
+            // Similarly, you can style the nextButton
+            nextButton.style.background = 'black';
+            nextButton.style.color =  'white';
+
+            // Positioning adjustments
+            
+           
+
+            prevButton.style.left = '10px'; // Adjust the left position as needed
+
+            nextButton.style.right = '10px'; // Adjust the right position as needed
+        }
         });
 
 
@@ -436,6 +466,31 @@ hr {
             }
         });
     </script>
+    
+    <script>
+        // Get the average rating from your server-side logic or any source
+        const aveRating = parseFloat(document.getElementById('avgrating').innerText);
+
+        console.log(aveRating);
+      
+        // Get the rating container element
+        const ratingContainer = document.getElementById('ratingContainer');
+      
+        // Set the background color based on the average rating
+        if (aveRating > 4) {
+          ratingContainer.style.backgroundColor = 'green';
+          ratingContainer.style.color = 'white';
+
+        } else if (aveRating >= 3 && aveRating <= 3.9) {
+          ratingContainer.style.backgroundColor = "yellow";
+        } else if (aveRating >= 2 && aveRating <= 2.9) {
+          ratingContainer.style.backgroundColor = 'orange';
+        } else if (aveRating >= 0 && aveRating <= 1.9) {
+          ratingContainer.style.backgroundColor = 'red';
+          ratingContainer.style.color = 'white';
+
+        }
+      </script>
     
 
     

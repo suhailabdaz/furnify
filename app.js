@@ -1,4 +1,6 @@
 const express=require("express")
+require('dotenv').config()
+
 const session=require('express-session')
 const mongoose = require("mongoose")
 const multer=require("multer")
@@ -11,10 +13,19 @@ const sharp=require('sharp')
 const nocache=require("nocache")
 const flash=require("express-flash")
 
-require('dotenv').config
+
+const port=process.env.PORT
+
+const MONGO_URL=process.env.MONGO_URL
+
+
+
+console.log("url",MONGO_URL);
+
+mongoose.connect(MONGO_URL);
+
 
 const app=express()
-const port=3000
 app.use(nocache())
 app.use(session({
   secret: 'your-secret-key', 

@@ -7,7 +7,11 @@ const cartModel=require('../model/cart_model')
 const Razorpay=require("razorpay")
 const bcrypt=require("bcrypt")
 const puppeteer=require('puppeteer')
-const {key_id,key_secret}=require("../../.env")
+const key_id=process.env.key_id;
+const key_secret=process.env.key_secret;
+
+const instance=new Razorpay({key_id:key_id,key_secret:key_secret})
+
 
 const {nameValid,
     lnameValid,
@@ -898,7 +902,6 @@ const wallet = async (req, res) => {
 
 
 
-const instance=new Razorpay({key_id:key_id,key_secret:key_secret})
 
 const walletupi = async (req, res) => {
   console.log('body:', req.body);
@@ -909,7 +912,7 @@ const walletupi = async (req, res) => {
   };
   instance.orders.create(options, function (err, order) {
       console.log("order1 :", order);
-      res.send({ orderId: order.id })
+      res.send({ orderId: order.id})
     })
 }
 

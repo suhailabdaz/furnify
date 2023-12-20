@@ -18,10 +18,6 @@ const port=process.env.PORT
 
 const MONGO_URL=process.env.MONGO_URL
 
-
-
-console.log("url",MONGO_URL);
-
 mongoose.connect(MONGO_URL);
 
 

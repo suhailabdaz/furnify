@@ -62,6 +62,10 @@ adrouter.get('/deleteBanner/:id',auth.loggedadmin,banner_controller.deleteBanner
 adrouter.get('/couponList',auth.loggedadmin,coupon_controller.couponList)
 adrouter.get('/newcoupon',auth.loggedadmin,coupon_controller.addcouponpage)
 adrouter.post('/add_coupon',auth.loggedadmin,coupon_controller.createCoupon)
+adrouter.get('/unlistCoupon/:id',auth.loggedadmin,coupon_controller.unlistCoupon)
+adrouter.get('/editCouponGet/:id',auth.loggedadmin,coupon_controller.editCouponPage)
+adrouter.post('/updateCoupon',auth.loggedadmin,coupon_controller.updateCoupon)
+
 
 
 adrouter.get('/bannerList',auth.loggedadmin,banner_controller.bannerList)

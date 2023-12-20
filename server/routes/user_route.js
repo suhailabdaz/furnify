@@ -107,10 +107,14 @@ usrouter.post('/walletcreate/orderId',auth.islogged,profile_controller.walletupi
 
 usrouter.post('/walletTopup',auth.islogged,profile_controller.walletTopup)
 
+usrouter.get("/Rewards",auth.islogged,profile_controller.couponsAndRewards)
 
 //checkoutsection
 
 usrouter.post("/applyCoupon",checkout_controller.applyCoupon)
+
+usrouter.post("/revokeCoupon",checkout_controller.revokeCoupon)
+
 
 usrouter.post('/checkoutreload',auth.islogged,checkout_controller.checkoutreload)
 

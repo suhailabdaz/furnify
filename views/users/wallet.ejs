@@ -120,7 +120,7 @@
            
           </div>
           <form id="orderForm" style="font-family: 'Arial', sans-serif;">
-            <input type="number" id="Amount" name="Amount" style="border: 1px solid #ccc; padding: 8px; font-weight: bold; margin-right: 10px;">
+            <input type="number" id="Amount" name="Amount" placeholder="Enter Amount .." style="border: 1px solid #ccc; padding: 8px; font-weight: bold; margin-right: 10px;">
             <button onclick="RazorpayWallet(event)" style="background-color: #fff; color: #333; border: 1px solid #ccc; padding: 10px; font-weight: bold; cursor: pointer;">Add To Wallet</button>
         </form>
         
@@ -134,19 +134,21 @@
   <!-- End Hero Section -->
 
   
-    <div style="text-align: center;">
-      <section class="user-details-section mt-4 section-container">
-        <div style="display: inline-block; text-align: center; margin-left: 32%;">
-          <h1>Wallet&nbsp;:&nbsp;</h4>
-            <h1 style="display: inline-block; font-size: 50px;text-align: center;"><span>Rs.&nbsp;</span><span style="font-weight: bolder;"><%= userWallet %></span></h1>
+    <div >
+      <section class="user-details-section mt-4 section-container d-flex justify-content-center">
+        <div >
+         
+            <h1 ><span>Wallet&nbsp;Balance&nbsp;:&nbsp;Rs.&nbsp;</span><span style="font-weight: bolder;"><%= userWallet %></span></h1>
         </div>
         
  
       </section>
     </div>
+    <div class="d-flex justify-content-center">
+      <h1 >Wallet history</h1><br>
+      </div>
 
-      <section  class="user-details-section mt-4 section-container">
-          <h1 style="text-align: center;">Wallet history&nbsp;</h1>
+      <section  class="user-details-section mt-4 section-container d-flex justify-content-center">
             <table class="responsive-table">
               <thead>
                 <tr>

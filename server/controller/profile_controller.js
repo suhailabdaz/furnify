@@ -897,6 +897,16 @@ const wallet = async (req, res) => {
     }
 };
 
+const couponsAndRewards=async (req,res)=>{
+    try{
+        res.render('users/rewardsPage')
+    }
+    catch(err){
+        console.log(err);
+        res.send(err)
+    }
+}
+
 
 
 
@@ -949,4 +959,5 @@ const walletTopup= async(req,res)=>{
 
 module.exports={userdetails,profileEdit,profileUpdate,newAddress,addressUpdate,changepassword
 ,editaddress,updateAddress,deleteAddress,orderHistory,ordercancelling,
-singleOrderPage,orderreturning,downloadInvoice,wallet,walletupi,walletTopup,itemcancelling,itemreturning}
+singleOrderPage,orderreturning,downloadInvoice,wallet,walletupi,walletTopup,itemcancelling,itemreturning,
+couponsAndRewards}

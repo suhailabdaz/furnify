@@ -251,7 +251,8 @@ const checkoutpage = async (req, res) => {
     const userId = req.session.userId;
     const user = await usersModel.findById(userId);
     const availableCoupons = await couponModel.find({
-      couponCode: { $nin: user.usedCoupons }
+      couponCode: { $nin: user.usedCoupons },
+      status:true
     });
     console.log("coupons",availableCoupons);
 

@@ -288,20 +288,30 @@ const applyCoupon = async (req, res) => {
     const coupon = await couponModel.findOne({ couponCode: couponCode });
     console.log(coupon);
     
-    if (coupon) {
-        // Coupon is not null
+    if (coupon&&coupon.status===true) {
 
         const user = await userModel.findById(userId);
 
         if (user && user.usedCoupons.includes(couponCode)) {
-          // User has already used this coupon
           console.log("nvjksadnjkghakjvajkvnasdmvbasfhvb");
           res.json({ success: false, message: "Already Redeemed" });
         }
         else if (coupon.expiry > new Date() && coupon.minimumPrice <= subtotal) {
             console.log("Coupon is valid");
-            const dicprice = (subtotal * coupon.discount) / 100;
-            const price = subtotal - dicprice;
+            let dicprice;
+            let price;
+            if(coupon.type==="percentageDiscount"){
+              dicprice = (subtotal * coupon.discount) / 100;
+              if(dicprice>=coupon.maxRedeem){
+                dicprice=coupon.maxRedeem
+              }
+              price = subtotal - dicprice;
+            }else if(coupon.type==="flatDiscount"){
+              dicprice=coupon.discount
+              price=subtotal-dicprice
+
+            }
+            
             console.log(price);
 
             await userModel.findByIdAndUpdate(
@@ -314,7 +324,6 @@ const applyCoupon = async (req, res) => {
             res.json({ success: false, message: "Invalid Coupon" });
         }
     } else {
-        // Coupon is null
         res.json({ success: false, message: "Coupon not found" });
     }
     
@@ -324,6 +333,48 @@ const applyCoupon = async (req, res) => {
     }
 }
 
+const revokeCoupon=async(req,res)=>{
+  try{
+
+    const { couponCode, subtotal } = req.body;
+    const userId=req.session.userId
+    const coupon = await couponModel.findOne({ couponCode: couponCode });
+    console.log(coupon);
+    
+    if (coupon) {
+
+        const user = await userModel.findById(userId);
+
+       
+        if (coupon.expiry > new Date() && coupon.minimumPrice <= subtotal) {
+            console.log("Coupon is valid");
+            const dprice = (subtotal * coupon.discount) / 100;
+            const dicprice = 0;
+
+            const price = subtotal;
+            console.log(price);
+
+            await userModel.findByIdAndUpdate(
+              userId,
+              { $pull: { usedCoupons: couponCode } },
+              { new: true }
+            );
+            res.json({ success: true, dicprice, price });
+        } else {
+            res.json({ success: false, message: "Invalid Coupon" });
+        }
+    } else {
+        res.json({ success: false, message: "Coupon not found" });
+    }
+    
+
+  }
+  catch(err){
+    console.log(err);
+    res.send(err)
+  }
+}
+
 
 
   module.exports={
@@ -331,5 +382,6 @@ const applyCoupon = async (req, res) => {
     placeOrder,
     upi,
     applyCoupon,
+    revokeCoupon,
     wallettransaction
   }

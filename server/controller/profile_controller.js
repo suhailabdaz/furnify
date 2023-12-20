@@ -2,6 +2,7 @@ const categoryModel=require('../model/category_model')
 const userModel=require('../model/user_model')
 const orderModel=require('../model/order_model')
 const productModel=require('../model/product_model')
+const couponModel=require("../model/coupon_model")
 const walletModel=require('../model/wallet_model')
 const cartModel=require('../model/cart_model')
 const Razorpay=require("razorpay")
@@ -899,7 +900,16 @@ const wallet = async (req, res) => {
 
 const couponsAndRewards=async (req,res)=>{
     try{
-        res.render('users/rewardsPage')
+
+        const userId = req.session.userId;
+        console.log(userId);
+        const user = await userModel.findById(userId);
+        const coupons = await couponModel.find({
+          couponCode: { $nin: user.usedCoupons },
+          status:true
+        });
+        const categories=await categoryModel.find()
+        res.render('users/rewardsPage',{categories,coupons,referralCode:userId})
     }
     catch(err){
         console.log(err);

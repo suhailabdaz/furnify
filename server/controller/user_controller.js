@@ -20,6 +20,7 @@ const pass=process.env.pass
 const otpModel = require("../model/user_otp_model");
 const { category } = require("./admin_controller");
 const bannerModel = require("../model/banner_model");
+const walletModel = require("../model/wallet_model");
 
 
 
@@ -313,6 +314,7 @@ const signupotp = async (req, res) => {
         const phone = req.body.phone
         const password = req.body.password
         const cpassword = req.body.confirm_password
+        const referralCode=req.body.referralCode
 
         const isfnameValid = nameValid(firstname)
         const islnameValid=lnameValid(lastname)
@@ -368,6 +370,7 @@ const signupotp = async (req, res) => {
         else {
             const hashedpassword = await bcrypt.hash(password, 10)
             const user = new usersModel({firstname:firstname,lastname:lastname, email: email, mobileNumber: phone, password: hashedpassword })
+            req.session.referralCode=referralCode
             req.session.user = user
             req.session.signup = true
             req.session.forgot = false
@@ -439,6 +442,41 @@ const verifyotp = async (req, res) => {
                 req.session.userId = userdata._id;
                 req.session.isAuth=true
                 req.session.otppressed=false
+                const referral=req.session.referralCode
+                console.log("referal",referral);
+                const winner=await walletModel.findOne({userId:referral})
+                console.log("winner",winner);
+                if (winner) {
+                    // Update the user's wallet by adding 50
+                    const updatedWallet = winner.wallet + 50;
+                
+                    // Update the user's wallet in the database
+                    await walletModel.findOneAndUpdate(
+                        { userId: referral },
+                        { $set: { wallet: updatedWallet } },
+                        { new: true }
+                    );
+                
+                    // Optionally, you can also add a transaction record to the walletTransactions array
+                    const transaction = {
+                        date: new Date(),
+                        type: "Credited", // Assuming you want to record a credit transaction
+                        amount: 50,
+                    };
+                
+                    // Push the transaction to the walletTransactions array
+                    await walletModel.findOneAndUpdate(
+                        { userId: referral },
+                        { $push: { walletTransactions: transaction } },
+                        { new: true }
+                    );
+                
+                    console.log("Added 50 to the user's wallet.");
+                } else {
+                    console.log("User not found with the provided referral code.");
+                }
+
+
                 res.redirect('/')
                 }
                 else if(req.session.forgot){

@@ -478,7 +478,12 @@
 		  
 			  document.body.removeChild(tempInput);
 		  
-			  alert('Coupon code copied to clipboard: ' + couponCode);
+			  Swal.fire({
+                    icon: 'success',
+                    title: 'Copied!',
+                    showConfirmButton: false,
+                    timer: 1000, // 1 second
+                });
 			}
 		  
 			document.addEventListener('DOMContentLoaded', function () {

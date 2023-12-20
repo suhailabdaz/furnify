@@ -184,7 +184,7 @@ const bannerURL=async(req,res)=>{
         else if(banner.label=="coupon"){
             const couponId=new mongoose.Types.ObjectId(banner.bannerlink)
             const  coupon=await couponModel.findOne({_id: couponId})
-            res.redirect("/profile")
+            res.redirect("/Rewards")
         
         }
         else{

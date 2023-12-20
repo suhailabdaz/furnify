@@ -18,8 +18,6 @@ const couponSchema=new mongoose.Schema({
     },
     discount:{
         type:Number,
-        min:0,
-        max:100,
         required:true
     },
     maxRedeem:{

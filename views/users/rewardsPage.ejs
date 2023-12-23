@@ -161,7 +161,6 @@
             button.addEventListener('click', function () {
                 const couponCode = this.getAttribute('data-coupon-code');
                 
-                // Create a temporary input element to copy the coupon code
                 const tempInput = document.createElement('input');
                 tempInput.setAttribute('value', couponCode);
                 document.body.appendChild(tempInput);
@@ -169,7 +168,6 @@
                 document.execCommand('copy');
                 document.body.removeChild(tempInput);
 
-                // Display a brief "Copied!" message using SweetAlert2
                 Swal.fire({
                     icon: 'success',
                     title: 'Copied!',

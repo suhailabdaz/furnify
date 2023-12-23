@@ -18,7 +18,16 @@ const port=process.env.PORT
 
 const MONGO_URL=process.env.MONGO_URL
 
-mongoose.connect(MONGO_URL);
+
+
+mongoose
+.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(()=>{
+  console.log("connect aayi mwone");
+})
+.catch((err)=>{
+  console.log(err);
+})
 
 
 const app=express()

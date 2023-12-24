@@ -155,7 +155,6 @@ const sortProducts=async (req,res)=>{
 const singleproduct=async(req,res)=>{
     try{
         const id=req.params.id
-        console.log("haywan",id);
         const product = await productModel
         .findOne({ _id: id })
         .populate({
@@ -255,7 +254,7 @@ const logout= async(req, res) => {
 const signup=async(req,res)=>{
     console.log("hhhhh");
     
-    req.session.otppressed=true
+    
     res.render("users/signup",
         {
             expressFlash: {
@@ -393,6 +392,7 @@ const options = { upsert: true };
 await otpModel.updateOne(filter, update, options);
 
             await sendmail(email, otp)
+            req.session.otppressed=true
             res.redirect('/otp')
         }
     }
@@ -438,6 +438,7 @@ const verifyotp = async (req, res) => {
             try {
                 if(req.session.signup){
                 await usersModel.create(user)
+
                 const userdata = await usersModel.findOne({ email: email });
                 req.session.userId = userdata._id;
                 req.session.isAuth=true
@@ -447,24 +448,20 @@ const verifyotp = async (req, res) => {
                 const winner=await walletModel.findOne({userId:referral})
                 console.log("winner",winner);
                 if (winner) {
-                    // Update the user's wallet by adding 50
                     const updatedWallet = winner.wallet + 50;
                 
-                    // Update the user's wallet in the database
                     await walletModel.findOneAndUpdate(
                         { userId: referral },
                         { $set: { wallet: updatedWallet } },
                         { new: true }
                     );
                 
-                    // Optionally, you can also add a transaction record to the walletTransactions array
                     const transaction = {
                         date: new Date(),
-                        type: "Credited", // Assuming you want to record a credit transaction
+                        type: "Credited", 
                         amount: 50,
                     };
                 
-                    // Push the transaction to the walletTransactions array
                     await walletModel.findOneAndUpdate(
                         { userId: referral },
                         { $push: { walletTransactions: transaction } },
@@ -478,10 +475,12 @@ const verifyotp = async (req, res) => {
 
 
                 res.redirect('/')
+                req.session.otppressed=false
                 }
                 else if(req.session.forgot){
                     req.session.newpasspressed=true
                     res.redirect('/newpassword')
+                    req.session.otppressed=false
                 }
             }
             catch (error) {

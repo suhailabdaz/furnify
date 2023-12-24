@@ -872,7 +872,7 @@ const downloadInvoice = async (req, res) => {
 
     res.send(pdfBuffer);
     
-  } catch (error) {
+  } catch (error) {   
     console.error('Error generating PDF:', error);
     res.status(500).send('Internal Server Error');
   }
@@ -936,8 +936,6 @@ const walletupi = async (req, res) => {
     })
 }
 
-  
-  
 const walletTopup= async(req,res)=>{
     try {
         const userId = req.session.userId;

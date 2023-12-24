@@ -347,8 +347,9 @@ hr {
 
     
         <div class="user-ratings-section" id="ratingsSection" style="display: none;">
-            <div class="row">
 
+            <div class="row">
+                <% if (locals.product.userRatings && product.userRatings.length > 0) { %>
                 <% product.userRatings.forEach(userRating => { %>
                     <div class=" col-md-4 col-lg-6 " >
                         <div class="user-rating">
@@ -361,6 +362,9 @@ hr {
                         </div>
                     </div>
                 <% }); %>
+
+                <% } %>
+
             </div>
         </div>
     </div>

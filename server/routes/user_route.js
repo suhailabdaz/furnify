@@ -23,7 +23,7 @@ usrouter.get('/singleproduct/:id',user_controller.singleproduct)
 
 usrouter.get("/profile",user_controller.profile)
 
-usrouter.get("/signup",auth.checkSessionVariable('signupPressed','/'),user_controller.signup)
+usrouter.get("/signup",auth.iflogged,user_controller.signup)
 
 usrouter.post("/signupotp",auth.iflogged,user_controller.signupotp)
 
@@ -53,7 +53,7 @@ usrouter.get('/deletcart/:id/',auth.islogged,cart_controller.deletecart)
 
 usrouter.post('/update-cart-quantity/:productId',auth.islogged,cart_controller.updatecart)
 
-usrouter.get('/checkoutpage',auth.islogged,cart_controller.checkoutpage)
+usrouter.get('/checkoutpage',auth.checkSessionVariable('checkout','/'),cart_controller.checkoutpage)
 
 // profile Selection
 

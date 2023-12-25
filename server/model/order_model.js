@@ -1,10 +1,10 @@
 const mongoose=require('mongoose')
-const shortid=require('shortid')
+
+
 
 const orderschema=mongoose.Schema({
     orderId:{
         type:String,
-        default:shortid.generate,
         unique:true
         },
         userId:{

@@ -9,7 +9,7 @@ const usrouter=require("./server/routes/user_route")
 const adrouter=require("./server/routes/admin_route")
 const path=require("path")
 const ejs=require("ejs")
-const sharp=require('sharp')
+
 const nocache=require("nocache")
 const flash=require("express-flash")
 

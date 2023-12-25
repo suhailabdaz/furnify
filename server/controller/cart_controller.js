@@ -39,9 +39,11 @@ const showcart = async (req, res) => {
               total: 0,
             });
       }
-      console.log(cart)
+      
+      req.session.checkout=true
 
       res.render('users/cart.ejs', { cart, categories });
+    
   } catch (err) {
       console.error(err);
       res.status(500).send('Error occurred');

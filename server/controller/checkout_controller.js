@@ -6,7 +6,9 @@ const productModel=require('../model/product_model')
 const couponModel=require('../model/coupon_model')
 const walletModel=require('../model/wallet_model')
 const bcrypt=require("bcrypt")
-const shortid=require("shortid")
+const ShortUniqueId = require('short-unique-id');
+const uid = new ShortUniqueId({ length: 10 });
+
 const mongoose=require("mongoose")
 const {bnameValid,
   adphoneValid,
@@ -195,7 +197,7 @@ const placeOrder = async (req, res) => {
     }));
 
     const order = new orderModel({
-      orderId: shortid.generate(),
+      orderId:uid.rnd(),
       userId: userId,
       userName: username,
       items: items,

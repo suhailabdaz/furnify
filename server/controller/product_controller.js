@@ -2,7 +2,7 @@ const fs=require('fs')
 const path=require('path')
 const productModel = require('../model/product_model')
 const categoryModel = require('../model/category_model')
-const sharp=require('sharp')
+
 
 
 const products = async (req, res) => {

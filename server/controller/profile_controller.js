@@ -882,7 +882,7 @@ const wallet = async (req, res) => {
     try {
     const userId = req.session.userId;
     const categories = await categoryModel.find({});
-    const user = await walletModel.findOne({ userId: userId }).sort({ 'walletTransactions.date': -1});
+    let user = await walletModel.findOne({ userId: userId }).sort({ 'walletTransactions.date': -1});
     
     if (!user) {
         user = await walletModel.create({ userId: userId });

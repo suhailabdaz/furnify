@@ -7,9 +7,9 @@
                 <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
                     <a href="/bannerURL?id=<%= banner._id %>">
                     <img src="<%= banner.image.url %>" class="d-block w-100 sliderimg" alt="<%= banner.title %>">
-                    <div class="carousel-caption d-none d-md-block" style="color: <%= (banner.color !== undefined && banner.color !== null) ? banner.color : '#fff' %>;">
+                    <div class="carousel-caption d-none d-md-block btitle" style="color: <%= (banner.color !== undefined && banner.color !== null) ? banner.color : '#fff' %>;">
                     
-                        <h1 style="font-size: 120px;"><%= banner.title %></h1>
+                        <h1 style="font-size: 10vw;"><%= banner.title %></h1>
                         <h3><%= banner.subtitle %></h3>
                     </div>
                 </a>

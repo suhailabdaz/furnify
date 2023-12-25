@@ -25,7 +25,7 @@ usrouter.get("/profile",user_controller.profile)
 
 usrouter.get("/signup",auth.iflogged,user_controller.signup)
 
-usrouter.post("/signupotp",auth.iflogged,user_controller.signupotp)
+usrouter.post("/signupotp",user_controller.signupotp)
 
 usrouter.get('/otp',auth.checkSessionVariable('otppressed','/'),user_controller.otp)
 

@@ -1,4 +1,5 @@
 		<!-- Start Header/Navigation -->
+		
 		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
 			<div class="container">
@@ -8,8 +9,8 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
-				<div class="collapse navbar-collapse" id="navbarsFurni">
-				<div class="search-bar">
+				<div class="collapse navbar-collapse " id="navbarsFurni">
+				<div class="search-bar ">
 					<form action="/searchProducts"method='post'>
 						<input name="searchProducts" type="text" class="search-input" placeholder="Search...">
 						<button class="search-button"><img src="/images/searcharrow.png"></button>
@@ -18,20 +19,20 @@
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 						<li><a class="nav-link" href="/"><img src="/images/homesvg.svg"></a></li>
-						<li><a class="nav-link" href="/profile"><img src="/images/user.svg"></a></li>
 						<li><a class="nav-link" href="/cartpage"><img src="/images/cart.svg"></a></li>
+						<li><a class="nav-link" href="/profile"><img src="/images/user.svg"></a></li>
 					</ul>
 				</div>
 			</div>
 			
            
-				
 		</nav>
-		<div class="select-line" style="background-color: #3b5d50;">
-			<ul class="custom-horizontal-list navbar-nav ms-auto mb-2 mb-md-0" style="display: flex; list-style: none; flex-direction: row; justify-content: center; gap: 23px;">
+		
+		<div class="select-line justify-content-center "  >
+			<ul class="custom-horizontal-list navbar-nav ms-auto mb-2 mb-md-0" style="display: flex; list-style: none; flex-direction: row; justify-content: center; gap:1.5vw;   ">
 				<% categories.filter(category => category.status !== false).forEach(category => { %>
 					<li class="nav-item">
-					  <a class="nav-link" href="/shop?category=<%= category._id %>" style="color: #F0EAD6; font-size: 150%;">
+					  <a class="nav-link" id="cat-link" href="/shop?category=<%= category._id %>" style="color: #F0EAD6; font-size: 1.75vw;">
 						<%= category.name %>
 					  </a>
 					</li>
@@ -39,3 +40,5 @@
 				  
 			</ul>
 		</div>
+		
+	

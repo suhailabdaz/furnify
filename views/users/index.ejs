@@ -21,8 +21,42 @@
   <meta name="keywords" content="bootstrap, bootstrap4" />
   <style>
 
+
+
+
+	/* Default style for select-line */
+.select-line {
+    background-color: #3b5d50;
+}
+
+/* Media query for small screens (e.g., mobile devices) */
+@media (max-width: 767px) {
+    .select-line {
+        height: 8vw; /* Set the height for small screens */
+		align-items: start;
+		margin-top: 0.1px;
+    }
+}
+
+/* Media query for medium screens (e.g., tablets) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .select-line {
+        height: 6vw; /* Set the height for medium screens */
+    }
+}
+
+/* Media query for large screens (e.g., desktops) */
+@media (min-width: 992px) {
+    .select-line {
+        height: 4vw; /* Set the height for large screens */
+    }
+}
+
+
+
+
 	.sliderimg{
-		height: 600px!important;
+		height: 37vw;
 		object-fit: cover;
 	}
     .category-options {
@@ -44,10 +78,15 @@
     .search-input {
       border: none;
       padding: 10px;
-      width: 800px;
       background-color: #3b5d50;
       color: white;
     }
+	@media (min-width: 1200px) {
+  /* Set the width to 110vh for devices with a minimum width of 1200px */
+  .search-input {
+    width: 110vh;
+  }
+}
 
     .search-button {
       background-color: #3d5d50;
@@ -86,7 +125,7 @@
 				<% categories.filter(category => category.status !== false).forEach(category => { %>
 				  <div class="product-item vertical">
 					<a href="/shop?category=<%= category._id %>">
-					  <h1 style="font-size: 70px;" class="product-title"><%= category.name %></h1>
+					  <h1 style="font-size: 5.3vw;" class="product-title"><%= category.name %></h1>
 					</a>
 				  </div>
 				<% }); %>
@@ -178,9 +217,7 @@
 		<footer class="footer-section">
 			<div class="container relative">
 
-				<div class="sofa-img">
-					<img src="images/sofa.png" alt="Image" class="img-fluid">
-				</div>
+				
 
 				<div class="row">
 					<div class="col-lg-8">
@@ -304,7 +341,7 @@
 			document.addEventListener('DOMContentLoaded', function () {
 				setInterval(function() {
 					document.querySelector('.carousel-control-next').click();
-				}, 5000);
+				}, 10000);
 			});
 		</script>
 		</body>

@@ -180,12 +180,12 @@
 
 		<div class="untree_co-section product-section before-footer-section">
 		    <div class="container">
-				<div class="row">
+				<div class="row" >
 					
 					<% products.forEach(product => { %>
-					  <div class="col-12 col-md-4 col-lg-3 mb-5 product-item" >
+					  <div class="col-md-4 col-lg-3 col-sm-6 mb-5 product-item">
 						<a class="product-item" href="/singleproduct/<%= product._id %>" data-types="<%= product.type %>">
-						  <img src="<%= product.images[0] %>" class="img-fluid product-thumbnail" style="width: 100%; height: 200px;object-fit: cover;";>
+						  <img src="<%= product.images[0] %>" class="img-fluid product-thumbnail" style="width: 100%; height: 40vh;object-fit: cover;";>
 						  <h3 class="product-title"><%= product.name %></h3>
 						  <strong class="product-price">₹<%= product.price.toFixed(2) %></strong>
 						</a>

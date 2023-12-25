@@ -252,7 +252,7 @@ const logout= async(req, res) => {
 };
 
 const signup=async(req,res)=>{
-    console.log("hhhhh");
+   
     
     
     res.render("users/signup",
@@ -263,7 +263,7 @@ const signup=async(req,res)=>{
             emailerrorinvalid:req.flash('emailerrorinvalid'),
             nameerror:req.flash('nameerror'),
             lnameerror:req.flash('lnameerror'),
-            phoneExist:req.flash('phonexists'),
+            phoneExist:req.flash('phoneexists'),
             phoneerror:req.flash('phoneerror'),
             passworderror:req.flash('passworderror'),
               cpassworderror:req.flash('cpasswowrderror')
@@ -307,13 +307,17 @@ return otp;
 
 const signupotp = async (req, res) => {
     try {
+        console.log("its comming");
         const firstname = req.body.firstname
         const lastname=req.body.lastname
         const email = req.body.email
         const phone = req.body.phone
         const password = req.body.password
         const cpassword = req.body.confirm_password
-        const referralCode=req.body.referralCode
+        let referralCode;
+        if(req.body.referralCode){
+        referralCode=req.body.referralCode
+        }
 
         const isfnameValid = nameValid(firstname)
         const islnameValid=lnameValid(lastname)
@@ -325,51 +329,62 @@ const signupotp = async (req, res) => {
         const emailExist = await usersModel.findOne({ email: email })
         const phoneExist = await usersModel.findOne({mobileNumber:phone})
         if (emailExist) {
-            console.log("eqgdjq");
+            console.log("1");
+           
             req.flash('emailerror','Email Already Exists')
-            console.log("11");
+           
             res.redirect('/signup')
-            console.log("4567656");
+        
             
         }
         else if (!isEmailValid) {
+            console.log("2");
             req.flash('emailerrorinvalid','Enter a valid Email')
             res.redirect('/signup')
         }
         else if (!isfnameValid) {
-            console.log("12");
+            console.log("3");
+          
             req.flash('nameerror','Enter a valid Name')
-            console.log("12222");
+           
             res.redirect('/signup')
-            console.log("12678");
+       
         }
         else if (!islnameValid) {
+            console.log("4");
             req.flash('lnameerror','Enter a valid Name')
             res.redirect('/signup')
         }
 
         else if (phoneExist) {
-            req.flash('phoneexists','Email Already Exists')
+            console.log("5");
+            req.flash('phoneexists','phone number Already Exists')
             res.redirect('/signup')
             
         }
         else if (!isPhoneValid) {
+            console.log("6");
             req.flash('phoneerror','Enter a valid Phone number')
             res.redirect('/signup')
         }
        
         else if (!ispasswordValid) {
+            console.log("7");
             req.flash('passworderror', "Password should contain one uppercase,one lowercase,one number,one special charecter")
             res.redirect('/signup')
         }
         else if (!iscpasswordValid) {
+            console.log("8");
             req.flash( 'cpassworderror',"Password and Confirm password should be match")
             res.redirect('/signup')
         }
         else {
+            console.log("ivideyum");
             const hashedpassword = await bcrypt.hash(password, 10)
             const user = new usersModel({firstname:firstname,lastname:lastname, email: email, mobileNumber: phone, password: hashedpassword })
+            if(referralCode){
             req.session.referralCode=referralCode
+            }
             req.session.user = user
             req.session.signup = true
             req.session.forgot = false
@@ -473,14 +488,15 @@ const verifyotp = async (req, res) => {
                     console.log("User not found with the provided referral code.");
                 }
 
-
-                res.redirect('/')
                 req.session.otppressed=false
+                res.redirect('/')
+                
                 }
                 else if(req.session.forgot){
                     req.session.newpasspressed=true
-                    res.redirect('/newpassword')
                     req.session.otppressed=false
+                    res.redirect('/newpassword')
+                    
                 }
             }
             catch (error) {

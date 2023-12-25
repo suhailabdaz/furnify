@@ -257,14 +257,17 @@ hr {
     <%-include('userpartials/nav')%>
     <div>
     <div style="margin: 30px 30px 30px 30px ;" class="fulldiv my-5 d-flex justify-content-center">
-        <div class="product-container">
-            <div style="width: 50vh;" >
-                  
-                <div id="product-slider" class="tns-slider">
+        <div class="row product-container">
+            <div class="col-lg-6 col-md-6 col-sm-12" style="width: 75vh; height: 40vh;" >
+                
+                <div id="product-slider" class="tns-slider" >
                     <% product.images.forEach((image, index) => { %>
-                        <a href="/<%= image %>"  class="MagicZoom" id="Mag">
-                        <img src="/<%= image %>" alt="<%= product.name %> Image" class="img-fluid"/>
-                    </a>
+                        <div style="height: 75vh;">
+                        
+                        <img src="/<%= image %>" alt="<%= product.name %> Image" class="img-fluid"  style="width: 100%;" />
+                        
+                        </div>
+                   
                     <% }); %>
                 </div>
                 
@@ -272,7 +275,7 @@ hr {
             </div>
 
             <!-- Product Details Section -->
-            <div class="product-details-section">
+            <div class="product-details-section col-lg-6 col-md-6 col-sm-12">
                 <div class="row">
                 <h1 class="col-6"><%= product.name %></h1>
                 <p class="col-6 d-flex justify-content-end">

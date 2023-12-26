@@ -16,12 +16,39 @@
   <link href="/css/tiny-slider.css" rel="stylesheet">
   <link href="/css/style.css" rel="stylesheet">
   
-  <title>Edit Profile - Furnify</title>
+  <title>Edit Address-Furnify</title>
 
   <style>
-    /* Your existing styles */
 
-    /* Additional styles for the edit profile page */
+.select-line {
+    background-color: #3b5d50;
+}
+
+/* Media query for small screens (e.g., mobile devices) */
+@media (max-width: 767px) {
+    .select-line {
+        height: 8vw; /* Set the height for small screens */
+		align-items: start;
+		margin-top: 0.1px;
+    }
+}
+
+/* Media query for medium screens (e.g., tablets) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .select-line {
+        height: 6vw; /* Set the height for medium screens */
+    }
+}
+
+/* Media query for large screens (e.g., desktops) */
+@media (min-width: 992px) {
+    .select-line {
+        height: 4vw; /* Set the height for large screens */
+    }
+}
+
+
+ 
     .edit-profile-form {
       max-width: 800px;
       margin: auto;
@@ -194,7 +221,7 @@
     </div>
   </div>
   
-  <%-include('userpartials/footer')%>
+ <%-include('userpartials/footer')%>
 
   <!-- Your existing scripts -->
 

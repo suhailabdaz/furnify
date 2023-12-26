@@ -31,7 +31,7 @@ const ratePage=async(req,res)=>{
             
             await product.save();
           
-            res.status(200).send('Rating and review saved successfully');
+            res.redirect("/orderHistory");
           
           
 

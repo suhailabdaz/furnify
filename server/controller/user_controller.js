@@ -30,6 +30,7 @@ const home = async (req, res) =>{
     try {
         const categories = await categoryModel.find();
         const banners=await bannerModel.find();
+        req.session.newpasspressed=false
 
         res.render("users/index", { categories ,banners});
     } catch (error) {
@@ -219,7 +220,7 @@ const profile=async(req,res)=>{
             res.render("users/profile", {categories,name});
         }
         else{
-            req.session.forgrtpressed=true
+            req.session.forgetpressed=true
             req.session.signupPressed = true
 
             res.render("users/login",{
@@ -318,6 +319,7 @@ const signupotp = async (req, res) => {
         if(req.body.referralCode){
         referralCode=req.body.referralCode
         }
+        req.session.email=req.body.email
 
         const isfnameValid = nameValid(firstname)
         const islnameValid=lnameValid(lastname)
@@ -419,10 +421,13 @@ await otpModel.updateOne(filter, update, options);
 
 const otp = async (req, res) => {
     try {
+        console.log("ememem",req.session.email);
+        const otp=await userotp.findOne({email:req.session.email})
         res.render('users/otp',{
             expressFlash:{
                 otperror:req.flash('otperror')
-            }
+            },
+            otp:otp
         })
     }
     catch {
@@ -489,12 +494,14 @@ const verifyotp = async (req, res) => {
                 }
 
                 req.session.otppressed=false
+                req.session.forgetpressed=false
                 res.redirect('/')
                 
                 }
                 else if(req.session.forgot){
                     req.session.newpasspressed=true
                     req.session.otppressed=false
+                    req.session.forgetpressed=false
                     res.redirect('/newpassword')
                     
                 }
@@ -609,7 +616,7 @@ const forgotpasspost=async (req, res) => {
             
 
             await sendmail(email, otp)
-            req.session.forgrtpressed=false
+            
             req.session.otppressed=true
             res.redirect('/otp')
         }

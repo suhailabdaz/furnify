@@ -7,6 +7,7 @@ const checkout_controller=require("../controller/checkout_controller")
 const rating_controller=require("../controller/rating_controller")
 const banner_controller=require('../controller/banner_controller')
 const auth=require('../../middleware/isAuth')
+
 usrouter.get("/",user_controller.home)
 
 usrouter.get("/bannerURL",banner_controller.bannerURL)
@@ -35,11 +36,11 @@ usrouter.post("/resendotp",auth.iflogged,user_controller.resendotp)
 
 usrouter.post("/loginaction",user_controller.loginaction)
 
-usrouter.get("/forgotpassword",auth.checkSessionVariable('forgrtpressed','/profile'),user_controller.forgotpassword)
+usrouter.get("/forgotpassword",auth.checkSessionVariable('forgetpressed','/'),user_controller.forgotpassword)
 
 usrouter.post("/forgotpasspost",user_controller.forgotpasspost)
 
-usrouter.get('/newpassword',auth.checkSessionVariable('newpasspressed','/profile'),user_controller.new_password)
+usrouter.get('/newpassword',auth.checkSessionVariable('newpasspressed','/'),user_controller.new_password)
 
 usrouter.post('/resetpassword',user_controller.reset_password)
 
@@ -73,9 +74,9 @@ usrouter.post('/cp',auth.islogged,profile_controller.changepassword)
 
 usrouter.get('/editaddress/:addressId',auth.islogged,profile_controller.editaddress)
 
-usrouter.post('/updateaddress/:addressId',auth.islogged, profile_controller.updateAddress);
+usrouter.post('/updateaddress/:addressId',auth.islogged, profile_controller.updateAddress)
 
-usrouter.get('/deleteaddress/:addressId',auth.islogged, profile_controller.deleteAddress);
+usrouter.get('/deleteaddress/:addressId',auth.islogged, profile_controller.deleteAddress)
 
 usrouter.get('/orderHistory',auth.islogged,profile_controller.orderHistory)
 

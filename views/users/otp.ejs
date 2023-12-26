@@ -15,7 +15,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            height: 90vh;
         }
 
         .container {
@@ -104,7 +104,7 @@
 </body>
 <!-- Add this at the bottom of the <body> element -->
     <script>
-        let remainingTime = 30;
+        let remainingTime = <%= Math.max(0, Math.ceil((otp.expiry.getTime() - Date.now()) / 1000)) %>;
     
         function updateTimer() {
             document.getElementById('timer').textContent = remainingTime;
@@ -112,7 +112,7 @@
             // Hide the Resend OTP button when the timer reaches 0
             const resendButton = document.getElementById('resendButton');
             const timerElement = document.getElementById('textintimer');
-            
+    
             if (remainingTime === 0) {
                 resendButton.style.display = 'block';
                 timerElement.style.display = 'none';
@@ -123,7 +123,6 @@
         }
     
         function startTimer() {
-            remainingTime = 30;
             updateTimer();
     
             // Update the timer every second
@@ -142,8 +141,15 @@
     
         // Attach an event listener to the "Resend OTP" button
         document.getElementById('resendButton').addEventListener('click', () => {
+            // Reset remaining time to 30 seconds
+            remainingTime = <%= Math.max(0, Math.ceil((otp.expiry.getTime() - Date.now()) / 1000)) %>;
+
+    
             // Restart the timer when the button is clicked
             startTimer();
+    
+            // Hide the Resend OTP button
+            document.getElementById('resendButton').style.display = 'none';
     
             // Create a hidden form dynamically
             const form = document.createElement('form');
@@ -155,5 +161,7 @@
             form.submit();
         });
     </script>
+    
+    
     
 </html>

@@ -6,7 +6,6 @@ const orderModel=require('../model/order_model')
 const fs=require('fs')
 const os=require('os')
 const path=require('path')
-const easyinvoice = require('easyinvoice');
 const puppeteer=require('puppeteer')
 
 

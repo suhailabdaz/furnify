@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= product.name %> - Product Details</title>
@@ -30,6 +30,39 @@
         }
     </script>
     <style>
+
+
+	/* Default style for select-line */
+    .select-line {
+    background-color: #3b5d50;
+}
+
+/* Media query for small screens (e.g., mobile devices) */
+@media (max-width: 767px) {
+    .select-line {
+        height: 8vw; /* Set the height for small screens */
+		align-items: start;
+		margin-top: 0.1px;
+    }
+}
+
+/* Media query for medium screens (e.g., tablets) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .select-line {
+        height: 6vw; /* Set the height for medium screens */
+    }
+}
+
+/* Media query for large screens (e.g., desktops) */
+@media (min-width: 992px) {
+    .select-line {
+        height: 4vw; /* Set the height for large screens */
+    }
+}
+
+
+
+
 .user-ratings-section {
   max-width: 600px;
   margin: 0 auto;

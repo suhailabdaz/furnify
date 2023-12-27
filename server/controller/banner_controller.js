@@ -171,9 +171,9 @@ const bannerURL=async(req,res)=>{
         const bannerId=req.query.id
         const banner=await bannerModel.findOne({_id:bannerId})
         if(banner.label=="category"){
-            const categoryId=mongoose.Types.ObjectId(banner.bannerlink)
+            const categoryId=new mongoose.Types.ObjectId(banner.bannerlink)
             const  category=await categoryModel.findOne({_id: categoryId})
-            res.redirect(`/shop/?category=${categoryId}`)
+            res.redirect(`/shop?category=${categoryId}`)
             
         }
         else if(banner.label=="product"){

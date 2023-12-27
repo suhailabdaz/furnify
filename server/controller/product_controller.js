@@ -15,7 +15,7 @@ const products = async (req, res) => {
     }
     catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 
@@ -26,9 +26,9 @@ const newproduct = async (req, res) => {
         console.log("Categories:", categories);
 
         res.render('admin/newproduct', { category: categories });
-    } catch (err) {
+    }  catch (err) {
         console.log(err);
-        res.send("Error Occurred");
+        res.render("users/serverError")
     }
 }
 
@@ -66,7 +66,7 @@ const addproduct = async (req, res) => {
     }
     catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 const unlist = async (req, res) => {
@@ -82,7 +82,7 @@ const unlist = async (req, res) => {
     }
     catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 const deletepro = async (req, res) => {
@@ -93,7 +93,7 @@ const deletepro = async (req, res) => {
     }
     catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 const updatepro = async (req, res) => {
@@ -104,7 +104,7 @@ const updatepro = async (req, res) => {
         res.render('admin/updateproduct', { product: product })
     } catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 const editimg = async (req, res) => {
@@ -115,7 +115,7 @@ const editimg = async (req, res) => {
         res.render('admin/editimg', { product: product })
     } catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 const updateimg=async(req,res)=>{
@@ -129,7 +129,7 @@ const updateimg=async(req,res)=>{
     }
     catch (err) {
         console.log(err);
-        res.send("Error while adding images")
+        res.render("users/serverError")
     }
 }
 const deleteimg=async(req,res)=>{
@@ -154,9 +154,9 @@ const deleteimg=async(req,res)=>{
         
     
         }
-        catch(err){
-            console.log("error deleting image:",err);
-            res.status(500).send('Internal Server Error');
+        catch (err) {
+            console.log(err);
+            res.render("users/serverError")
         }
 
     }
@@ -164,10 +164,10 @@ const deleteimg=async(req,res)=>{
         console.log("Image not found");
     }
 }
-    catch (err) {
-        console.log(err);
-        res.send("Error Occured")
-    }
+catch (err) {
+    console.log(err);
+    res.render("users/serverError")
+}
 }
 
 
@@ -181,8 +181,9 @@ const resizeImage=async(req,res)=>{
         console.log(imagePath)
 
     }
-    catch(err){
+    catch (err) {
         console.log(err);
+        res.render("users/serverError")
     }
 }
 const updateproduct = async (req, res) => {
@@ -206,10 +207,10 @@ const updateproduct = async (req, res) => {
 
         await product.save()
         res.redirect('/admin/product')
-    } catch (err) {
+    }  catch (err) {
         console.log(err);
-        res.send("Error Occured")
-    }
+        res.render("users/serverError")
+    }
 }
 
 

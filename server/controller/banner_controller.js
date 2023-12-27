@@ -12,8 +12,9 @@ const bannerList=async(req,res)=>{
         console.log(banners);
          res.render("admin/bannerList",{banners:banners})
     }
-    catch(err){
-            console.log(err);
+    catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -23,9 +24,9 @@ const addbanner = async (req, res) => {
         const products=await productModel.find();
         const coupons=await couponModel.find();
         res.render('admin/newBanner',{categories,products,coupons});
-    } catch (err) {
+    }  catch (err) {
         console.log(err);
-        res.send("Error Occurred");
+        res.render("users/serverError")
     }
 }
 
@@ -69,9 +70,9 @@ const addBannerPost=async(req,res)=>{
     res.render("admin/bannerList",{banners:banners})
    
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send("error  occured posting")
+        res.render("users/serverError")
     }
 }
 
@@ -88,7 +89,7 @@ const unlistBanner=async(req,res)=>{
     }
     catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 
@@ -101,9 +102,9 @@ const updateBanner = async (req, res) => {
         const coupons=await couponModel.find();
        
         res.render('admin/updateBanner', { banner: banner,categories:categories,products:products,coupons:coupons })
-    } catch (err) {
+    }  catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 
@@ -145,10 +146,10 @@ const updateBannerPost = async (req, res) => {
         await banner.save()
         res.redirect('/admin/bannerList')
 }
-    catch (err) {
-        console.log(err);
-        res.send("Error Occured")
-    }
+catch (err) {
+    console.log(err);
+    res.render("users/serverError")
+}
 }
 
 const deleteBanner=async(req,res)=>{
@@ -158,9 +159,9 @@ const deleteBanner=async(req,res)=>{
         res.redirect('/admin/bannerList')
 
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send('error occured')
+        res.render("users/serverError")
     }
 }
 
@@ -192,9 +193,9 @@ const bannerURL=async(req,res)=>{
         }
 
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send(err)
+        res.render("users/serverError")
     }
 }
 

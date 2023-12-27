@@ -33,9 +33,9 @@ const home = async (req, res) =>{
         req.session.newpasspressed=false
 
         res.render("users/index", { categories ,banners});
-    } catch (error) {
-        console.error("Error fetching categories:", error);
-        res.status(500).send("Internal Server Error");
+    } catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 };
 const shop = async (req, res) => {
@@ -93,6 +93,7 @@ const filterProducts = async (req, res) => {
         console.log("ipooooo", theCategory);
     } catch (err) {
         console.log(err);
+        res.render("users/serverError")
     }
 };
 
@@ -147,8 +148,9 @@ const sortProducts=async (req,res)=>{
         
 
     }
-    catch(err){
+    catch (err) {
         console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -203,10 +205,10 @@ const singleproduct=async(req,res)=>{
         res.render('users/singleproduct',{categories,product:product,similar,averageRating,totalRatings})
         
     }
-    catch(err){
-        console.log("Shopping Page Error:",err);
-        res.status(500).send('Internal Server Error');
-    }
+    catch (err) {
+        console.log(err);
+        res.render("users/serverError")
+    }
 
 }
 
@@ -232,9 +234,9 @@ const profile=async(req,res)=>{
         }
 
 
-    } catch (error) {
-        console.error("Error fetching categories:", error);
-        res.status(500).send("Internal Server Error");
+    }  catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -246,10 +248,10 @@ const logout= async(req, res) => {
         res.redirect("/")
 
         }
-    catch (error) {
-        console.error("Error fetching categories:", error);
-        res.status(500).send("Internal Server Error");
-    }
+        catch (err) {
+            console.log(err);
+            res.render("users/serverError")
+        }
 };
 
 const signup=async(req,res)=>{
@@ -296,7 +298,8 @@ const sendmail = async (email, otp) => {
 
     }
     catch (err) {
-        console.log("error in sending mail:", err);
+        console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -414,8 +417,8 @@ await otpModel.updateOne(filter, update, options);
         }
     }
     catch (err) {
-        console.error('Error:', err);
-        res.send('error')
+        console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -430,9 +433,9 @@ const otp = async (req, res) => {
             otp:otp
         })
     }
-    catch {
-        res.status(200).send('error occured')
-
+    catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 
 }
@@ -506,9 +509,9 @@ const verifyotp = async (req, res) => {
                     
                 }
             }
-            catch (error) {
-                console.error(error);
-                res.status(500).send('Error occurred while saving user data');
+            catch (err) {
+                console.log(err);
+                res.render("users/serverError")
             }
         }
         else {
@@ -518,8 +521,7 @@ const verifyotp = async (req, res) => {
     }
     catch (err) {
         console.log(err);
-        res.status(500).send('error occured')
-
+        res.render("users/serverError")
     }
 }
 
@@ -536,8 +538,9 @@ const resendotp=async(req,res)=>{
      await sendmail(email, otp)
 
     }
-    catch(err){
-       console.log(err);
+    catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 
 }
@@ -568,9 +571,9 @@ const loginaction = async (req, res) => {
             req.flash('emailpasserror','Invalid Email or Password')
             res.redirect('/profile')
         }
-    } catch (error) {
-        // Error occurred, could be due to user not found or other issues
-       console.log(error);
+    }  catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 };
 
@@ -582,9 +585,9 @@ const forgotpassword=async (req, res) => {
             }
         })
     }
-    catch {
-        res.status(200).send('error occured')
-
+    catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -625,10 +628,9 @@ const forgotpasspost=async (req, res) => {
             res.redirect('/forgotpassword')
         }
     }
-    catch(err) {
-        res.status(400).send('error occurred: ' + err.message);
+    catch (err) {
         console.log(err);
-
+        res.render("users/serverError")
     }
 }
 
@@ -643,9 +645,9 @@ const new_password = async (req, res) => {
             }
         })
     }
-    catch {
-        res.status(400).send('error occured')
-
+    catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -674,9 +676,9 @@ const reset_password = async (req, res) => {
 
         }
     }
-    catch {
-        res.status(400).send('error occured')
-
+    catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -755,10 +757,8 @@ const searchProducts = async (req, res) => {
       }
     }
     catch (err) {
-      console.error(err);
-  
-      // Sending a more informative error response
-      res.status(500).json({ error: 'Internal Server Error', message: err.message });
+        console.log(err);
+        res.render("users/serverError")
     }
 };
 

@@ -17,6 +17,36 @@
   <title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
 
   <style>
+
+.select-line {
+    background-color: #3b5d50;
+}
+
+/* Media query for small screens (e.g., mobile devices) */
+@media (max-width: 767px) {
+    .select-line {
+        height: 8vw; /* Set the height for small screens */
+		align-items: start;
+		margin-top: 0.1px;
+    }
+}
+
+/* Media query for medium screens (e.g., tablets) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .select-line {
+        height: 6vw; /* Set the height for medium screens */
+    }
+}
+
+/* Media query for large screens (e.g., desktops) */
+@media (min-width: 992px) {
+    .select-line {
+        height: 4vw; /* Set the height for large screens */
+    }
+}
+
+
+
     .responsive-table {
       width: 100%;
       border-collapse: collapse;
@@ -28,7 +58,7 @@
     .responsive-table td {
       padding: 15px;
       text-align: left;
-      font-size: 30px;
+      font-size: 2vw;
     }
 
     .responsive-table th {
@@ -48,6 +78,13 @@
         overflow-x: auto;
         display: block;
       }
+      .responsive-table th,
+    .responsive-table td {
+      padding: 15px;
+      text-align: left;
+      font-size: 3.5vw;
+    }
+
     }
 
     .section-container {

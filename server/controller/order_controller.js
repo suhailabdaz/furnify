@@ -5,8 +5,9 @@ const orderPage=async (req,res)=>{
         const orders=await orderModel.find({}).sort({ createdAt: -1 })
     res.render("admin/orderPage",{orderdata:orders})
 }
-catch(err){
-    console.log(err)
+catch (err) {
+    console.log(err);
+    res.render("users/serverError")
 }
 }
 
@@ -30,8 +31,9 @@ const updateOrderStatus=async(req,res)=>{
         res.redirect('/admin/orderPage'); 
 
     }
-    catch(err){
+    catch (err) {
         console.log(err);
+        res.render("users/serverError")
     }
 }
 

@@ -6,6 +6,7 @@ const orderModel=require('../model/order_model')
 const fs=require('fs')
 const os=require('os')
 const path=require('path')
+const easyinvoice = require('easyinvoice');
 const puppeteer=require('puppeteer')
 
 
@@ -15,9 +16,9 @@ const puppeteer=require('puppeteer')
 const login = async (req,res) => {
     try {
         res.render('admin/admin_login');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+    }  catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 };
 
@@ -38,11 +39,9 @@ const adminloginpost=async(req,res)=> {
             res.render("admin/admin_login",{passworderror:"Invalid-password"} )
         }
     }
-    catch{
-      
-        console.log("gettt");
-        res.render("admin/admin_login",{emailerror:"Invalid-email"})
-
+    catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -50,9 +49,9 @@ const adminpanel=async(req,res)=>{
     try{
         res.render("admin/admin_panel")
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 
@@ -124,10 +123,10 @@ const chartData=async(req,res)=>{
         }
         
       }
-    catch(err){
-      console.log(err);
-      res.send("Error Occured")
-    }
+      catch (err) {
+        console.log(err);
+        res.render("users/serverError")
+    }
 
 }
 
@@ -138,9 +137,9 @@ const userslist=async(req,res)=>{
         res.render("admin/users_list",{users:user})
         
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 
@@ -184,9 +183,9 @@ if (currentStatus === false && user.status === true){
 }
 
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 
@@ -200,9 +199,9 @@ const searchUser=async(req,res)=>{
         req.session.searchUser=data
         res.redirect('/admin/searchview')
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 
@@ -211,9 +210,9 @@ const searchview=async(req,res)=>{
         const user = req.session.searchUser
         res.render('admin/users_list',{users:user})
       }
-    catch(err){
-      console.log(err);
-      res.send("Error Occured")
+      catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 
 }
@@ -235,10 +234,10 @@ const filter=async(req,res)=>{
         }
         res.render('admin/users_list',{users:user})
       }
-    catch(err){
-      console.log(err);
-      res.send("Error Occured")
-    }
+      catch (err) {
+        console.log(err);
+        res.render("users/serverError")
+    }
 
 }
 
@@ -247,9 +246,9 @@ const category=async(req,res)=>{
         const category=await categoryModel.find({})
         res.render("admin/categories",{cat:category})
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 const newcat=async(req,res)=>{
@@ -257,9 +256,9 @@ const newcat=async(req,res)=>{
         
         res.render("admin/addcategories")
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 
@@ -279,9 +278,9 @@ const addcategory=async(req,res)=>{
             res.redirect('/admin/category');
         }
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 
@@ -298,7 +297,7 @@ const unlistcat=async(req,res)=>{
         }
         catch (err) {
             console.log(err);
-            res.send("Error Occured")
+            res.render("users/serverError")
         }
     }
 
@@ -309,9 +308,9 @@ const updatecat=async(req,res)=>{
         const cat=await categoryModel.findOne({_id:id})
         res.render('admin/updatecat',{itemcat:cat})
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 const updatecategory=async(req,res)=>{
@@ -322,9 +321,9 @@ const updatecategory=async(req,res)=>{
         await categoryModel.updateOne({_id:id},{$set:{name:catName,description:catdes}})
         res.redirect('/admin/category')
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 
 }
@@ -356,7 +355,7 @@ const downloadsales = async (req, res) => {
                 $match: {
                     createdAt: {
                         $gte: new Date(startDate),
-                        $lt: new Date(endDate),
+                        $lte: new Date(endDate),
                     },
                 },
             },
@@ -392,6 +391,8 @@ const downloadsales = async (req, res) => {
             },
         ]);
 
+
+    
         const htmlContent = `
             <!DOCTYPE html>
             <html lang="en">
@@ -408,7 +409,7 @@ const downloadsales = async (req, res) => {
             <body>
                 <h2 align="center"> Sales Report</h2>
                 Start Date:${startDate}<br>
-                End Date:${endDate}<br>
+                End Date:${endDate}<br> 
                 <center>
                     <table style="border-collapse: collapse;">
                         <thead>
@@ -462,9 +463,10 @@ const downloadsales = async (req, res) => {
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename=sales.pdf');
         res.status(200).end(pdfBuffer);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send(err.message || 'Internal Server Error');
+    
+    }  catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 };
 

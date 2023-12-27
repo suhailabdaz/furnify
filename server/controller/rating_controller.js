@@ -38,10 +38,10 @@ const ratePage=async(req,res)=>{
         
 
         }
-    catch(err){
-        console.log(err);
-        res.send("cant get ratepage")
-    }
+        catch (err) {
+            console.log(err);
+            res.render("users/serverError")
+        }
 }
 
 

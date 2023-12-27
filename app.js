@@ -56,6 +56,8 @@ app.use("/",usrouter)
 
 app.use("/admin",adrouter)
 
+
+
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
@@ -72,4 +74,12 @@ const storage=multer.diskStorage({
 
 
 
+
+
 const upload =multer({storage:storage})
+
+
+
+app.get("*",(req,res)=>{
+  res.render("users/404")
+})

@@ -45,9 +45,9 @@ const showcart = async (req, res) => {
       res.render('users/cart.ejs', { cart, categories });
     
   } catch (err) {
-      console.error(err);
-      res.status(500).send('Error occurred');
-  }
+    console.log(err);
+    res.render("users/serverError")
+}
 };
 
   
@@ -110,10 +110,10 @@ const showcart = async (req, res) => {
       await cart.save();
       res.redirect('/cartpage');
     }
-    } catch (err) {
-      console.error(err);
-     
-    }
+    }  catch (err) {
+      console.log(err);
+      res.render("users/serverError")
+  }
   }
 
 
@@ -149,10 +149,10 @@ const updateCartItem = async (req, res) => {
         await cart.save();
 
         return res.json(cart);
-    } catch (error) {
-        console.error('Error updating cart item:', error);
-        return res.status(500).json({ message: 'Internal Server Error' });
-    }
+    }  catch (err) {
+      console.log(err);
+      res.render("users/serverError")
+  }
 };
 
 const updatecart = async (req, res) => {
@@ -217,10 +217,10 @@ const updatecart = async (req, res) => {
       total: total,
     });
 
-  } catch (error) {
-    console.error('Error updating cart quantity:', error);
-    res.status(500).json({ success: false, error: 'Internal server error' });
-  }
+  }  catch (err) {
+    console.log(err);
+    res.render("users/serverError")
+}
 };
 
 
@@ -238,11 +238,10 @@ const deletecart=async(req,res)=>{
       await updatedCart.save();
      res.redirect('/cartpage')
   }
-  catch(err) {
-      console.log(err);
-      res.status(500).send('error occured')
-
-  }
+  catch (err) {
+    console.log(err);
+    res.render("users/serverError")
+}
 }
 
 const checkoutpage = async (req, res) => {
@@ -302,10 +301,10 @@ const checkoutpage = async (req, res) => {
     res.render('users/checkout', {availableCoupons, addresses, cartItems, categories, cart,cartId });
   
   
-}catch(err) {
-    console.error(err);
-    res.status(500).send('Error occurred');
-  }
+} catch (err) {
+  console.log(err);
+  res.render("users/serverError")
+}
 };
 
 
@@ -355,10 +354,10 @@ const addToFvourites= async (req, res) => {
 
     await fav.save();
     res.redirect('/favouritespage');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error occurred');
-  }
+  }  catch (err) {
+    console.log(err);
+    res.render("users/serverError")
+}
 }
 const favouritespage=async(req,res)=>{
   try {
@@ -390,8 +389,8 @@ const favouritespage=async(req,res)=>{
 
     res.render('users/favourites.ejs', { fav, categories });
 } catch (err) {
-    console.error(err);
-    res.status(500).send('Error occurred');
+  console.log(err);
+  res.render("users/serverError")
 }
   
 }
@@ -407,11 +406,10 @@ const deletefav=async(req,res)=>{
       await updatedFav.save();
       res.redirect('/favouritespage')
   }
-  catch(err) {
-      console.log(err);
-      res.status(500).send('error occured')
-
-  }
+  catch (err) {
+    console.log(err);
+    res.render("users/serverError")
+}
 }
 
 const addtocartviafav=async(req,res)=>{
@@ -468,9 +466,9 @@ const addtocartviafav=async(req,res)=>{
 
 
   }
-  catch(err){
-    console.error(err);
-    res.status(500).send('Error occurred');
+  catch (err) {
+    console.log(err);
+    res.render("users/serverError")
 }
 }
 

@@ -23,9 +23,10 @@ const createCoupon=async(req,res)=>{
 
     }
 }
-    catch(err){
-        console.log(err);
-    }
+catch (err) {
+    console.log(err);
+    res.render("users/serverError")
+}
 }
 
 const couponList=async(req,res)=>{
@@ -34,9 +35,9 @@ const couponList=async(req,res)=>{
         res.render('admin/couponList',{coupons})
 
     }
-    catch(err){
-        console.log(err)
-
+    catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -44,8 +45,9 @@ const addcouponpage=async(req,res)=>{
     try{
         res.render('admin/addCoupon')
     }
-    catch(err){
-        console.log(err)
+    catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -58,9 +60,9 @@ const unlistCoupon=async (req,res)=>{
         await coupon.save();
         res.redirect('/admin/couponList')
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send(err)
+        res.render("users/serverError")
     }
 }
 
@@ -70,9 +72,9 @@ const editCouponPage=async (req,res)=>{
         const coupon=await couponModel.findOne({_id:id})
         res.render('admin/editCouponPage',{coupon:coupon})
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send(err)
+        res.render("users/serverError")
     }
 }
 
@@ -109,9 +111,9 @@ const updateCoupon=async(req,res)=>{
 
 
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send(err)
+        res.render("users/serverError")
     }
 }
 

@@ -19,6 +19,35 @@
   <title>Rewards-Coupons</title>
 
   <style>
+
+
+	/* Default style for select-line */
+  .select-line {
+    background-color: #3b5d50;
+}
+
+/* Media query for small screens (e.g., mobile devices) */
+@media (max-width: 767px) {
+    .select-line {
+        height: 8vw; /* Set the height for small screens */
+		align-items: start;
+		margin-top: 0.1px;
+    }
+}
+
+/* Media query for medium screens (e.g., tablets) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .select-line {
+        height: 6vw; /* Set the height for medium screens */
+    }
+}
+
+/* Media query for large screens (e.g., desktops) */
+@media (min-width: 992px) {
+    .select-line {
+        height: 4vw; /* Set the height for large screens */
+    }
+}
   
 
   
@@ -71,7 +100,7 @@
   <!-- End Header/Navigation -->
 
   <!-- Start Hero Section -->
-  <div class="hero mb-5" style="height:40vh;" >
+  <div class="hero mb-5" style="height:40vh" >
     <div class="container ">
         <div class="row justify-content-between">
             <div class="col-lg-12">
@@ -84,7 +113,7 @@
                 <div style="background-color: #3b5d50; color: #efeeee;" >
                     <div class="card-body">
                         <h5 class="card-title">Your Referral Code</h5>
-                        <p class="card-text">Share this code with your friends and <span style="font-size: 20px;">WIN Rs.50 </span></p>
+                        <p class="card-text d-none d-lg-block">Share this code with your friends and <span style="font-size: 3vw;">WIN Rs.50 </span></p>
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" value="<%= referralCode %>" id="referralCodeInput" readonly>
                             <button class="btn btn-primary" onclick="copyReferralCode()">Copy</button>

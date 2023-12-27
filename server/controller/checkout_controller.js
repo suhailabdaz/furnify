@@ -160,10 +160,10 @@ if(!phoneValid){
         console.log('Cart Total:', cart.total);
 
         res.render('users/checkout', { availableCoupons,addresses, cartItems, categories, cart });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error occurred');
-    }
+    }  catch (err) {
+      console.log(err);
+      res.render("users/serverError")
+  }
 };
 
 const placeOrder = async (req, res) => {
@@ -229,10 +229,10 @@ const placeOrder = async (req, res) => {
     }
 
     res.render('users/order_confirmation', { order, categories });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
-  }
+  }  catch (err) {
+    console.log(err);
+    res.render("users/serverError")
+}
 };
 
 const instance=new Razorpay({key_id:key_id,key_secret:key_secret})
@@ -277,10 +277,10 @@ const wallettransaction = async (req, res) => {
      else{
       res.json({success:false,message:"don't have enought money"})
      }
-  } catch (err) {
-      console.error(err);
-      res.redirect('/error')
-    }
+  }  catch (err) {
+    console.log(err);
+    res.render("users/serverError")
+}
 }
 
 const applyCoupon = async (req, res) => {
@@ -330,9 +330,9 @@ const applyCoupon = async (req, res) => {
     }
     
   } catch (err) {
-      console.error(err);
-      res.status(500).send('Error occurred');
-    }
+    console.log(err);
+    res.render("users/serverError")
+}
 }
 
 const revokeCoupon=async(req,res)=>{
@@ -371,10 +371,10 @@ const revokeCoupon=async(req,res)=>{
     
 
   }
-  catch(err){
+  catch (err) {
     console.log(err);
-    res.send(err)
-  }
+    res.render("users/serverError")
+}
 }
 
 

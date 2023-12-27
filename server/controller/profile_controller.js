@@ -41,7 +41,7 @@ const userdetails = async (req, res) => {
     }
     catch (err) {
         console.log(err);
-        res.send("Error Occured")
+        res.render("users/serverError")
     }
 }
 
@@ -54,9 +54,9 @@ const profileEdit=async(req,res)=>{
         console.log("data",data);
         res.render('users/editprofile',{userData:data,categories})
     }
-    catch(err){
-        res.status(500).send('error occured')
+    catch (err) {
         console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -80,9 +80,9 @@ const profileUpdate=async(req,res)=>{
         console.log("data",data);
         res.redirect('/userdetails')
     }
-    catch(err){
-        res.status(500).send('error occured')
+    catch (err) {
         console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -101,9 +101,9 @@ const newAddress=async(req,res)=>{
             phoneerror:req.flash("phoneerror")
         }})
     }
-    catch(err){
-        res.status(500).send('error occured')
+    catch (err) {
         console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -215,9 +215,9 @@ if(!phoneValid){
         }
         
         res.redirect('/userdetails');
-    } catch (err) {
-        res.status(500).send('Error occurred');
+    }  catch (err) {
         console.log(err);
+        res.render("users/serverError")
     }
 };
 
@@ -247,9 +247,9 @@ const changepassword=async(req,res)=>{
         }
         
     }
-    catch(err){
-        res.status(500).send('error occured')
+    catch (err) {
         console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -276,11 +276,10 @@ const editaddress=async(req,res)=>{
             countryerror:req.flash("countryerror"),
             phoneerror:req.flash("phoneerror")
         }})    }
-    catch(err){
-        res.status(500).send('error occured')
-        console.log(err);
-
-    }
+        catch (err) {
+            console.log(err);
+            res.render("users/serverError")
+        }
 }
 const updateAddress = async (req, res) => {
     try {
@@ -380,9 +379,9 @@ if(!phoneValid){
 
         
             res.redirect('/userdetails');
-    } catch (err) {
-        res.status(500).send('Error occurred');
+    }  catch (err) {
         console.log(err);
+        res.render("users/serverError")
     }
 };
 
@@ -400,10 +399,9 @@ const deleteAddress=async(req,res)=>{
         res.redirect('/userdetails');
 
     }
-    catch(err){
-        res.status(500).send('Error occurred');
+    catch (err) {
         console.log(err);
-
+        res.render("users/serverError")
     }
 }
 
@@ -453,9 +451,10 @@ const orderHistory=async (req,res)=>{
         }
         
     
-    catch(err){
-        console.log(err)
-    }
+        catch (err) {
+            console.log(err);
+            res.render("users/serverError")
+        }
 }
 
 const ordercancelling=async(req,res)=>{
@@ -509,10 +508,10 @@ const ordercancelling=async(req,res)=>{
        res.redirect("/orderhistory")
 
     }
-    catch(err){
-        res.status(500).send('error occured')
+    catch (err) {
         console.log(err);
-    }
+        res.render("users/serverError")
+    }
 }
 
 const orderreturning=async(req,res)=>{
@@ -561,8 +560,9 @@ const orderreturning=async(req,res)=>{
        res.redirect("/orderhistory")
 
     }
-    catch(err){
-        console.log(err)
+    catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -655,9 +655,9 @@ const itemcancelling=async(req,res)=>{
 
     
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send("couldnt cancel")
+        res.render("users/serverError")
     }
 }
 
@@ -744,9 +744,9 @@ const itemreturning=async(req,res)=>{
     
         
         }
-        catch(err){
+        catch (err) {
             console.log(err);
-            res.send("couldnt cancel")
+            res.render("users/serverError")
         }
 }
 
@@ -760,8 +760,9 @@ const singleOrderPage=async (req,res)=>{
         res.render('users/orderDetails',{categories,order})
 
     }
-    catch(err){
-        console.log(err)
+    catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 }
 
@@ -872,10 +873,10 @@ const downloadInvoice = async (req, res) => {
 
     res.send(pdfBuffer);
     
-  } catch (error) {   
-    console.error('Error generating PDF:', error);
-    res.status(500).send('Internal Server Error');
-  }
+  } catch (err) {
+    console.log(err);
+    res.render("users/serverError")
+}
 };
 
 const wallet = async (req, res) => {
@@ -889,12 +890,12 @@ const wallet = async (req, res) => {
     }
     
     const userWallet = user.wallet;
-    const usertransactions=user.walletTransactions
+    const usertransactions=user.walletTransactions.reverse()
     
     res.render("users/wallet", { categories, userWallet ,usertransactions});
-    } catch (err) {
-    console.log(err);
-      res.status(500).send("Internal Server Error");
+    }  catch (err) {
+        console.log(err);
+        res.render("users/serverError")
     }
 };
 
@@ -911,9 +912,9 @@ const couponsAndRewards=async (req,res)=>{
         const categories=await categoryModel.find()
         res.render('users/rewardsPage',{categories,coupons,referralCode:userId})
     }
-    catch(err){
+    catch (err) {
         console.log(err);
-        res.send(err)
+        res.render("users/serverError")
     }
 }
 
@@ -951,10 +952,10 @@ const walletTopup= async(req,res)=>{
       
         await wallet.save();
         res.redirect("/wallet")
-      } catch (error) {
-        console.error('Error handling Razorpay callback:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-      }
+      } catch (err) {
+        console.log(err);
+        res.render("users/serverError")
+    }
 }
 
 

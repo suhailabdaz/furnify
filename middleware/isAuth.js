@@ -1,4 +1,8 @@
 const category=require('.././server/model/category_model')
+const userModel=require('.././server/model/user_model')
+
+
+
 
 const loadCategory=async(req,res,next)=>{
     try {
@@ -20,13 +24,19 @@ const iflogged=async(req,res,next)=>{
   }
 }
 const islogged=async(req,res,next)=>{
-  if(req.session.isAuth){
-    req.user=req.session.user;
-    next()
-  }else{
+const user= await userModel.findOne({_id:req.session.userId})
+
+if(user&&user.status==false){
+  next()
+}
+  else{
     res.redirect('/profile')
   }
 }
+
+
+
+
 
 const loggedout=async(req,res,next)=>{
   if(req.session.user){
@@ -66,7 +76,7 @@ const logoutAdmin = (req, res, next) => {
     }
 }
 const logouting = (req,res,next) => {
-    req.session.destroy(),
+    req.session.admin=false,
     res.redirect('/admin')
 }
 

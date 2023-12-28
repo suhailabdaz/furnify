@@ -214,7 +214,8 @@ const singleproduct=async(req,res)=>{
 
 const profile=async(req,res)=>{
     try {
-        if(req.session.isAuth){
+        const user= await usersModel.findOne({_id:req.session.userId})
+        if(user&&user.status==false){
             const userId=req.session.userId
             const categories = await categoryModel.find();
             const user = await usersModel.findOne({_id:userId});
@@ -244,9 +245,7 @@ const logout= async(req, res) => {
     try {
         req.session.userId=null
         req.session.isAuth=false
-        req.session.destroy()
         res.redirect("/")
-
         }
         catch (err) {
             console.log(err);
@@ -550,12 +549,17 @@ const loginaction = async (req, res) => {
         const email = req.body.email;
         const user = await usersModel.findOne({ email: email });
 
-        // Check if the user exists
-        if (!user) {
-            throw new Error('User not found');
+        if(!user){
+            req.flash('emailpasserror','Invalid Email or Password')
+            return res.redirect('/profile')
         }
 
-        const passwordmatch = await bcrypt.compare(req.body.password, user.password);
+     
+
+        
+
+         passwordmatch = await bcrypt.compare(req.body.password, user.password);
+
 
         if (passwordmatch && !user.status) {
             req.session.userId = user._id;

@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Breeze Admin</title>
+    <title>Furnify Admin</title>
     <link rel="stylesheet" href="/adminassets/vendors/mdi/css/materialdesignicons.min.css" />
     <link rel="stylesheet" href="/adminassets/vendors/flag-icon-css/css/flag-icon.min.css" />
     <link rel="stylesheet" href="/adminassets/vendors/css/vendor.bundle.base.css" />
@@ -39,14 +39,17 @@
 
           <div class="container mt-5">
             <h1 class="mb-4 text-center text-primary">User Management</h1>
+            <form action="/admin/viewall">
+              <button type="submit" class="btn btn-success mt-3">View All</button>
+            </form>
     
             <div class="mb-3"><div class="d-flex justify-content-between">
-                <!-- <a href="/admin/newuser" class="btn btn-success">Add New User</a> -->
-                <!-- <a href="/admin/logout" class="btn btn-danger ml-2x">Sign Out</a></div> -->
+          
                 <form class="d-flex justify-content-center" action="/admin/searchUser" method="post">
                     <input type="text" name="search" class="form-control mt-3 search-input" placeholder="Search by User Name" >
                     <button type="submit" class="btn btn-success mt-3 ml-2">Search</button>
                 </form>
+               
                 <div class="dropdown">
                   <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     Sort
@@ -69,8 +72,8 @@
                         <th>LastName</th>
                         <th>E-Mail</th>
                         <th>Phone No</th>
-                        <th>Blocked</th>
-                        <th>Password</th>
+    
+                        
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -82,18 +85,14 @@
                         <td><%= data.lastname %></td>
                         <td><%= data.email %></td>
                         <td><%= data.mobileNumber %></td>
-                        <td><%= data.status %></td>
-                        <!-- <td><%= data.status ? 'True' : 'False' %></td> -->
-                        <td>********</td>  <!--  password hashed -->
+                       
                         <td>
                           <a href="/admin/update/<%= data.email%>">
                             <button class="btn btn-primary btn-sm" id="blockORunblock">
                                 <%= data.status ? 'Unblock' : 'Block' %>
                             </button>
                         </a>
-                          <!-- <a href="/admin/update/<%= data.email%>"><button class="btn btn-primary btn-sm" id="blockORunblock">Block</button></a> -->
-                            <!-- <a href="/admin/update/<%= data.email%>" class="btn btn-primary btn-sm">Update</a>
-                            <a href="/admin/delete/<%= data.email%>" class="btn btn-danger btn-sm">Delete</a> -->
+                       
                         </td>
                     </tr>
                     <% }); %>

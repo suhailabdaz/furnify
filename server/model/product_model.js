@@ -21,6 +21,10 @@ const proschema=new mongoose.Schema({
      type:Number,
      required:true
   },
+  discount:{
+    type:Number,
+    required:true
+  },
     price:{
         type:Number,
         required:true

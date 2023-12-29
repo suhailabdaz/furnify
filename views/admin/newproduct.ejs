@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Breeze Admin</title>
+    <title>Furnify Admin</title>
     <link rel="stylesheet" href="/adminassets/vendors/mdi/css/materialdesignicons.min.css" />
     <link rel="stylesheet" href="/adminassets/vendors/flag-icon-css/css/flag-icon.min.css" />
     <link rel="stylesheet" href="/adminassets/vendors/css/vendor.bundle.base.css" />
@@ -49,29 +49,33 @@
                 <form action="/admin/addproduct" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="productName" class="form-label">Product Name:</label>
-                        <input type="text" class="form-control" id="productName" name="productName" required>
+                        <input type="text" class="form-control" id="productName" name="productName" value="<%= productInfo && productInfo.productName ?productInfo.productName : '' %>" required>
+                        <% if(expressFlash.productNameError){%>
+                          <div class="alter text-danger text-start"><%= expressFlash.productNameError%></div>
+                      <%}%>
                     </div>
 
                     <div class="mb-3">
                       <label for="parentCategory" class="form-label">Category:</label>
-                      <select class="form-select" id="parentCategory" name="parentCategory"   required>
-                        <option value="" disabled selected>Select Category</option>
-                        <% category.forEach(category => { %>
-                            <option value="<%= category._id %>"><%= category.name %></option>
-                        <% }); %>
-                    </select>
-                    
+                      <select class="form-select" id="parentCategory" name="parentCategory" required>
+                          <option value="" disabled <% if (!productInfo || !productInfo.parentCategory) { %>selected<% } %>>Select Category</option>
+                          <% category.forEach(category => { %>
+                              <option value="<%= category._id %>" <% if (productInfo && productInfo.parentCategory === category._id) { %>selected<% } %>><%= category.name %></option>
+                          <% }); %>
+                      </select>
+                      <% if(expressFlash.parentCategoryError) { %>
+                          <div class="alter text-danger text-start"><%= expressFlash.parentCategoryError %></div>
+                      <% } %>
                   </div>
+                  
                   <div class="mb-3">
                     <label for="productType" class="form-label">Product Type:</label>
-                    <input type="text" class="form-control" id="productType" name="productType" required>
+                    <input type="text" class="form-control" id="productType" name="productType" value="<%= productInfo && productInfo.productType ?productInfo.productType : '' %>" required>
+                    <% if(expressFlash.productTypeError){%>
+                      <div class="alter text-danger text-start"><%= expressFlash.productTypeError%></div>
+                  <%}%>
                 </div>
-                  <!-- <div class="mb-3">
-                      <label for="subCategory" class="form-label">Sub Category:</label>
-                      <select class="form-select" id="subCategory" name="subCategory" required>
-                          <option value="" disabled selected>Select sub Category</option>
-                      </select>
-                  </div> -->
+    
 
                   <div class="mb-3">
                     <label for="images" class="form-label">Images:</label>
@@ -80,49 +84,75 @@
 
                 <div class="mb-3 d-flex">
                   <label for="subCategory" class="form-label">Stock:</label><br>
-                  <input type="number" class="form-control ml-3" id="productName" name="stock" required>
-                  
+                  <input type="number" class="form-control ml-3" id="productName" name="stock" value="<%= productInfo && productInfo.stock ?productInfo.stock : '' %>" required>
+                  <% if(expressFlash.stockError){%>
+                    <div class="alter text-danger text-start"><%= expressFlash.stockError%></div>
+                <%}%>
                   
               </div>
 
               <div class="mb-3">
                 <label for="mrp" class="form-label">MRP:</label>
-                <input type="text" class="form-control" id="mrp" name="mrp" required>
+                <input type="number" class="form-control" id="mrp" name="mrp" min="1"   oninput="calculatePrice()" value="<%= productInfo && productInfo.mrp ?productInfo.mrp : '' %>" required>
+                <% if(expressFlash.mrpError){%>
+                  <div class="alter text-danger text-start"><%= expressFlash.mrpError%></div>
+                <%}%>
+            </div>
+
+            <div class="mb-3">
+              <label for="discount" class="form-label">Discount</label>
+              <input type="number" class="form-control" id="discount" name="discount"  min="0" max="99"  oninput="calculatePrice()" value="<%= productInfo && productInfo.discount ?productInfo.discount : '' %>" required>
+              <% if(expressFlash.discountError){%>
+                <div class="alter text-danger text-start"><%= expressFlash.discountError%></div>
+              <%}%>
             </div>
           
 
                     <div class="mb-3">
                       <label for="price" class="form-label">Price:</label>
-                      <input type="text" class="form-control" id="price" name="price" required>
+                      <input type="number" class="form-control" id="price" name="price" readonly value="<%= productInfo && productInfo.price ?productInfo.price : '' %>"  required>
+                      <% if(expressFlash.priceError){%>
+                        <div class="alter text-danger text-start"><%= expressFlash.priceError%></div>
+                      <%}%>
                   </div>
         
                     <div class="mb-3">
                         <label for="description" class="form-label">Description:</label>
-                        <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                        <textarea class="form-control" id="description" name="description" rows="4" value="<%= productInfo && productInfo.description ?productInfo.description : '' %>" required></textarea>
+                        <% if(expressFlash.descriptionError){%>
+                          <div class="alter text-danger text-start"><%= expressFlash.descriptionError%></div>
+                        <%}%>
                     </div>
 
                     <div class="mb-3 d-flex">
                       <label for="height" class="form-label">Height:</label><br>
-                      <input type="number" class="form-control ml-3" id="productName" name="height" required>
-                      
+                      <input type="number" class="form-control ml-3" id="productName" name="height" value="<%= productInfo && productInfo.height ?productInfo.height : '' %>" required>
+                      <% if(expressFlash.heightError){%>
+                        <div class="alter text-danger text-start"><%= expressFlash.heightError%></div>
+                      <%}%>
                       
                   </div>
 
                   <div class="mb-3 d-flex">
                     <label for="height" class="form-label">weight:</label><br>
-                    <input type="number" class="form-control ml-3" id="productName" name="weight" required>
-                    
+                    <input type="number" class="form-control ml-3" id="productName" name="weight" value="<%= productInfo && productInfo.weight ?productInfo.weight : '' %>" required>
+                    <% if(expressFlash.weightError){%>
+                      <div class="alter text-danger text-start"><%= expressFlash.weightError%></div>
+                    <%}%>
                     
                 </div>
 
                   <div class="mb-3 d-flex">
                     <label for="width" class="form-label">Width:</label><br>
-                    <input type="number" class="form-control ml-3" id="width" name="width" required>
+                    <input type="number" class="form-control ml-3" id="width" name="width" value="<%= productInfo && productInfo.width ?productInfo.width : '' %>" required>
+                    <% if(expressFlash.widthError){%>
+                      <div class="alter text-danger text-start"><%= expressFlash.widthError%></div>
+                    <%}%>
                 </div>
 
                 <div class="mb-3 d-flex">
                   <label for="sidelength" class="form-label">sidelength:</label><br>
-                  <input type="number" class="form-control ml-3" id="sidelength" name="sidelength" required>
+                  <input type="number" class="form-control ml-3" id="sidelength" name="sidelength" value="<%= productInfo && productInfo.sidelength ?productInfo.sidelength : '' %>" required>
               </div>
 
               <div class="mb-3">
@@ -150,54 +180,34 @@
 
          
         </div>
-        <!-- main-panel ends -->
+       
       </div>
-      <!-- page-body-wrapper ends -->
+     
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
+   
     <script>
-    function loadSubcategories(subcatData) {
-      var cleanedData = subcatData.replace(/[^\[\]\{\}\"0-9a-zA-Z\,\:]/g, '');
-    var subcat = JSON.parse(cleanedData);
-    // console.log("Parsed subcat:", subcat);
-
-
+      function calculatePrice() {
+        const mrpInput = document.getElementById('mrp');
+        const discountInput = document.getElementById('discount');
+        const priceInput = document.getElementById('price');
     
-    //   console.log("hi");
-    //   console.log(subcat);
-      var parentCategorySelect = document.getElementById("parentCategory");
-        var subCategorySelect = document.getElementById("subCategory");
-  
-        var selectedParentCategoryId = parentCategorySelect.value;
-        console.log("Selected Parent Category ID:", selectedParentCategoryId);
-
+        let mrp = parseFloat(mrpInput.value); 
+        let discount = parseFloat(discountInput.value) || 0;
+    
+        mrp = isNaN(mrp) ? 0 : Math.max(mrp, 1);
+        mrpInput.value = mrp;
+    
+        discount = Math.min(Math.max(discount, 0), 99);
+        discountInput.value = discount;
+    
+        const calculatedPrice = discount >= 0 && discount <= 99 ? mrp - (mrp * discount / 100) : '';
+    
+        priceInput.value = isNaN(calculatedPrice) ? '' : calculatedPrice.toFixed(2);
+      }
+    </script>
+    
     
 
-    var filteredSubcategories = subcat
-  .filter(function(category) {
-    console.log("Selected Parent Category ID:", selectedParentCategoryId);
-    console.log("Subcategory Parent Category ID:", category.parentCategoryId);
-    return category.parentCategoryId.id === selectedParentCategoryId;
-  })
-  
-
-  
-        console.log("Filtered Subcategories:", filteredSubcategories);
-      
-        subCategorySelect.innerHTML = '<option value="" disabled selected>Select sub Category</option>';
-        console.log(filteredSubcategories);
-        filteredSubcategories.forEach(function(subcategory) {
-        //   console.log("jjj");
-        // console.log(subcategory.id);
-        // console.log(subcategory.name);
-            var option = document.createElement("option");
-            option.value = subcategory.id;
-            option.textContent = subcategory.subcategoryName;
-            subCategorySelect.appendChild(option);
-        });
-    }</script>
-  
     
     <script src="/adminassets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->

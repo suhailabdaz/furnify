@@ -119,7 +119,14 @@ const editCouponPage=async (req,res)=>{
     try{
         const id=req.params.id
         const coupon=await couponModel.findOne({_id:id})
-        res.render('admin/editCouponPage',{coupon:coupon})
+        res.render('admin/editCouponPage',{coupon:coupon,expressFlash:{
+            codeError:req.flash("codeError"),
+            minimumError:req.flash("minError"),
+            discountError:req.flash("discountError"),
+            expiryError:req.flash("expiryError"),
+            maxError:req.flash("maxError"),
+            typeError:req.flash("typeError"),
+            existsError:req.flash("couponExistsError")}})
     }
     catch (err) {
         console.log(err);
@@ -129,14 +136,63 @@ const editCouponPage=async (req,res)=>{
 
 const updateCoupon=async(req,res)=>{
     try{
+        const id = req.params.id
+
+        const  currentCoupon= await couponModel.find({_id:id})
+
+        
+
         const {couponId,couponCode,minimumPrice,discount,expiry,maxRedeem,couponType}=req.body
 
-        const couponExists = await couponModel.findOne({ couponCode: couponCode });
+        const couponValid=uppercaseAlphanumValid(couponCode)
+        const minimumValid = onlyNumbers(minimumPrice) 
+        const discountValid = onlyNumbers(discount)
+        const expiryValid= isFutureDate(expiry)
+        const maxredeemValid = onlyNumbers(maxRedeem)
+        const coupontypeValid = alphanumValid(couponType)
+
+        if(!couponValid){
+            req.flash("codeError","only Uppercase letters Allowed")
+            return res.redirect(`/admin/editCouponGet/${id}`)
+        }
+        else if(!minimumValid){
+            req.flash("minError","Invalid Data")
+            return res.redirect(`/admin/editCouponGet/${id}`)
+        }
+        else if(!discountValid){
+            req.flash("discountError","Invalid Data")
+            return res.redirect(`/admin/editCouponGet/${id}`)
+        }
+        else if(!expiryValid){
+            req.flash("expiryError","Invalid Data")
+            return res.redirect(`/admin/editCouponGet/${id}`)
+        }
+        else if(!maxredeemValid){
+            req.flash("maxError","Invalid Data")
+            return res.redirect(`/admin/editCouponGet/${id}`)
+
+        }
+        else if(!coupontypeValid){
+            req.flash("typeError","Invalid Data")
+            return res.redirect(`/admin/editCouponGet/${id}`)
+        }
+
     
+
+        const currCouponCode = currentCoupon.couponCode;
+
+        const couponExists = await couponModel.findOne({
+            $and: [
+                { couponCode: couponCode }, // Your original condition
+                { couponCode: { $ne: currCouponCode } } // Exclude current coupon
+            ]
+        });
+            
         if (couponExists) {
-            console.log("Coupon exists");
-            res.redirect('/admin/couponList');
-        } else {
+            req.flash("couponExistsError","coupon code Exists")
+            return res.redirect(`/admin/editCouponGet/${id}`)
+        }
+        else {
 
             const updatedCoupon = await couponModel.findByIdAndUpdate(
                 couponId,

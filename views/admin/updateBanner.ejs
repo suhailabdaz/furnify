@@ -84,12 +84,18 @@
                     <div class="mb-3">
                         <label for="bannerTitle" class="form-label">Banner Title</label>
                         <input type="text" class="form-control" id="bannerTitle" name="bannerTitle" value="<%=banner.title %>" required>
+                        <% if(expressFlash.titleError){%>
+                          <div class="alter text-danger text-start"><%= expressFlash.titleError%></div>
+                      <%}%>
                     </div>
                     
         
                     <div class="mb-3">
                       <label for="bannerSubtitle" class="form-label">Banner Subtitle:</label>
                       <textarea class="form-control" id="bannerSubtitle" name="bannerSubtitle" rows="4" required><%= banner.subtitle%></textarea>
+                      <% if(expressFlash.subtitleError){%>
+                        <div class="alter text-danger text-start"><%= expressFlash.subtitleError%></div>
+                    <%}%>
                     </div>
 
                     <div class="mb-3">

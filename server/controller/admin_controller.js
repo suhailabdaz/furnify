@@ -283,7 +283,11 @@ const updatecat = async (req, res) => {
   try {
     const id = req.params.id;
     const cat = await categoryModel.findOne({ _id: id });
-    res.render("admin/updatecat", { itemcat: cat });
+    res.render("admin/updatecat", { itemcat: cat,expressFlash:{
+      catNameError:req.flash("catNameError"),
+      catDesError:req.flash("catDesError"),
+      catExistError:req.flash("catExistError")
+    }});
   } catch (err) {
     console.log(err);
     res.render("users/serverError");
@@ -292,8 +296,31 @@ const updatecat = async (req, res) => {
 const updatecategory = async (req, res) => {
   try {
     const id = req.params.id;
-    const catName = req.body.categoryName;
-    const catdes = req.body.description;
+   const {categoryName,description}=req.body
+
+
+    const catNameValid = alphanumValid(categoryName)
+    const catDesValid = alphanumValid(description)
+
+    if(!catNameValid){
+      req.flash("catNameError","Enter Valid Category Name")
+      return res.redirect(`/admin/updatecat/${id}`)
+    }
+    if(!catDesValid){
+      req.flash("catDesError","Enter valid Description")
+      return res.redirect(`/admin/updatecat/${id}`)
+    }
+
+    const categoryExists = await categoryModel.findOne({ 
+      _id: { $ne: id }, 
+      name: new RegExp('^' + categoryName + '$', 'i')
+  });
+    if (categoryExists) {
+      req.flash("catExistError","Category already exists")
+      return res.redirect(`/admin/updatecat/${id}`)
+    }
+
+
     await categoryModel.updateOne(
       { _id: id },
       { $set: { name: catName, description: catdes } }

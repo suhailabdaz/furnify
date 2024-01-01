@@ -3,6 +3,9 @@ const categoryModel = require('../model/category_model');
 const productModel = require('../model/product_model');
 const couponModel=require('../model/coupon_model');
 const mongoose=require('mongoose');
+const { alphanumValid,
+    onlyNumbers,
+    zerotonine}=require('../../utils/validators/admin_validators')
 
 
 
@@ -23,7 +26,11 @@ const addbanner = async (req, res) => {
         const categories=await categoryModel.find();
         const products=await productModel.find();
         const coupons=await couponModel.find();
-        res.render('admin/newBanner',{categories,products,coupons});
+        res.render('admin/newBanner',{categories,products,coupons,bannerInfo:req.session.bannerInfo,expressFlash:{
+            titleError:req.flash("titleError"),
+            subtitleError:req.flash("subtitleError")
+        }});
+        req.session.bannerInfo=null
     }  catch (err) {
         console.log(err);
         res.render("users/serverError")
@@ -34,6 +41,21 @@ const addBannerPost=async(req,res)=>{
     try{
         
         const { bannerLabel, bannerTitle, bannerimage,bannerSubtitle,bannerColor} = req.body
+        req.session.bannerInfo=req.body
+        const subtitleValid = alphanumValid(bannerSubtitle)
+
+        const titleValid = alphanumValid(bannerTitle)
+
+        if(!titleValid){
+            req.flash("titleError","Invalid Entry !")
+            return res.redirect("/admin/newbanner")
+        }
+        if(!subtitleValid){
+            req.flash("subtitleError","Invalid Entry !")
+            return res.redirect("/admin/newbanner")
+        }
+
+        req.session.bannerInfo=null;
 
         const isValidObjectId = mongoose.Types.ObjectId.isValid;
         let bannerLink
@@ -101,7 +123,10 @@ const updateBanner = async (req, res) => {
         const products=await productModel.find();
         const coupons=await couponModel.find();
        
-        res.render('admin/updateBanner', { banner: banner,categories:categories,products:products,coupons:coupons })
+        res.render('admin/updateBanner', { banner: banner,categories:categories,products:products,coupons:coupons ,expressFlash:{
+            titleError:req.flash("titleError"),
+            subtitleError:req.flash("subtitleError")
+        }})
     }  catch (err) {
         console.log(err);
         res.render("users/serverError")
@@ -112,8 +137,20 @@ const updateBannerPost = async (req, res) => {
     try {
         const id = req.params.id
         const { bannerLabel,bannerTitle,bannerSubtitle,bannerImage } = req.body
-        console.log("the filke is here",req.file);
         const banner=await bannerModel.findOne({_id:id})
+
+        const subtitleValid = alphanumValid(bannerSubtitle)
+
+        const titleValid = alphanumValid(bannerTitle)
+
+        if(!titleValid){
+            req.flash("titleError","Invalid Entry !")
+            return res.redirect(`/admin/updateBanner/${id}`)
+        }
+        if(!subtitleValid){
+            req.flash("subtitleError","Invalid Entry !")
+            return res.redirect(`/admin/updateBanner/${id}`)
+        }
 
         let bannerLink;
 

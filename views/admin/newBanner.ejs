@@ -88,14 +88,20 @@
 
                     <div class="mb-3">
                       <label for="parentCategory" class="form-label">title:</label>
-                      <input type="text" class="form-control" id="bannerTitle" name="bannerTitle" required>
+                      <input type="text" class="form-control" id="bannerTitle" name="bannerTitle" value="<%= bannerInfo && bannerInfo.bannerTitle ?bannerInfo.bannerTitle : '' %>" required>
+                      <% if(expressFlash.titleError){%>
+                        <div class="alter text-danger text-start"><%= expressFlash.titleError%></div>
+                    <%}%>
 
                      
                     
                   </div>
                   <div class="mb-3">
                     <label for="productType" class="form-label">Subtitle:</label>
-                    <input type="text" class="form-control" id="bannerSubtitle" name="bannerSubtitle" required>
+                    <input type="text" class="form-control" id="bannerSubtitle" name="bannerSubtitle" value="<%= bannerInfo && bannerInfo.bannerTitle ?bannerInfo.bannerTitle : '' %>" required>
+                    <% if(expressFlash.subtitleError){%>
+                      <div class="alter text-danger text-start"><%= expressFlash.subtitleError%></div>
+                  <%}%>
                 </div>
                   
 

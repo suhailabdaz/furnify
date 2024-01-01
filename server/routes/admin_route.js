@@ -65,7 +65,7 @@ adrouter.get('/newcoupon',auth.loggedadmin,coupon_controller.addcouponpage)
 adrouter.post('/add_coupon',auth.loggedadmin,coupon_controller.createCoupon)
 adrouter.get('/unlistCoupon/:id',auth.loggedadmin,coupon_controller.unlistCoupon)
 adrouter.get('/editCouponGet/:id',auth.loggedadmin,coupon_controller.editCouponPage)
-adrouter.post('/updateCoupon',auth.loggedadmin,coupon_controller.updateCoupon)
+adrouter.post('/updateCoupon/:id',auth.loggedadmin,coupon_controller.updateCoupon)
 
 
 

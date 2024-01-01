@@ -40,10 +40,16 @@
             <div class="container form-container">
                 <h1 class="mb-4">Update Coupon</h1>
         
-                <form action="/admin/updateCoupon" method="post">
+                <form action="/admin/updateCoupon/<%=coupon._id%>" method="post">
+                  <% if(expressFlash.existsError){%>
+                    <div class="alter text-danger text-start"><%= expressFlash.existsError%></div>
+                  <%}%>
                     <div class="mb-3">
                         <label for="couponCode" class="form-label">Coupon Code:</label>
                         <input type="text" class="form-control" id="couponCode" name="couponCode" value="<%=coupon.couponCode%>" required>
+                        <% if(expressFlash.codeError){%>
+                          <div class="alter text-danger text-start"><%= expressFlash.codeError%></div>
+                        <%}%>
                     </div>
 
                     <div class="mb-3">
@@ -52,29 +58,41 @@
                           <option value="flatDiscount">Flat Discount</option>
                           <option value="percentageDiscount">Percentage Discount</option>
                       </select>
+                      <% if (expressFlash.typeError) { %>
+                        <div class="alert text-danger text-start"><%= expressFlash.typeError %></div>
+                    <% } %>
                   </div>
         
                     <div class="mb-3">
                         <label for="minimumPrice" class="form-label">minimumPrice:</label>
                         <input type="number" class="form-control" id="minimumPrice" name="minimumPrice" value="<%=coupon.minimumPrice%>"  required>
+                        <% if(expressFlash.minimumError){%>
+                          <div class="alter text-danger text-start"><%= expressFlash.minimumError%></div>
+                        <%}%>
 
                     </div>
 
                     <div class="mb-3">
                         <label for="discount" class="form-label">Discount:</label>
                         <input type="number" class="form-control" id="discount" name="discount" oninput="updateMaxRedeem()" value="<%=coupon.discount%>" required>
+                        <% if(expressFlash.discountError){%>
+                          <div class="alter text-danger text-start"><%= expressFlash.discountError%></div>
+                        <%}%>
                     </div>
 
                     <div class="mb-3">
                       <label for="maxRedeem" class="form-label">Max Redeemeable Amount:</label>
                       <input type="number" class="form-control" id="maxRedeem" name="maxRedeem" value="<%=coupon.maxRedeem%>"  required>
+                      <% if(expressFlash.maxError){%>
+                        <div class="alter text-danger text-start"><%= expressFlash.maxError%></div>
+                      <%}%>
                   </div>
-
-
-
                         <div class="mb-3">
                             <label for="expiry" class="form-label">Expiry:</label>
                             <input type="date" class="form-control" id="expiry" name="expiry" value="<%=coupon.expiry%>" required>
+                            <% if(expressFlash.expiryError){%>
+                              <div class="alter text-danger text-start"><%= expressFlash.expiryError%></div>
+                            <%}%>
                             </div>
                         <input type="hidden" id="couponId" name="couponId" value="<%= coupon._id %>">
 

@@ -1,15 +1,56 @@
 const couponModel=require("../model/coupon_model")
+const {alphanumValid,
+    onlyNumbers,
+    zerotonine,
+    uppercaseAlphanumValid,
+    isFutureDate}=require("../../utils/validators/admin_validators")
 
 const createCoupon=async(req,res)=>{
     try{
         const {couponCode,minimumPrice,discount,expiry,maxRedeem,couponType}=req.body
 
+        const couponValid=uppercaseAlphanumValid(couponCode)
+        const minimumValid = onlyNumbers(minimumPrice) 
+        const discountValid = onlyNumbers(discount)
+        const expiryValid= isFutureDate(expiry)
+        const maxredeemValid = onlyNumbers(maxRedeem)
+        const coupontypeValid = alphanumValid(couponType)
+
+        req.session.couponInfo=req.body
+
+        if(!couponValid){
+            req.flash("codeError","only Uppercase letters Allowed")
+            return res.redirect("/admin/newcoupon")
+        }
+        else if(!minimumValid){
+            req.flash("minError","Invalid Data")
+            return res.redirect("/admin/newcoupon")
+        }
+        else if(!discountValid){
+            req.flash("discountError","Invalid Data")
+            return res.redirect("/admin/newcoupon")
+        }
+        else if(!expiryValid){
+            req.flash("expiryError","Invalid Data")
+            return res.redirect("/admin/newcoupon")
+        }
+        else if(!maxredeemValid){
+            req.flash("maxError","Invalid Data")
+            return res.redirect("/admin/newcoupon")
+
+        }
+        else if(!coupontypeValid){
+            req.flash("typeError","Invalid Data")
+            return res.redirect("/admin/newcoupon")
+        }
+
+
         const couponExists = await couponModel.findOne({ couponCode: couponCode });
-    
         if (couponExists) {
-            console.log("Coupon exists");
-            res.redirect('/admin/couponList');
+            req.flash("couponExistsError","coupon code Exists")
+            res.redirect('/admin/newcoupon');
         } else {
+            req.session.couponInfo=null
             await couponModel.create({
                 couponCode: couponCode,
                 type:couponType,
@@ -18,7 +59,6 @@ const createCoupon=async(req,res)=>{
                 maxRedeem:maxRedeem,
                 expiry:expiry 
                 })
-            console.log("COUPON created");
             res.redirect('/admin/couponList');
 
     }
@@ -43,7 +83,16 @@ const couponList=async(req,res)=>{
 
 const addcouponpage=async(req,res)=>{
     try{
-        res.render('admin/addCoupon')
+        res.render('admin/addCoupon',{couponInfo:req.session.couponInfo,expressFlash:{
+        codeError:req.flash("codeError"),
+    minimumError:req.flash("minError"),
+    discountError:req.flash("discountError"),
+    expiryError:req.flash("expiryError"),
+    maxError:req.flash("maxError"),
+    typeError:req.flash("typeError"),
+    existsError:req.flash("couponExistsError")
+        }})
+        req.session.couponInfo=null
     }
     catch (err) {
         console.log(err);

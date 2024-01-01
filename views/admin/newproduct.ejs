@@ -118,7 +118,7 @@
         
                     <div class="mb-3">
                         <label for="description" class="form-label">Description:</label>
-                        <textarea class="form-control" id="description" name="description" rows="4" value="<%= productInfo && productInfo.description ?productInfo.description : '' %>" required></textarea>
+                        <textarea class="form-control" id="description" name="description" rows="4" required><%= productInfo && productInfo.description ?productInfo.description : '' %></textarea>
                         <% if(expressFlash.descriptionError){%>
                           <div class="alter text-danger text-start"><%= expressFlash.descriptionError%></div>
                         <%}%>
@@ -153,21 +153,33 @@
                 <div class="mb-3 d-flex">
                   <label for="sidelength" class="form-label">sidelength:</label><br>
                   <input type="number" class="form-control ml-3" id="sidelength" name="sidelength" value="<%= productInfo && productInfo.sidelength ?productInfo.sidelength : '' %>" required>
+                  <% if(expressFlash.sidelengthError){%>
+                    <div class="alter text-danger text-start"><%= expressFlash.sidelengthError%></div>
+                  <%}%>
               </div>
 
               <div class="mb-3">
                 <label for="madeof" class="form-label">Madeof:</label>
-                <input type="text" class="form-control" id="price" name="madeOf" required>
+                <input type="text" class="form-control" id="price" name="madeOf" value="<%= productInfo && productInfo.madeOf ?productInfo.madeOf : '' %>" required>
+                <% if(expressFlash.madeOfError){%>
+                  <div class="alter text-danger text-start"><%= expressFlash.madeOfError %></div>
+                <%}%>
             </div>
 
             <div class="mb-3">
               <label for="color" class="form-label">color:</label>
-              <input type="text" class="form-control" id="color" name="color" required>
+              <input type="text" class="form-control" id="color" name="color" value="<%= productInfo && productInfo.color ?productInfo.color : '' %>" required>
+              <% if(expressFlash.colorError){%>
+                <div class="alter text-danger text-start"><%= expressFlash.colorError%></div>
+              <%}%>
           </div>
 
           <div class="mb-3">
             <label for="manufacturer" class="form-label">manufacturer:</label>
-            <input type="text" class="form-control" id="manufacturer" name="manufacturer" required>
+            <input type="text" class="form-control" id="manufacturer" name="manufacturer" value="<%= productInfo && productInfo.manufacturer ?productInfo.manufacturer : '' %>" required>
+            <% if(expressFlash.manufacturerError){%>
+              <div class="alter text-danger text-start"><%= expressFlash.manufacturerError%></div>
+            <%}%>
         </div>
 
 

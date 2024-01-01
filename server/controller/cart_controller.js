@@ -83,13 +83,11 @@ const showcart = async (req, res) => {
           total: 0,
         });
       }
-      
       const productExist = cart.item.findIndex((item) => item.productId == pid);
-      
       if (productExist !== -1) {
         cart.item[productExist].quantity += 1;
         cart.item[productExist].total =
-          cart.item[productExist].quantity * price;
+        cart.item[productExist].quantity * price;
       } else {
         const newItem = {
           productId: pid,

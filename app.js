@@ -9,9 +9,10 @@ const usrouter=require("./server/routes/user_route")
 const adrouter=require("./server/routes/admin_route")
 const path=require("path")
 const ejs=require("ejs")
+const flash=require("express-flash")
+
 
 const nocache=require("nocache")
-const flash=require("express-flash")
 
 
 const port=process.env.PORT
@@ -38,10 +39,12 @@ app.use(session({
   saveUninitialized: true,
 }));
 
+app.use(flash());
+
 
 app.use(bodyParser.json()); 
 app.use(express.urlencoded({extended:true}))
-app.use(flash());
+
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/public/usersassets'));

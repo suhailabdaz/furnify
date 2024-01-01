@@ -2,7 +2,9 @@ const bcrypt = require("bcrypt");
 const usersModel = require("../model/user_model");
 const categoryModel = require("../model/category_model");
 const orderModel = require("../model/order_model");
-
+const { alphanumValid,
+  onlyNumbers,
+  zerotonine}=require('../../utils/validators/admin_validators')
 
 const fs = require("fs");
 const os = require("os");
@@ -31,6 +33,7 @@ const adminloginpost = async (req, res) => {
     console.log(user);
     if (passwordmatch && user.isAdmin ) {
       req.session.admin = true;
+      req.session.isAuth = false;
       res.redirect("/admin/adminpanel");
     } else {
       console.log("get");
@@ -215,7 +218,12 @@ const category = async (req, res) => {
 };
 const newcat = async (req, res) => {
   try {
-    res.render("admin/addcategories");
+    res.render("admin/addcategories",{catinfo:req.session.catinfo,expressFlash:{
+      catNameError:req.flash("catNameError"),
+      catDesError:req.flash("catDesError"),
+      catExistError:req.flash("catExistError")
+    }});
+    req.session.catinfo=null
   } catch (err) {
     console.log(err);
     res.render("users/serverError");
@@ -224,16 +232,29 @@ const newcat = async (req, res) => {
 
 const addcategory = async (req, res) => {
   try {
-    const catName = req.body.categoryName;
-    const catDes = req.body.description;
+    const {categoryName,description}=req.body
 
-    const categoryExists = await categoryModel.findOne({ name: catName });
+    const catNameValid = alphanumValid(categoryName)
+    const catDesValid = alphanumValid(description)
+
+    req.session.catinfo=req.body
+
+    if(!catNameValid){
+      req.flash("catNameError","Enter Valid Category Name")
+      return res.redirect("/admin/newcat")
+    }
+    if(!catDesValid){
+      req.flash("catDesError","Enter valid Description")
+      return res.redirect("/admin/newcat")
+    }
+    const categoryExists = await categoryModel.findOne({ name: new RegExp('^' + categoryName + '$', 'i') });
 
     if (categoryExists) {
-      console.log("Category exists");
-      res.redirect("/admin/category");
+      req.flash("catExistError","Category already exists")
+      res.redirect("/admin/newcat");
     } else {
-      await categoryModel.create({ name: catName, description: catDes });
+      req.session.catinfo=null
+      await categoryModel.create({ name: categoryName, description: description });
       console.log("Category created");
       res.redirect("/admin/category");
     }

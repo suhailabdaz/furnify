@@ -26,7 +26,7 @@ const iflogged=async(req,res,next)=>{
 const islogged=async(req,res,next)=>{
 const user= await userModel.findOne({_id:req.session.userId})
 
-if(user&&user.status==false){
+if(req.session.isAuth &&user && user.status==false){
   next()
 }
   else{
@@ -59,8 +59,11 @@ const checkSessionVariable = (variableName,redirectPath) => {
     };
   };
 
+
+
   const loggedadmin = (req, res, next) => {
     if(req.session.admin){
+    
         next()
     } else {
         res.redirect('/admin')
@@ -76,7 +79,8 @@ const logoutAdmin = (req, res, next) => {
     }
 }
 const logouting = (req,res,next) => {
-    req.session.admin=false,
+    req.session.admin=false;
+    req.session.destroy();
     res.redirect('/admin')
 }
 

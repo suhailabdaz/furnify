@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>StepEra Admin</title>
+    <title>Furnify Admin</title>
     <link rel="stylesheet" href="/adminassets/vendors/mdi/css/materialdesignicons.min.css" />
     <link rel="stylesheet" href="/adminassets/vendors/flag-icon-css/css/flag-icon.min.css" />
     <link rel="stylesheet" href="/adminassets/vendors/css/vendor.bundle.base.css" />
@@ -43,70 +43,121 @@
                     <div class="mb-3">
                         <label for="categoryName" class="form-label">Product Name:</label>
                         <input type="text" class="form-control" id="categoryName" name="productName" value="<%= product.name %>" required>
+                        <% if(expressFlash.productNameError){%>
+                          <div class="alter text-danger text-start"><%= expressFlash.productNameError%></div>
+                      <%}%>
                     </div>
+
+                    
+
+                    <div class="mb-3">
+                      <label for="categoryName" class="form-label">Product Type:</label>
+                      <input type="text" class="form-control" id="categoryName" name="productType" value="<%= product.type %>" required>
+                      <% if(expressFlash.productTypeError){%>
+                        <div class="alter text-danger text-start"><%= expressFlash.productTypeError%></div>
+                    <%}%>
+                  </div>
 
                     <div class="mb-3">
                       <label for="categoryName" class="form-label">MRP:</label>
-                      <input type="number" class="form-control" id="mrp" name="mrp" value="<%= product.mrp %>" required>
+                      <input type="number" class="form-control" id="mrp" name="mrp" min="1" oninput="calculatePrice()" value="<%= product.mrp %>" required>
+                      <% if(expressFlash.mrpError){%>
+                        <div class="alter text-danger text-start"><%= expressFlash.mrpError%></div>
+                      <%}%>
                   </div>
-
-                    <div class="mb-3">
-                        <label for="categoryName" class="form-label">Price:</label>
-                        <input type="number" class="form-control" id="categoryName" name="productprice" value="<%= product.price %>" required>
-                    </div>
-                    <div class="mb-3 d-flex">
-                        <label for="categoryName" class="form-label">Product stock:</label>
-                        
-                   
-                        <input type="text" class="form-control ml-2" id="categoryName" name="stock" value="<%= product.stock %>" style="height:15px;width: 50px;" required>
-                        
-                    </div>
-        
-                    <div class="mb-3">
-                      <label for="description" class="form-label">Description:</label>
-                      <textarea class="form-control" id="description" name="description" rows="4" required><%= product.description%></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                      <label for="categoryName" class="form-label">Height:</label>
-                      <input type="number" class="form-control" id="categoryName" name="height" value="<%= product.height %>" required>
-                  </div>
-
                   <div class="mb-3">
-                    <label for="categoryName" class="form-label">Width:</label>
-                    <input type="number" class="form-control" id="categoryName" name="width" value="<%= product.width %>" required>
+                    <label for="categoryName" class="form-label">Discount:</label>
+                    <input type="number" class="form-control" id="discount" name="discount" min="0" max="99" oninput="calculatePrice()" value="<%= product.discount %>" required>
+                    <% if(expressFlash.discountError){%>
+                      <div class="alter text-danger text-start"><%= expressFlash.discountError%></div>
+                    <%}%>
                 </div>
-                
                 <div class="mb-3">
-                  <label for="categoryName" class="form-label">weight:</label>
-                  <input type="number" class="form-control" id="categoryName" name="weight" value="<%= product.weight %>" required>
+                  <label for="price" class="form-label">Price:</label>
+                  <input type="number" class="form-control" id="price" name="price" readonly value="<%= product.price %>"  required>
+                  <% if(expressFlash.priceError){%>
+                    <div class="alter text-danger text-start"><%= expressFlash.priceError%></div>
+                  <%}%>
               </div>
-
-              <div class="mb-3">
-                <label for="categoryName" class="form-label">sidelength:</label>
-                <input type="number" class="form-control" id="categoryName" name="sidelength" value="<%= product.sidelength %>" required>
+                    
+              <div class="mb-3 d-flex">
+                <label for="subCategory" class="form-label">Stock:</label><br>
+                <input type="number" class="form-control ml-3" id="productName" name="stock" value="<%= product.stock %>" required>
+                <% if(expressFlash.stockError){%>
+                  <div class="alter text-danger text-start"><%= expressFlash.stockError%></div>
+              <%}%>
+                
             </div>
-
-            
+        
             <div class="mb-3">
-              <label for="categoryName" class="form-label">madeOf:</label>
-              <input type="text" class="form-control" id="categoryName" name="madeof" value="<%= product.madeOf %>" required>
+              <label for="description" class="form-label">Description:</label>
+              <textarea class="form-control" id="description" name="description" rows="4" required><%= product.description%></textarea>
+              <% if(expressFlash.descriptionError){%>
+                <div class="alter text-danger text-start"><%= expressFlash.descriptionError%></div>
+              <%}%>
           </div>
 
-           
-          <div class="mb-3">
-            <label for="categoryName" class="form-label">color:</label>
-            <input type="text" class="form-control" id="categoryName" name="color" value="<%= product.color %>" required>
+          <div class="mb-3 d-flex">
+            <label for="height" class="form-label">Height:</label><br>
+            <input type="number" class="form-control ml-3" id="productName" name="height" value="<%= product.height %>" required>
+            <% if(expressFlash.heightError){%>
+              <div class="alter text-danger text-start"><%= expressFlash.heightError%></div>
+            <%}%>
+            
         </div>
 
-        <div class="mb-3">
-          <label for="categoryName" class="form-label">manufacturer:</label>
-          <input type="text" class="form-control" id="categoryName" name="manufacturer" value="<%= product.manufacturer %>" required>
+        <div class="mb-3 d-flex">
+          <label for="width" class="form-label">Width:</label><br>
+          <input type="number" class="form-control ml-3" id="width" name="width" value="<%= product.width %>" required>
+          <% if(expressFlash.widthError){%>
+            <div class="alter text-danger text-start"><%= expressFlash.widthError%></div>
+          <%}%>
       </div>
+      <div class="mb-3 d-flex">
+        <label for="height" class="form-label">weight:</label><br>
+        <input type="number" class="form-control ml-3" id="productName" name="weight" value="<%= product.weight %>" required>
+        <% if(expressFlash.weightError){%>
+          <div class="alter text-danger text-start"><%= expressFlash.weightError%></div>
+        <%}%>
+        
+    </div>
+
+    <div class="mb-3 d-flex">
+      <label for="sidelength" class="form-label">sidelength:</label><br>
+      <input type="number" class="form-control ml-3" id="sidelength" name="sidelength" value="<%= product.sidelength%>" required>
+      <% if(expressFlash.sidelengthError){%>
+        <div class="alter text-danger text-start"><%= expressFlash.sidelengthError%></div>
+      <%}%>
+  </div>
+
+             
+  <div class="mb-3">
+    <label for="madeof" class="form-label">Madeof:</label>
+    <input type="text" class="form-control" id="price" name="madeOf" value="<%= product.madeOf %>" required>
+    <% if(expressFlash.madeOfError){%>
+      <div class="alter text-danger text-start"><%= expressFlash.madeOfError %></div>
+    <%}%>
+</div>
+
+<div class="mb-3">
+  <label for="color" class="form-label">color:</label>
+  <input type="text" class="form-control" id="color" name="color" value="<%= product.color %>" required>
+  <% if(expressFlash.colorError){%>
+    <div class="alter text-danger text-start"><%= expressFlash.colorError%></div>
+  <%}%>
+</div>
+
+<div class="mb-3">
+  <label for="manufacturer" class="form-label">manufacturer:</label>
+  <input type="text" class="form-control" id="manufacturer" name="manufacturer" value="<%= product.manufacturer%>" required>
+  <% if(expressFlash.manufacturerError){%>
+    <div class="alter text-danger text-start"><%= expressFlash.manufacturerError%></div>
+  <%}%>
+</div>
 
                     <div class="mb-3">
                       <label for="description" class="form-label">Images:</label>
-                     <% product.images.forEach(item=>{ %>
+                      <% product.images.forEach(item=>{ %>
                         <img style=" width: 100px;height: 100px;"src="/<%= item %>">
                         
                         <!-- <a href="/admin/deleteimg?pid=<%= product._id %>&filename=<%= item %>" class="btn btn-danger btn-xs">Delete</a> -->
@@ -128,6 +179,26 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
+    <script>
+      function calculatePrice() {
+        const mrpInput = document.getElementById('mrp');
+        const discountInput = document.getElementById('discount');
+        const priceInput = document.getElementById('price');
+    
+        let mrp = parseFloat(mrpInput.value); 
+        let discount = parseFloat(discountInput.value) || 0;
+    
+        mrp = isNaN(mrp) ? 0 : Math.max(mrp, 1);
+        mrpInput.value = mrp;
+    
+        discount = Math.min(Math.max(discount, 0), 99);
+        discountInput.value = discount;
+    
+        const calculatedPrice = discount >= 0 && discount <= 99 ? mrp - (mrp * discount / 100) : '';
+    
+        priceInput.value = isNaN(calculatedPrice) ? '' : calculatedPrice.toFixed(2);
+      }
+    </script>
     
     <script src="/adminassets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->

@@ -59,7 +59,7 @@ const filterProducts = async (req, res) => {
   try {
     const category = req.query.category;
     const selectedType = req.query.filterType;
-    const sortOption = req.query.sortoption; // Get the sorting option from the query parameters
+    const sortOption = req.query.sortoption; 
 
     let products;
 
@@ -233,7 +233,7 @@ const singleproduct = async (req, res) => {
 const profile = async (req, res) => {
   try {
     const user = await usersModel.findOne({ _id: req.session.userId });
-    if (user && user.status == false) {
+    if (req.session.isAuth&&user && user.status == false) {
       const userId = req.session.userId;
       const categories = await categoryModel.find();
       const user = await usersModel.findOne({ _id: userId });
@@ -385,7 +385,6 @@ const signupotp = async (req, res) => {
       );
       res.redirect("/signup");
     } else {
-      console.log("ivideyum");
       const hashedpassword = await bcrypt.hash(password, 10);
       const user = new usersModel({
         firstname: firstname,
@@ -430,7 +429,6 @@ const signupotp = async (req, res) => {
 
 const otp = async (req, res) => {
   try {
-    console.log("ememem", req.session.email);
     const otp = await userotp.findOne({ email: req.session.email });
     res.render("users/otp", {
       expressFlash: {
@@ -467,6 +465,7 @@ const verifyotp = async (req, res) => {
           const userdata = await usersModel.findOne({ email: email });
           req.session.userId = userdata._id;
           req.session.isAuth = true;
+          req.session.admin=false;
           req.session.otppressed = false;
           const referral = req.session.referralCode;
           console.log("referal", referral);
@@ -557,6 +556,7 @@ const loginaction = async (req, res) => {
       req.session.userId = user._id;
       req.session.firstname = user.firstname;
       req.session.isAuth = true;
+      req.session.admin=false;
       res.redirect("/");
     } else if (user.status) {
       req.flash("blockerror", "SORRY! Your Account has been suspended !!!");

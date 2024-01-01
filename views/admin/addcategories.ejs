@@ -39,16 +39,25 @@
          
             <div class="container form-container">
                 <h1 class="mb-4">Add Category</h1>
+                <% if(expressFlash.catExistError){%>
+                  <div class="alter text-danger text-start"><%= expressFlash.catExistError%></div>
+              <%}%>
         
                 <form action="/admin/add-category" method="post">
                     <div class="mb-3">
                         <label for="categoryName" class="form-label">Category Name:</label>
-                        <input type="text" class="form-control" id="categoryName" name="categoryName" required>
+                        <input type="text" class="form-control" id="categoryName" name="categoryName" value="<%= catinfo && catinfo.categoryName ?catinfo.categoryName : '' %>"   required>
+                        <% if(expressFlash.catNameError){%>
+                          <div class="alter text-danger text-start"><%= expressFlash.catNameError%></div>
+                      <%}%>
                     </div>
         
                     <div class="mb-3">
                         <label for="description" class="form-label">Description:</label>
-                        <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                        <textarea class="form-control" id="description" name="description" rows="4" required><%= catinfo && catinfo.description ?catinfo.description : '' %></textarea>
+                        <% if(expressFlash.catDesError){%>
+                          <div class="alter text-danger text-start"><%= expressFlash.catDesError%></div>
+                      <%}%>
                     </div>
         
                     <button type="submit" class="btn btn-primary">Add Category</button>

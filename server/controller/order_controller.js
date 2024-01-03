@@ -37,8 +37,47 @@ const updateOrderStatus=async(req,res)=>{
     }
 }
 
+const filterOrder=async (req,res)=>{
+try{
+    const status=req.params.status
+    if(status=="All"){
+        const orders=await orderModel.find({}).sort({ createdAt: -1 })
+        res.render("admin/orderPage",{orderdata:orders})
+    }
+    else if(status=="Pending"){
+        const orders=await orderModel.find({status:status}).sort({ createdAt: -1 })
+        res.render("admin/orderPage",{orderdata:orders})
+    }
+    else if(status=="Processing"){
+        const orders=await orderModel.find({status:status}).sort({ createdAt: -1 })
+        res.render("admin/orderPage",{orderdata:orders})
+    }
+    else if(status=="Shipped"){
+        const orders=await orderModel.find({status:status}).sort({ createdAt: -1 })
+        res.render("admin/orderPage",{orderdata:orders})
+    }
+    else if(status=="Delivered"){
+        const orders=await orderModel.find({status:status}).sort({ createdAt: -1 })
+        res.render("admin/orderPage",{orderdata:orders})
+    }
+    else if(status=="Cancelled"){
+        const orders=await orderModel.find({status:status}).sort({ createdAt: -1 })
+        res.render("admin/orderPage",{orderdata:orders})
+    }
+    else if(status=="returned"){
+        const orders=await orderModel.find({status:status}).sort({ createdAt: -1 })
+        res.render("admin/orderPage",{orderdata:orders})
+    }
+}
+catch(err){
+    console.log(err);
+    res.render("users/serverError")
+}
+}
+
 
 module.exports={
     orderPage,
-    updateOrderStatus
+    updateOrderStatus,
+    filterOrder
 }

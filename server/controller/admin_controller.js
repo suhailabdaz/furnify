@@ -336,12 +336,14 @@ const downloadsales = async (req, res) => {
   try {
     const { startDate, endDate } = req.body;
 
+    console.log(req.body);
+
     const salesData = await orderModel.aggregate([
       {
         $match: {
           createdAt: {
             $gte: new Date(startDate),
-            $lt: new Date(endDate),
+            $lte: new Date(endDate),
           },
         },
       },
@@ -442,14 +444,14 @@ const downloadsales = async (req, res) => {
                                 <td style="border: 1px solid #000; padding: 8px;"></td>
                                 <td style="border: 1px solid #000; padding: 8px;">Total No of Orders</td>
                                 <td style="border: 1px solid #000; padding: 8px;">${
-                                  salesData[0].totalOrders
+                                  salesData.totalOrders
                                 }</td>
                             </tr>
                             <tr>
                                 <td style="border: 1px solid #000; padding: 8px;"></td>
                                 <td style="border: 1px solid #000; padding: 8px;">Total Revenue</td>
                                 <td style="border: 1px solid #000; padding: 8px;">${
-                                  salesData[0].totalAmount
+                                  salesData.totalAmount
                                 }</td>
                             </tr>
                         </tbody>
@@ -483,6 +485,9 @@ const downloadsales = async (req, res) => {
     res.render("users/serverError");
   }
 };
+
+
+
 
 module.exports = {
   login,

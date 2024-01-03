@@ -232,21 +232,21 @@ input:checked + .slider:before {
                         <div class="card-body">
                             <form class="frm" action="/signupotp" method="post">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="firstName" name="firstname" required placeholder="First Name">
+                                    <input type="text" class="form-control" id="firstName" name="firstname" value="<%=userInfo && userInfo.firstname?userInfo.firstname : ''%>" required placeholder="First Name">
                                     <% if(expressFlash.nameerror){%>
                                         <div class="alter text-danger text-start"><%= expressFlash.nameerror%></div>
                                     <%}%>
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="lastname" name="lastname" required
+                                    <input type="text" class="form-control" id="lastname" name="lastname" value="<%=userInfo && userInfo.lastname?userInfo.lastname : ''%>" required
                                         placeholder="Last Name">
                                     <% if(expressFlash.lnameerror){%>
                                         <div class="alter text-danger text-start"><%= expressFlash.lnameerror%></div>
                                     <%}%>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control" id="email" name="email" required placeholder="Email">
+                                    <input type="email" class="form-control" id="email" name="email" value="<%=userInfo && userInfo.email?userInfo.email : ''%>" required placeholder="Email">
                                     <% if(expressFlash.emailerror){%>
                                         <div class="alter text-danger text-start"><%= expressFlash.emailerror%></div>
                                     <%}%>
@@ -255,7 +255,7 @@ input:checked + .slider:before {
                                     <%}%>
                                 </div>
                                 <div class="form-group">
-<input type="tel" class="form-control" id="phone" name="phone" required placeholder="Phone Number">                                   
+<input type="tel" class="form-control" id="phone" name="phone"  value="<%=userInfo && userInfo.phone?userInfo.phone : ''%>" required placeholder="Phone Number">                                   
                                 <% if(expressFlash.phoneerror){%>
                                         <div class="alter text-danger text-start"><%= expressFlash.phoneerror%></div>
                                     <%}%>
@@ -265,19 +265,19 @@ input:checked + .slider:before {
                                 </div>
             
                                 <div class="form-group">
-                                    <input type="password" class="form-control" id="password" name="password" required placeholder="Password">                                 
+                                    <input type="password" class="form-control" id="password" name="password" value="<%=userInfo && userInfo.password? userInfo.password : ''%>" required placeholder="Password">                                 
                                     <% if(expressFlash.passworderror){%>
                                         <div class="alter text-danger text-start"><%= expressFlash.passworderror%></div>
                                     <%}%>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required placeholder="Confirm Password">
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" value="<%=userInfo && userInfo.confirm_password?userInfo.confirm_password : ''%>" required placeholder="Confirm Password">
                                     <% if(expressFlash.cpassworderror){%>
                                         <div class="alter text-danger text-start"><%= expressFlash.cpassworderror%></div>
                                     <%}%>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="referralCode" name="referralCode" placeholder="Referral Code (if any..)">
+                                    <input type="text" class="form-control" id="referralCode" name="referralCode" value="<%=userInfo && userInfo.referralCode?userinfo.referralCode : ''%>"placeholder="Referral Code (if any..)">
     
                                 </div>
                                 

@@ -7,7 +7,6 @@ const walletModel = require("../model/wallet_model");
 const cartModel = require("../model/cart_model");
 const Razorpay = require("razorpay");
 const bcrypt = require("bcrypt");
-const puppeteer = require("puppeteer");
 const easyinvoice = require("easyinvoice");
 
 const key_id = process.env.key_id;
@@ -87,6 +86,7 @@ const newAddress = async (req, res) => {
     const categories = await categoryModel.find();
     res.render("users/newAddress", {
       categories,
+      addressInfo:req.session.addressInfo,
       expressFlash: {
         fullnameerror: req.flash("fullnameerror"),
         saveaserror: req.flash("saveaserror"),
@@ -99,6 +99,7 @@ const newAddress = async (req, res) => {
         phoneerror: req.flash("phoneerror"),
       },
     });
+    req.session.addressInfo=null;
   } catch (err) {
     console.log(err);
     res.render("users/serverError");
@@ -118,9 +119,9 @@ const addressUpdate = async (req, res) => {
       country,
       phone,
     } = req.body;
+    req.session.addressInfo=req.body
     const userId = req.session.userId;
     const categories = await categoryModel.find();
-    console.log("id", userId);
 
     const existingUser = await userModel.findOne({ _id: userId });
     const fullnamevalid = bnameValid(fullname);
@@ -187,9 +188,10 @@ const addressUpdate = async (req, res) => {
       });
 
       if (existingAddress) {
-        // req.flash('address', 'This Address already existed');
         return res.redirect("/addAddress");
       }
+
+      req.session.addressInfo=null
 
       existingUser.address.push({
         saveas: saveas,

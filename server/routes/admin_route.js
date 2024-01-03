@@ -73,6 +73,8 @@ adrouter.get('/bannerList',auth.loggedadmin,banner_controller.bannerList)
 adrouter.get('/newbanner',auth.loggedadmin,banner_controller.addbanner)
 adrouter.post('/addBanner',upload.single('image'),auth.loggedadmin,banner_controller.addBannerPost)
 
+adrouter.get('/filterOrder/:status',auth.loggedadmin,order_controller.filterOrder)
+
 
 
 

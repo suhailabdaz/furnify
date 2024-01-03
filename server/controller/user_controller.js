@@ -244,12 +244,13 @@ const profile = async (req, res) => {
       req.session.signupPressed = true;
 
       res.render("users/login", {
-        expressFlash: {
+        logInfo:req.session.logInfo,expressFlash: {
           emailpasserror: req.flash("emailpasserror"),
           blockerror: req.flash("blockerror"),
         },
       });
     }
+    req.session.logInfo=null
   } catch (err) {
     console.log(err);
     res.render("users/serverError");
@@ -269,7 +270,7 @@ const logout = async (req, res) => {
 
 const signup = async (req, res) => {
   res.render("users/signup", {
-    expressFlash: {
+   userInfo:req.session.userInfo, expressFlash: {
       emailerror: req.flash("emailerror"),
       emailerrorinvalid: req.flash("emailerrorinvalid"),
       nameerror: req.flash("nameerror"),
@@ -280,6 +281,7 @@ const signup = async (req, res) => {
       cpassworderror: req.flash("cpasswowrderror"),
     },
   });
+    req.session.userInfo=null
 };
 
 const sendmail = async (email, otp) => {
@@ -331,6 +333,7 @@ const signupotp = async (req, res) => {
     if (req.body.referralCode) {
       referralCode = req.body.referralCode;
     }
+    req.session.userInfo=req.body
     req.session.email = req.body.email;
 
     const isfnameValid = nameValid(firstname);
@@ -385,6 +388,7 @@ const signupotp = async (req, res) => {
       );
       res.redirect("/signup");
     } else {
+      req.session.userInfo=null
       const hashedpassword = await bcrypt.hash(password, 10);
       const user = new usersModel({
         firstname: firstname,
@@ -545,6 +549,8 @@ const loginaction = async (req, res) => {
     const email = req.body.email;
     const user = await usersModel.findOne({ email: email });
 
+    req.session.logInfo=req.body
+
     if (!user) {
       req.flash("emailpasserror", "Invalid Email or Password");
       return res.redirect("/profile");
@@ -557,6 +563,7 @@ const loginaction = async (req, res) => {
       req.session.firstname = user.firstname;
       req.session.isAuth = true;
       req.session.admin=false;
+      req.session.logInfo=null;
       res.redirect("/");
     } else if (user.status) {
       req.flash("blockerror", "SORRY! Your Account has been suspended !!!");
@@ -565,6 +572,7 @@ const loginaction = async (req, res) => {
       req.flash("emailpasserror", "Invalid Email or Password");
       res.redirect("/profile");
     }
+    
   } catch (err) {
     console.log(err);
     res.render("users/serverError");

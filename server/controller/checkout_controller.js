@@ -23,6 +23,8 @@ const checkoutreload = async (req, res) => {
         const { saveas, fullname, adname, street, pincode, city, state, country, phone } = req.body;
         const cartId = req.body.cartId;
 
+        req.session.chadInfo=req.body;
+
         const userId = req.session.userId;
         console.log("id", userId);
         const user = await userModel.findById(userId);
@@ -88,7 +90,6 @@ if(!phoneValid){
 }
 
         if (existingUser) {
-            // Corrected query to find existing address for the user
             const existingAddress = await userModel.findOne({
                 '_id': userId,
                 'address': {
@@ -107,8 +108,10 @@ if(!phoneValid){
 
             if (existingAddress) {
                 
-                return res.redirect('/addAddress');
+              req.flash("existserror",'address already exists')
+              return res.redirect(`/checkoutpage?cartId=${cartId}`)
             }
+            req.session.chadInfo=null
 
             existingUser.address.push({
                 saveas: saveas,
@@ -131,7 +134,7 @@ if(!phoneValid){
         if (!addresslist) {
             console.log('User not found');
             // Handle the case where the user with the given userId is not found
-            return res.status(404).send('User not found');
+            return res.render("users/serverError")
         }
 
         const addresses = addresslist.address;
@@ -139,7 +142,7 @@ if(!phoneValid){
         // Check if cartId is provided and is valid
         if (!cartId) {
             console.log('Cart ID not provided');
-            return res.status(400).send('Cart ID not provided');
+            return res.render("users/serverError")
         }
 
         // Find the cart by ID
@@ -148,7 +151,7 @@ if(!phoneValid){
         // Check if cart exists
         if (!cart) {
             console.log('Cart not found');
-            return res.status(404).send('Cart not found');
+            return res.render("users/serverError")
         }
 
         const cartItems = cart.item.map((cartItem) => ({
@@ -168,7 +171,6 @@ if(!phoneValid){
 
 const placeOrder = async (req, res) => {
   try {
-    console.log(req.body);
     const categories = await categoryModel.find({});
 
     const addressId = req.body.selectedAddressId;
@@ -176,9 +178,7 @@ const placeOrder = async (req, res) => {
       address: { $elemMatch: { _id: addressId } },
     });
 
-    if (!user) {
-      return res.status(404).send('User not found');
-    }
+    
 
     const selectedAddress = user.address.find((address) =>
       address._id.equals(addressId)

@@ -38,6 +38,20 @@
 
           <div class="container mt-5">
             <h1 class="mb-4 text-center text-primary">Order Management</h1>
+            <form action="/admin/orderpage" class="mb-3">
+              <button type="submit" class="btn btn-success mt-3">View All</button>
+            </form>
+            <div class="form-group">
+              <label for="orderStatus">Filter by Status:</label>
+              <select class="form-control" id="orderStatus" onchange="filterOrders()">
+                  <option value="Pending">Pending</option>
+                  <option value="Processing">Processing</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Cancelled">Cancelled</option>
+                  <option value="Returned">Returned</option>
+              </select>
+          </div>
     
             
             
@@ -159,6 +173,12 @@
       .catch(error => {
           console.error('Error:', error);
       });
+  }
+</script>
+<script>
+  function filterOrders() {
+      const orderStatus = document.getElementById("orderStatus").value;
+      window.location.href=`/admin/filterOrder/${orderStatus}`
   }
 </script>
   </body>

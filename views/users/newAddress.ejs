@@ -145,14 +145,14 @@
 
         <div class="form-group col-md-6">
             <label for="saveas">Save as</label>
-            <input type="text" id="saveas" name="saveas" class="form-control">
+            <input type="text" id="saveas" name="saveas" value="<%=addressInfo && addressInfo.saveas?addressInfo.saveas:''%>" class="form-control">
             <% if(expressFlash.saveaserror){ %>
               <div class="alert text-danger text-start" style="color: red;"><%= expressFlash.saveaserror %></div>
           <% } %>
           </div>
         <div class="form-group col-md-6">
           <label for="fullname">Full Name</label>
-          <input type="text" id="fullname" name="fullname" class="form-control">
+          <input type="text" id="fullname" name="fullname" value="<%=addressInfo && addressInfo.fullname?addressInfo.fullname:''%>"  class="form-control">
           <% if(expressFlash.fullnameerror){ %>
             <div class="alert text-danger text-start" style="color: red;"><%= expressFlash.fullnameerror %></div>
         <% } %>
@@ -160,7 +160,7 @@
   
         <div class="form-group col-md-6">
           <label for="adname">House Name / Flat No</label>
-          <input type="text" id="adname" name="adname" class="form-control">
+          <input type="text" id="adname" name="adname" value="<%=addressInfo && addressInfo.adname?addressInfo.adname:''%>"  class="form-control">
           <% if(expressFlash.adnameerror){ %>
             <div class="alert text-danger text-start" style="color: red;"><%= expressFlash.adnameerror %></div>
         <% } %>
@@ -168,7 +168,7 @@
   
         <div class="form-group col-md-6">
           <label for="street">Street</label>
-          <input type="text" id="street" name="street" class="form-control">
+          <input type="text" id="street" name="street" value="<%=addressInfo && addressInfo.street?addressInfo.street:''%>"  class="form-control">
           <% if(expressFlash.streeterror){ %>
             <div class="alert text-danger text-start" style="color: red;"><%= expressFlash.streeterror %></div>
         <% } %>
@@ -176,7 +176,7 @@
   
         <div class="form-group col-md-6">
           <label for="pincode">Pincode</label>
-          <input type="number" id="pincode" name="pincode" class="form-control">
+          <input type="number" id="pincode" name="pincode" value="<%=addressInfo && addressInfo.pincode?addressInfo.pincode:''%>"  class="form-control">
           <% if(expressFlash.pincodeerror){ %>
             <div class="alert text-danger text-start" style="color: red;"><%= expressFlash.pincodeerror %></div>
         <% } %>
@@ -184,7 +184,7 @@
   
         <div class="form-group col-md-6">
           <label for="city">City</label>
-          <input type="text" id="city" name="city" class="form-control">
+          <input type="text" id="city" name="city" value="<%=addressInfo && addressInfo.city?addressInfo.city:''%>"  class="form-control">
           <% if(expressFlash.cityerror){ %>
             <div class="alert text-danger text-start" style="color: red;"><%= expressFlash.cityerror %></div>
         <% } %>
@@ -211,7 +211,7 @@
   
         <div class="form-group col-md-6">
           <label for="phone">Phone Number</label>
-          <input type="number" id="phone" name="phone" class="form-control">
+          <input type="number" id="phone" name="phone" value="<%=addressInfo && addressInfo.phone?addressInfo.phone:''%>"  class="form-control">
           <% if(expressFlash.phoneerror){ %>
             <div class="alert text-danger text-start" style="color: red;"><%= expressFlash.streeterror %></div>
         <% } %>

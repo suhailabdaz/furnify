@@ -21,16 +21,7 @@
 
     <!-- ElevateZoom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-elevatezoom/3.0.8/jquery.elevatezoom.min.css">
-    <script>
-        function getStars(rating) {
-            const fullStars = Math.floor(rating);
-            const halfStar = rating % 1 !== 0;
     
-            const stars = '★'.repeat(fullStars) + (halfStar ? '½' : '');
-    
-            return stars;
-        }
-    </script>
     <style>
 
 
@@ -142,7 +133,24 @@ hr {
 
        
 
-       
+        .product-details-section {
+    width: 100%; /* Full width by default */
+    padding: 20px;
+    text-align: left;
+    background-color: #fff; /* Set the background color you want */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: Add box shadow for a card-like appearance */
+    z-index: 2; /* Ensure the product details card is above the images */
+}
+
+/* Media query for larger screens (e.g., desktops) */
+@media (min-width: 1200px) {
+    .product-details-section {
+        width: calc(50% - 25px); /* Adjusted width with right margin */
+        margin-right: 25px; /* Right margin */
+    }
+}
+
+
         
 
         .product-details {
@@ -233,11 +241,12 @@ hr {
         }
 
         .product-image {
-            width: 500px;
+            width: 75%; /* Ensure images fill their container */
+            height: 75vh; /* Set your desired height */
         }
 
         .similar-products-section {
-    padding: 20px;
+        padding: 2vw;
 }
 
 .product-item {
@@ -261,7 +270,7 @@ hr {
 }
 
 .card-body {
-    padding: 10px;
+    padding: 1vw;
     text-align: center;
 }
 
@@ -290,98 +299,101 @@ hr {
 <body>
 
     <%-include('userpartials/nav')%>
-    <div>
-    <div style="margin: 30px 30px 30px 30px ;" class="fulldiv my-5 d-flex justify-content-center">
+ 
+    <div class="fulldiv my-5 d-flex justify-content-center">
         <div class="row product-container">
-            <div class="col-lg-6 col-md-6 col-sm-12" style="width: 75vh; height: 40vh;" >
-                
-                <div id="product-slider" class="tns-slider" >
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div id="product-slider" class="tns-slider">
                     <% product.images.forEach((image, index) => { %>
-                        <div style="height: 75vh;">
-                        
-                        <img src="/<%= image %>" alt="<%= product.name %> Image" class="img-fluid"  style="width: 100%;" />
-                        
+                        <div>
+                            <img src="/<%= image %>" alt="<%= product.name %> Image" class="img-fluid product-image" />
                         </div>
-                   
                     <% }); %>
                 </div>
-                
-               
             </div>
-
+    
             <!-- Product Details Section -->
-            <div class="product-details-section col-lg-6 col-md-6 col-sm-12">
-                <div class="row">
-                <h1 class="col-6"><%= product.name %></h1>
-                <p class="col-6 d-flex justify-content-end">
-                    <span id="ratingContainer"class="rating-container">
-                      ★&nbsp;<span id="avgrating"><%= averageRating %> </span>&nbsp;<span>(<%= totalRatings %>)</span>
-                    </span>
-                  </p>
-            </div>
-                <p class="price"><span style="text-decoration: line-through;color: #857b79;">Rs.<%= product.mrp.toFixed(2) %></span>&nbsp;&nbsp;&nbsp;Rs.<%= product.price.toFixed(2) %></p>
+<!-- Product Details Section -->
+<div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="product-details-sectionn">
+        <div class="row">
+            <h1 class="col-12"><%= product.name %></h1>
+            <p class="col-12 d-flex justify-content-end">
+               <% if (product.userRatings && product.userRatings.length > 0) { %>
+    <span id="ratingContainer" class="rating-container">
+        ★&nbsp;<span id="avgrating"><%= averageRating %> </span>&nbsp;<span>(<%= totalRatings %>)</span>
+    </span>
+<% } else { %>
+    <p>No ratings yet</p>
+<% } %>
 
-                <div class="description">
-                    <p><strong>Description:</strong></p>
-                    <p><%= product.description %></p>
-                </div>
+            </p>
+        </div>
+        <p class="price"><span style="text-decoration: line-through;color: #857b79;">Rs.<%= product.mrp.toFixed(2) %></span>&nbsp;&nbsp;&nbsp;Rs.<%= product.price.toFixed(2) %></p>
 
-<!-- Specifications Section -->
-<div class="specifications">
-    <p><strong>Specifications:</strong></p>
-    <ul>
-        <% if (product.height || product.width || product.sidelength) { %>
-            <li><strong>Dimensions:</strong>
-                <% if (product.height) { %>
-                    <%= product.height %> cm (H)
+        <div class="description col-12">
+            <p><strong>Description:</strong></p>
+            <p><%= product.description %></p>
+        </div>
+
+        <!-- Specifications Section -->
+        <div class="specifications col-12">
+            <p><strong>Specifications:</strong></p>
+            <ul>
+                <% if (product.height || product.width || product.sidelength) { %>
+                    <li><strong>Dimensions:</strong>
+                        <% if (product.height) { %>
+                            <%= product.height %> cm (H)
+                        <% } %>
+                        <% if (product.width) { %>
+                            x <%= product.width %> cm (W)
+                        <% } %>
+                        <% if (product.sidelength) { %>
+                            x <%= product.sidelength %> cm (Sidelength)
+                        <% } %>
+                    </li>
                 <% } %>
-                <% if (product.width) { %>
-                    x <%= product.width %> cm (W)
+                <% if (product.weight) { %>
+                    <li><strong>Weight:</strong> <%= product.weight %> kg</li>
                 <% } %>
-                <% if (product.sidelength) { %>
-                    x <%= product.sidelength %> cm (Sidelength)
+                <% if (product.color) { %>
+                    <li><strong>Color:</strong> <%= product.color %> </li>
                 <% } %>
-            </li>
-        <% } %>
-        <% if (product.weight) { %>
-            <li><strong>Weight:</strong> <%= product.weight %> kg</li>
-        <% } %>
-        <% if (product.color) { %>
-            <li><strong>color:</strong> <%= product.color %> </li>
-        <% } %>
-        <% if (product.madeOf) { %>
-            <li><strong>Materials:</strong> <%= product.madeOf %> </li>
-        <% } %>
-        <% if (product.manufacturer) { %>
-            <li><strong>manufacturer:</strong> <%= product.manufacturer %> </li>
-        <% } %>
-        <!-- Add more specifications as needed -->
-    </ul>
+                <% if (product.madeOf) { %>
+                    <li><strong>Materials:</strong> <%= product.madeOf %> </li>
+                <% } %>
+                <% if (product.manufacturer) { %>
+                    <li><strong>Manufacturer:</strong> <%= product.manufacturer %> </li>
+                <% } %>
+                <!-- Add more specifications as needed -->
+            </ul>
+        </div>
+
+        <div class="buttons-row col-12">
+            <% if (product.stock > 0) { %>
+                <a href="/addtocart/<%= product._id %>"><button class="btn btn-primary">
+                        <span class="fas fa-shopping-cart"></span> Add to Cart
+                    </button></a>
+            <% } else { %>
+                <button class="btn btn-danger" disabled>
+                    Out of Stock
+                </button>
+            <% } %>
+            <a href="/addtofavourites/<%=product._id%>"><button class="btn btn-secondary">
+                    <span class="fas fa-heart"></span> Add to Wishlist
+                </button></a>
+        </div>
+    </div>
 </div>
 
-                <div class="buttons-row">
-                    <% if (product.stock > 0) { %>
-                        <a href="/addtocart/<%= product._id %>"><button class="btn btn-primary">
-                                <span class="fas fa-shopping-cart"></span> Add to Cart
-                            </button></a>
-                    <% } else { %>
-                        <button class="btn btn-danger" disabled>
-                            Out of Stock
-                        </button>
-                    <% } %>
-                    <a href="/addtofavourites/<%=product._id%>"><button class="btn btn-secondary">
-                            <span class="fas fa-heart"></span> Add to Wishlist
-                        </button></a>
-                </div>
-            </div>
         </div>
-        
     </div>
+    
 
 
    
     <div class="container mt-3">
-        <button style="margin-left: 75vh; margin-bottom: 12px;" id="toggleRatingsBtn" class=" ml-5 btn btn-primary"> User Ratings and Reviews</button>
+        <button style="margin-left: 30vw; margin-bottom: 1.5vw;" id="toggleRatingsBtn" class=" ml-5 btn btn-primary"> User Ratings and Reviews</button>
 
     
         <div class="user-ratings-section" id="ratingsSection" style="display: none;">
@@ -400,6 +412,8 @@ hr {
                         </div>
                     </div>
                 <% }); %>
+                <% } else { %>
+                    <p>No ratings yet</p>
 
                 <% } %>
 
@@ -431,17 +445,8 @@ hr {
         </div>
     <% } %>
     
-    </div>
+    
     <%-include('userpartials/footer')%>
-
-    
-
-
-    
-
-    
-        <!-- End Footer Section -->
-
         
     <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
@@ -477,19 +482,17 @@ hr {
     }
 
     if (prevButton && nextButton) {
-            prevButton.style.background = 'black'; // Set your desired background color
-            prevButton.style.color = 'white'; // Set your desired text color
-            // Similarly, you can style the nextButton
-            nextButton.style.background = 'black';
-            nextButton.style.color =  'white';
+            prevButton.style.background = "white"; 
+            prevButton.style.color = 'black'; 
 
-            // Positioning adjustments
+            nextButton.style.background = 'white';
+            nextButton.style.color =  'black';
+
             
            
 
-            prevButton.style.left = '10px'; // Adjust the left position as needed
-
-            nextButton.style.right = '10px'; // Adjust the right position as needed
+            prevButton.style.left = '10px'; 
+            nextButton.style.right = '10px'; 
         }
         });
 
@@ -510,16 +513,13 @@ hr {
     </script>
     
     <script>
-        // Get the average rating from your server-side logic or any source
         const aveRating = parseFloat(document.getElementById('avgrating').innerText);
 
         console.log(aveRating);
       
-        // Get the rating container element
         const ratingContainer = document.getElementById('ratingContainer');
       
-        // Set the background color based on the average rating
-        if (aveRating > 4) {
+        if (aveRating >= 4) {
           ratingContainer.style.backgroundColor = 'green';
           ratingContainer.style.color = 'white';
 
